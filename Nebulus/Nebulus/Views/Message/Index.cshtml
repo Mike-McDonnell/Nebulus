@@ -9,10 +9,13 @@
 @Html.Grid(Model).Columns(columns =>
 {
     columns.Add(item => item.MessageTitle).Titled("Title");
-    columns.Add(item => item.MessagePriority).Titled("Priority");
-    columns.Add(item => item.ScheduleStart).Titled("Start Time");
+    columns.Add().RenderValueAs(o => Enum.Parse(typeof(MessagePriorityType), o.MessagePriority.ToString()).ToString()).Titled("Priority");
+    columns.Add(item => item.ScheduleStart.LocalDateTime).Titled("Start Time");
     columns.Add(item => item.ScheduleInterval).Titled("Interval");
-    columns.Add(item => item.Expiration).Titled("Expiration");
+    columns.Add(item => item.Expiration.LocalDateTime).Titled("Expiration");
+    columns.Add().Encoded(false).Sanitized(false).SetWidth(30).RenderValueAs(o => @Html.ActionLink("Edit", "Edit", o));
+    columns.Add().Encoded(false).Sanitized(false).SetWidth(30).RenderValueAs(o => @<button type="submit">X</button>);
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @<button type="submit">Send Now</button>);
 })
 
 <br/>
