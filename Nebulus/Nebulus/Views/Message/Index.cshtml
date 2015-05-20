@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using GridMvc.Html
+@using Nebulus.Models
+@model IEnumerable<MessageItem>
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add(item => item.MessageTitle).Titled("Title");
+    columns.Add(item => item.MessagePriority).Titled("Priority");
+    columns.Add(item => item.ScheduleStart).Titled("Start Time");
+    columns.Add(item => item.ScheduleInterval).Titled("Interval");
+    columns.Add(item => item.Expiration).Titled("Expiration");
+})
+
+<br/>
+<div class="row">
+    <p><a href="~/Message/Create" class="btn-block">Create Message &raquo;</a></p>
+</div>
+
+
+
+
+
+
+
+
+
