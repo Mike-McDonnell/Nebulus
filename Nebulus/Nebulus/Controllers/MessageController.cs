@@ -37,20 +37,36 @@ namespace Nebulus.Controllers
             messageItem.MessageItemId = Guid.NewGuid().ToString();
             MModel.MessageItems.Add(messageItem);
             MModel.SaveChanges();
-            return View(messageItem);
+            return RedirectToAction("Index");
         }
         [HttpGet]
+        public ActionResult Edit(string id)
+        {
+            return View(MModel.MessageItems.Find(id));
+        }
+
+        [HttpPost]
         public ActionResult Edit(MessageItem messageItem)
         {
-            if (ModelState.IsValid)
-            {
-                MModel.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
-                MModel.SaveChanges();
+            MModel.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
+            MModel.SaveChanges();
 
-                return RedirectToAction("Index");
-            }
+            return RedirectToAction("Index");
+        }
 
-            return View(messageItem);
+        [HttpGet]
+        public ActionResult Delete(string id)
+        {
+            return View(MModel.MessageItems.Find(id));
+        }
+
+        [HttpPost]
+        public ActionResult Delete(MessageItem messageItem)
+        {
+            MModel.MessageItems.Remove(MModel.MessageItems.Find(messageItem.MessageItemId));
+            MModel.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

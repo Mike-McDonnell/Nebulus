@@ -1,120 +1,145 @@
 ﻿@model Nebulus.Models.MessageItem
-
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
-
 
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.MessageItemId, null)
     
-    <div class="form-horizontal">
-        <h4>MessageItem</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageItemId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MessageItemId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MessageItemId, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    @*<div class="form-horizontal">*@
+        <div id="Wrapper">
+            <form action="">
+                <div id="MessageWrapper">
+                    <fieldset>
+                        <legend>MESSAGE</legend>
+                        <div id="" class="FloatDivLeft">
+                            <p>
+                                <label for="MessageTitle">Message Title:</label>
+                                @Html.EditorFor(model => model.MessageTitle, null)
+                                @Html.ValidationMessageFor(model => model.MessageTitle, "", new { @class = "text-danger" })
+                            </p>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MessageTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MessageTitle, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div id="" class="FloatDivLeft">
+                            <p>
+                                <label for="MessagePriority">Message Priority:</label>
+                                @Html.EnumDropDownListFor(model => model.MessagePriority)
+                                @Html.ValidationMessageFor(model => model.MessagePriority, "", new { @class = "text-danger" })
+                            </p>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageBody, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MessageBody, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div id="" class="FloatDivRight">
+                            <p>
+                                <label for="MessageType">Message Type:</label>
+                                @Html.EnumDropDownListFor(model => model.MessageType)
+                                @Html.ValidationMessageFor(model => model.MessageType, "", new { @class = "text-danger" })
+                            </p>
+                        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.MessageType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MessageType, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                        <div id="" class="ClearBoth">
+                            <p>
+                                <label for="MessageBody">Message:</label><br />
+                                @Html.TextAreaFor(Model => Model.MessageBody, new { @class = "ckeditor" })
+                                @Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })
+                            </p>
+                        </div>
+                    </fieldset>
+                </div><!--end of MessageWrapper-->
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageLocation, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.MessageLocation, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div id="AdvancedWrapper">
+                    <fieldset>
+                        <legend>ADVANCED</legend>
+                        <fieldset class="odd">
+                            <div id="" class="ClearBoth">
+                                <div id="" class="FloatDivLeft">
+                                    <p>
+                                        <label for="ScheduleStart">Schedule:</label><br>
+                                        @Html.EditorFor(model => model.ScheduleStart)
+                                        @Html.ValidationMessageFor(model => model.ScheduleStart, "", new { @class = "text-danger" })
+                                    </p>
+                                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessagePriority, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.MessagePriority, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MessagePriority, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                                <div id="Calendar" class="FloatDivLeft">
+                                    <fieldset>
+                                        <legend>Calendar:</legend>
+                                     
+                                    </fieldset>
+                                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ScheduleStart, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ScheduleStart, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ScheduleStart, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                                <div id="Repeat" class="FloatDivRight">
+                                    <fieldset>
+                                        <legend>Repeat:</legend>
+                                        <p>Hourly: <input type="radio" value="hourly" name="repetition" id="hourly"></p>
+                                        <p>Daily: <input type="radio" value="daily" name="repetition" id="daily"></p>
+                                        <p>Weekly: <input type="radio" value="weekly" name="repetition" id="weekly"></p>
+                                        <p>Monthly: <input type="radio" value="monthly" name="repetition" id="monthly"></p>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <div id="" class="ClearBoth">
+                                <div id="FirstHortDiv" class="FloatDivLeft">
+                                    <p>Screen Location/Coordinates:</p>
+                                    @Html.EnumDropDownListFor(model => model.MessageLocation)
+                                    @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
+                                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ScheduleInterval, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ScheduleInterval, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ScheduleInterval, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                                <div id="SecondHortDiv" class="FloatDivLeft">
+                                    <p>Expiration:</p>
+                                    @Html.EditorFor(model => model.Expiration)
+                                    @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
+                                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.duration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.duration, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                                <div id="ThirdHortDiv" class="FloatDivRight">
+                                    <p>Duration:</p>
+                                    @Html.EditorFor(model => model.duration)
+                                    @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset class="odd">
+                            <div id="" class="ClearBoth">
+                                <div id="" class="FloatDivLeft">
+                                    <p>
+                                        <label for="">AD	Group:</label>
+                                        <input type="text" name="">
+                                    </p>
+                                </div>
+                                <div id="" class="FloatDivRight">
+                                    <p>
+                                        <label for="">Computer Name:</label>
+                                        <input type="text" name="">
+                                    </p>
+                                </div>
+                                <div id="" class="ClearBoth FloatDivLeft" style="margin-left:23px">
+                                    <p>
+                                        <label for="">Subnet:</label>
+                                        <input type="text" name="">
+                                    </p>
+                                </div>
+                                <div id="" class="FloatDivRight">
+                                    <p>
+                                        <label for="">Username:</label>
+                                        <input type="text" name="">
+                                    </p>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </fieldset>
+                </div><!--end of AdvancedWrapper-->
+                <button type="button" value="">Cancel</button>
+                <button type="submit" >Transmit</button>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Expiration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Expiration, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            </form>
+        </div><!--end of wrapper-->
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TargetGroup, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+     @*</div>*@
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
