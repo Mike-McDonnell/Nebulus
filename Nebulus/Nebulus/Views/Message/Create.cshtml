@@ -1,4 +1,5 @@
 ﻿@model Nebulus.Models.MessageItem
+@using DayPilot.Web.Mvc
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -66,7 +67,10 @@
                                 <div id="Calendar" class="FloatDivLeft">
                                     <fieldset>
                                         <legend>Calendar:</legend>
-                                     
+                                        @Html.DayPilotMonth("dp", new DayPilotMonthConfig
+                                        {
+                                            BackendUrl = Url.Content("~/Message/Backend"),
+                                        })
                                     </fieldset>
                                 </div>
 
@@ -140,6 +144,11 @@
 
      @*</div>*@
 }
+
+<script type="text/javascript">
+    $("#ScheduleStart").datetimepicker({ inline: true, minDate: 'yesterday' });
+    $("#Expiration").datetimepicker({ inline: true, minDate: 'tommorow' });
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

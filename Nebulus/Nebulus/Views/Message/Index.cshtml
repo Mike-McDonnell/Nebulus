@@ -1,10 +1,39 @@
-﻿@{
+﻿@using DayPilot.Web.Mvc
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @using GridMvc.Html
 @using Nebulus.Models
 @model IEnumerable<MessageItem>
+
+<br />
+
+@Html.DayPilotMonth("dp", new DayPilotMonthConfig
+{
+    BackendUrl = Url.Content("~/Message/Backend"),
+    EventClickHandling = DayPilot.Web.Mvc.Events.Month.EventClickHandlingType.CallBack,
+    TimeRangeSelectedHandling = DayPilot.Web.Mvc.Events.Month.TimeRangeSelectedHandlingType.CallBack,  
+})
+
+<br />
+
+<div class="tip">
+<select id="dropdown">
+    @{ for (var d = DateTime.Today; d < DateTime.Today.AddMonths(15); d = d.AddMonths(1))
+     {
+        <option value="@d.ToString("s")">@d.ToString("MMMM yyyy")</option>
+     }}
+</select>
+</div>
+
+<br />
+
+<div class="row">
+    <p><a href="~/Message/Create" class="btn btn-default">Create Message &raquo;</a></p>
+</div>
+
+<br />
 
 @Html.Grid(Model).Columns(columns =>
 {
@@ -18,10 +47,14 @@
     columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Send Now", "Send", o, new { @class = "btn btn-default  btn-xs" }));
 })
 
-<br/>
-<div class="row">
-    <p><a href="~/Message/Create" class="btn btn-default">Create Message &raquo;</a></p>
-</div>
+<script type="text/javascript">
+    $("#dropdown").change(function () {
+        var selected = $(this).val();
+        dp.commandCallBack("navigate", { start: selected });
+    });
+</script>
+
+
 
 
 

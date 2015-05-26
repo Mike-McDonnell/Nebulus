@@ -177,6 +177,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Dpm.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -200,8 +201,24 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Daypilot\calendar_blue.css" />
+    <Content Include="Content\Daypilot\calendar_g.css" />
+    <Content Include="Content\Daypilot\calendar_green.css" />
+    <Content Include="Content\Daypilot\calendar_traditional.css" />
+    <Content Include="Content\Daypilot\calendar_transparent.css" />
+    <Content Include="Content\Daypilot\calendar_white.css" />
+    <Content Include="Content\Daypilot\month_blue.css" />
+    <Content Include="Content\Daypilot\month_g.css" />
+    <Content Include="Content\Daypilot\month_green.css" />
+    <Content Include="Content\Daypilot\month_traditional.css" />
+    <Content Include="Content\Daypilot\month_transparent.css" />
+    <Content Include="Content\Daypilot\month_white.css" />
+    <Content Include="Content\Daypilot\navigator_green.css" />
+    <Content Include="Content\Daypilot\navigator_transparent.css" />
+    <Content Include="Content\Daypilot\navigator_white.css" />
     <Content Include="Content\forms.css" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -470,11 +487,13 @@
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\ckeditor\styles.js" />
+    <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
     <Content Include="Scripts\gridmvc.js" />
     <Content Include="Scripts\gridmvc.lang.ru.js" />
     <Content Include="Scripts\gridmvc.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery.datetimepicker.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

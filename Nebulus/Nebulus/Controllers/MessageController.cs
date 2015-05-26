@@ -11,15 +11,18 @@ namespace Nebulus.Controllers
     public class MessageController : Controller
     {
         MessageModel MModel;
+        private Dpm dpm;
 
         public MessageController()
         {
             MModel = new MessageModel();
+            dpm = new Dpm() { MModel = this.MModel };
         }
 
         public ActionResult Index()
         {
-            var messageItems = MModel.MessageItems.ToList();
+            DateTimeOffset ExpireDate = DateTimeOffset.Now.AddDays(45);
+            var messageItems = MModel.MessageItems.Where(item => item.Expiration <= ExpireDate).ToList();
             return View(messageItems);
         }
         [HttpGet]
@@ -67,6 +70,10 @@ namespace Nebulus.Controllers
             MModel.SaveChanges();
 
             return RedirectToAction("Index");
+        }
+        public ActionResult Backend()
+        {
+            return dpm.CallBack(this);
         }
     }
 }

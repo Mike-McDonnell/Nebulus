@@ -14,7 +14,7 @@ namespace Nebulus.Models
 
     public enum MessageLocation
     {
-        Top, Bottom, Right, Left, FullScreen
+        Bottom, Top, Right, Left, FullScreen
     }
 
     public enum MessagePriorityType
