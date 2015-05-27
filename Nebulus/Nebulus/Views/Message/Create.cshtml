@@ -45,7 +45,7 @@
                             <p>
                                 <label for="MessageBody">Message:</label><br />
                                 @Html.TextAreaFor(Model => Model.MessageBody, new { @class = "ckeditor" })
-                                @Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })
+                                @*@Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })*@
                             </p>
                         </div>
                     </fieldset>
@@ -107,29 +107,29 @@
                             </div>
                         </fieldset>
                         <fieldset class="odd">
-                            <div id="" class="ClearBoth">
+                            <div id="Tags" class="ClearBoth">
                                 <div id="" class="FloatDivLeft">
                                     <p>
                                         <label for="">AD	Group:</label>
-                                        <input type="text" name="">
+                                        <input id="ADGroupSearch" type="text" name="" />
                                     </p>
                                 </div>
-                                <div id="" class="FloatDivRight">
-                                    <p>
-                                        <label for="">Computer Name:</label>
-                                        <input type="text" name="">
-                                    </p>
-                                </div>
-                                <div id="" class="ClearBoth FloatDivLeft" style="margin-left:23px">
-                                    <p>
-                                        <label for="">Subnet:</label>
-                                        <input type="text" name="">
-                                    </p>
-                                </div>
-                                <div id="" class="FloatDivRight">
+                                <div  class="FloatDivRight">
                                     <p>
                                         <label for="">Username:</label>
-                                        <input type="text" name="">
+                                        <input id="userNameSearch" type="text" name="">
+                                    </p>
+                                </div>
+                                <div  class="FloatDivRight">
+                                    <p>
+                                        <label for="">Computer Name:</label>
+                                        <input id="computerSearch" type="text" name="">
+                                    </p>
+                                </div>
+                                <div class="ClearBoth FloatDivLeft" style="margin-left:23px">
+                                    <p>
+                                        <label for="">Subnet:</label>
+                                        <input id="subNetSearch" type="text" name="">
                                     </p>
                                 </div>
                             </div>
@@ -148,6 +148,20 @@
 <script type="text/javascript">
     $("#ScheduleStart").datetimepicker({ inline: true, minDate: 'yesterday' });
     $("#Expiration").datetimepicker({ inline: true, minDate: 'tommorow' });
+    $("#ADGroupSearch").autocomplete({
+        source: function (request, response) {
+            jQuery.get("/Tag/GetADGroups", {
+                term: request.term
+            }, function (data) {
+                // assuming data is a JavaScript array such as
+                // ["one@abc.de", "onf@abc.de","ong@abc.de"]
+                // and not a string
+                response(data);
+            });
+        },
+        minLength: 3
+    });
+
 </script>
 
 @section Scripts {

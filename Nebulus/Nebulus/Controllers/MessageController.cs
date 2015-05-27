@@ -35,7 +35,8 @@ namespace Nebulus.Controllers
             return View(messageItem);
         }
         [HttpPost]
-        public ActionResult Create(MessageItem messageItem)
+        [ValidateInput(false)]
+        public ActionResult Create(MessageItem messageItem, FormCollection Form)
         {
             messageItem.MessageItemId = Guid.NewGuid().ToString();
             MModel.MessageItems.Add(messageItem);
@@ -75,5 +76,7 @@ namespace Nebulus.Controllers
         {
             return dpm.CallBack(this);
         }
+
+        
     }
 }

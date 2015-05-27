@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web.Mvc;
 
 namespace Nebulus.Models
 {
@@ -9,6 +10,7 @@ namespace Nebulus.Models
     {
         public string MessageItemId { get; set; }
         public string MessageTitle { get; set; }
+        [AllowHtml]
         public string MessageBody { get; set; }
         public MessageType MessageType { get; set; }
         public MessageLocation MessageLocation { get; set; }
