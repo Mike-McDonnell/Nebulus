@@ -16,6 +16,7 @@ namespace Nebulus.Controllers
 
         public JsonResult GetADGroups(string term)
         {
+            
             return new JsonResult();
         }
 

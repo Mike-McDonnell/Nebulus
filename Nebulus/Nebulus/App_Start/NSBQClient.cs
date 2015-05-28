@@ -15,11 +15,11 @@ namespace Nebulus
             
             try
             {
-                ServiceBusConnectionStringBuilder connBuilder = new ServiceBusConnectionStringBuilder(Nebulus.Properties.Settings.Default.NebulusHUBConnectionString);
+                ServiceBusConnectionStringBuilder connBuilder = new ServiceBusConnectionStringBuilder(AppConfiguration.Settings.ServiceBUSConenctionString);
                 MessagingFactory messageFactory = MessagingFactory.CreateFromConnectionString(connBuilder.ToString());
                 NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(connBuilder.ToString());
 
-                string QueueName = "NebulusSprachSBQueue";
+                string QueueName = AppConfiguration.Settings.ServiceBUSQueueName;
 
                 if (!namespaceManager.QueueExists(QueueName))
                 {

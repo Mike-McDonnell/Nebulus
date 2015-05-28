@@ -22,14 +22,5 @@ namespace Nebulus.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"Endpoint=sb://amedwsbamc0113.amed.ds.army.mil/ServiceBusDefaultNamespace;StsEndpoint=https://amedwsbamc0113.amed.ds.army.mil:9355/ServiceBusDefaultNamespace;RuntimePort=9354;ManagementPort=9355;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=0Fm0PIGNCp8D39LBsg3ipmMeNxfudWWoF3gfxTNpJxA=")]
-        public string NebulusHUBConnectionString {
-            get {
-                return ((string)(this["NebulusHUBConnectionString"]));
-            }
-        }
     }
 }

@@ -11,7 +11,7 @@ namespace Nebulus
 {
     class Dpm : DayPilotMonth
     {
-        public MessageModel MModel;
+        public NebulusContext MModel;
 
         protected override void OnInit(InitArgs e)
         {

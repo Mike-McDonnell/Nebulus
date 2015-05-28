@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +14,20 @@ namespace Nebulus.Controllers
             ViewBag.Title = "Home Page";
 
             return View();
+        }
+        [HttpGet]
+        public ActionResult Configure()
+        {
+            ViewBag.Title = "Configure Page";
+
+            return View(AppConfiguration.Settings);
+        }
+        [HttpPost]
+        public ActionResult Configure(Nebulus.Models.ConfigureModel NewConfig)
+        {
+            AppConfiguration.Settings = NewConfig;
+            AppConfiguration.SaveSettings();
+            return View(AppConfiguration.Settings);
         }
     }
 }

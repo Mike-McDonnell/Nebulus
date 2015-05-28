@@ -10,19 +10,17 @@ namespace Nebulus.Controllers
 {
     public class MessageController : Controller
     {
-        MessageModel MModel;
         private Dpm dpm;
 
         public MessageController()
         {
-            MModel = new MessageModel();
-            dpm = new Dpm() { MModel = this.MModel };
+            dpm = new Dpm() { MModel = Nebulus.AppConfiguration.NebulusDBContext };
         }
 
         public ActionResult Index()
         {
             DateTimeOffset ExpireDate = DateTimeOffset.Now.AddDays(45);
-            var messageItems = MModel.MessageItems.Where(item => item.Expiration <= ExpireDate).ToList();
+            var messageItems = Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Where(item => item.Expiration <= ExpireDate).ToList();
             return View(messageItems);
         }
         [HttpGet]
@@ -39,21 +37,21 @@ namespace Nebulus.Controllers
         public ActionResult Create(MessageItem messageItem, FormCollection Form)
         {
             messageItem.MessageItemId = Guid.NewGuid().ToString();
-            MModel.MessageItems.Add(messageItem);
-            MModel.SaveChanges();
+            Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
+            Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
             return RedirectToAction("Index");
         }
         [HttpGet]
         public ActionResult Edit(string id)
         {
-            return View(MModel.MessageItems.Find(id));
+            return View(Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Find(id));
         }
 
         [HttpPost]
         public ActionResult Edit(MessageItem messageItem)
         {
-            MModel.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
-            MModel.SaveChanges();
+            Nebulus.AppConfiguration.NebulusDBContext.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
+            Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -61,14 +59,14 @@ namespace Nebulus.Controllers
         [HttpGet]
         public ActionResult Delete(string id)
         {
-            return View(MModel.MessageItems.Find(id));
+            return View(Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Find(id));
         }
 
         [HttpPost]
         public ActionResult Delete(MessageItem messageItem)
         {
-            MModel.MessageItems.Remove(MModel.MessageItems.Find(messageItem.MessageItemId));
-            MModel.SaveChanges();
+            Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Remove(Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Find(messageItem.MessageItemId));
+            Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -76,7 +74,5 @@ namespace Nebulus.Controllers
         {
             return dpm.CallBack(this);
         }
-
-        
     }
 }

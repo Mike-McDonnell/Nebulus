@@ -19,6 +19,7 @@ namespace Nebulus
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            Nebulus.AppConfiguration.ConfigureAppSettings();
             Nebulus.NSBQ.ConfigureServiceHUB();
         }
     }

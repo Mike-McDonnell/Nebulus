@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -7,8 +8,8 @@ namespace Nebulus.Models
 {
     public class ConfigureModel
     {
-        public string ConfigureModelId { get; set; }
-        
+        [Key]
+        public int Id { get; set; }
         //General
         public bool ActiveDirectoryQueryEnabled { get; set; }
         public string ADConnectionString { get; set; }
@@ -28,9 +29,9 @@ namespace Nebulus.Models
 
         public bool SubNetTAGsEnabled { get; set; }
 
-        //public string ServiceBUSQueueName { get; set; }
+        public string ServiceBUSQueueName { get; set; }
 
-        //public string ServiceBUSConenctionString { get; set; }
+        public string ServiceBUSConenctionString { get; set; }
         
         //SplashScreen
 
@@ -40,5 +41,9 @@ namespace Nebulus.Models
         public string[] printServerServiceAccount { get; set; }
 
         public string[] printServerServiceAccountPassword { get; set; }
+
+        public TAGsDateSourceType SubNetTAGsDateSourceType { get; set; }
+
+        public string DatabaseConnectionString { get; set; }
     }
 }
