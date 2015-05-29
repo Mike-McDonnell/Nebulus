@@ -14,6 +14,12 @@ namespace Nebulus.Models
         public bool ActiveDirectoryQueryEnabled { get; set; }
         public string ADConnectionString { get; set; }
 
+        public string DatabaseConnectionString { get; set; }
+
+        public string ServiceBUSQueueName { get; set; }
+
+        public string ServiceBUSConenctionString { get; set; }
+
         //Message
         public bool GroupTAGsEnabled { get; set; }
         public TAGsDateSourceType GroupTAGsDateSourceType { get; set; }
@@ -25,25 +31,20 @@ namespace Nebulus.Models
 
         public bool ComputerTAGsEnabled { get; set; }
         public TAGsDateSourceType ComputerTAGsDateSourceType { get; set; }
+
         public string ComputerTAGsDateSource { get; set; }
 
         public bool SubNetTAGsEnabled { get; set; }
 
-        public string ServiceBUSQueueName { get; set; }
+        public TAGsDateSourceType SubNetTAGsDateSourceType { get; set; }
 
-        public string ServiceBUSConenctionString { get; set; }
-        
+        public string SubNetTAGsDateSource { get; set; }
+
         //SplashScreen
 
         //Printing
-        public String[] PrintServerNames { get; set; }
+       
+        public PrintServiceSettingsModel PrintServiceSettings {get; set;}
 
-        public string[] printServerServiceAccount { get; set; }
-
-        public string[] printServerServiceAccountPassword { get; set; }
-
-        public TAGsDateSourceType SubNetTAGsDateSourceType { get; set; }
-
-        public string DatabaseConnectionString { get; set; }
     }
 }

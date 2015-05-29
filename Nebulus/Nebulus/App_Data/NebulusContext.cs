@@ -10,7 +10,7 @@ namespace Nebulus
     {
         public DbSet<MessageItem> MessageItems { get; set; }
 
-        public DbSet<ConfigureModel> NebulusConfiguration { get; set; }
+        public DbSet<PrintServiceSettingsModel> PrintServiceConfiguration { get; set; }
 
         public NebulusContext()
             : base("name=NebulusContext")

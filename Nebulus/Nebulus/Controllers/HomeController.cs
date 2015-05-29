@@ -27,6 +27,10 @@ namespace Nebulus.Controllers
         {
             AppConfiguration.Settings = NewConfig;
             AppConfiguration.SaveSettings();
+
+            AppConfiguration.NebulusDBContext.Entry(NewConfig.PrintServiceSettings).State = System.Data.Entity.EntityState.Modified;
+            AppConfiguration.SaveSettings();
+
             return View(AppConfiguration.Settings);
         }
     }

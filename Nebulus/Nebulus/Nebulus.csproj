@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Security" />
     <Reference Include="System.ServiceModel" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\App_Enums.cs" />
     <Compile Include="Models\ConfigureModel.cs" />
     <Compile Include="Models\MessageItem.cs" />
+    <Compile Include="Models\PrintServiceSettingsModel.cs" />
     <Compile Include="Models\TAGsDateSourceType.cs" />
     <Compile Include="App_Start\NSBQClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
