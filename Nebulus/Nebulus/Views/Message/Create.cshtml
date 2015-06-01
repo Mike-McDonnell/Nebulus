@@ -108,30 +108,42 @@
                         </fieldset>
                         <fieldset class="odd">
                             <div id="Tags" class="ClearBoth">
+                                @if(AppConfiguration.Settings.GroupTAGsEnabled)
+                                { 
                                 <div id="" class="FloatDivLeft">
                                     <p>
                                         <label for="">AD	Group:</label>
                                         <input id="ADGroupSearch" type="text" name="" />
                                     </p>
                                 </div>
+                                }
+                                @if(AppConfiguration.Settings.UserTAGsEnabled)
+                                {
                                 <div  class="FloatDivRight">
                                     <p>
                                         <label for="">Username:</label>
                                         <input id="userNameSearch" type="text" name="">
                                     </p>
                                 </div>
+                                }
+                                @if(AppConfiguration.Settings.ComputerTAGsEnabled)
+                                {
                                 <div  class="FloatDivRight">
                                     <p>
                                         <label for="">Computer Name:</label>
                                         <input id="computerSearch" type="text" name="">
                                     </p>
                                 </div>
+                                }
+                                @if(AppConfiguration.Settings.SubNetTAGsEnabled)
+                                {
                                 <div class="ClearBoth FloatDivLeft" style="margin-left:23px">
                                     <p>
                                         <label for="">Subnet:</label>
                                         <input id="subNetSearch" type="text" name="">
                                     </p>
                                 </div>
+                                }
                             </div>
                         </fieldset>
                     </fieldset>
@@ -145,23 +157,73 @@
      @*</div>*@
 }
 
+@if (AppConfiguration.Settings.GroupTAGsEnabled)
+{
+    <script type="text/javascript">
+        $("#ADGroupSearch").autocomplete({
+            source: function (request, response) {
+                jQuery.get("/Tag/GetADGroups", {
+                    term: request.term
+                }, function (data) {
+                    response(data);
+                });
+            },
+            minLength: 3
+        });
+    </script>
+}
+
+@if (AppConfiguration.Settings.UserTAGsEnabled)
+{
+    <script type="text/javascript">
+        $("#userNameSearch").autocomplete({
+            source: function (request, response) {
+                jQuery.get("/Tag/GetADUsers", {
+                    term: request.term
+                }, function (data) {
+                    response(data);
+                });
+            },
+            minLength: 3
+        });
+    </script>
+}
+
+@if (AppConfiguration.Settings.ComputerTAGsEnabled)
+{
+    <script type="text/javascript">
+        $("#computerSearch").autocomplete({
+            source: function (request, response) {
+                jQuery.get("/Tag/GetADComputers", {
+                    term: request.term
+                }, function (data) {
+                    response(data);
+                });
+            },
+            minLength: 3
+        });
+    </script>
+}
+
+@if (AppConfiguration.Settings.SubNetTAGsEnabled)
+{
+    <script type="text/javascript">
+        $("#subNetSearch").autocomplete({
+            source: function (request, response) {
+                jQuery.get("/Tag/GetSubNetList", {
+                    term: request.term
+                }, function (data) {
+                    response(data);
+                });
+            },
+            minLength: 3
+        });
+    </script>
+}
+
 <script type="text/javascript">
     $("#ScheduleStart").datetimepicker({ inline: true, minDate: 'yesterday' });
     $("#Expiration").datetimepicker({ inline: true, minDate: 'tommorow' });
-    $("#ADGroupSearch").autocomplete({
-        source: function (request, response) {
-            jQuery.get("/Tag/GetADGroups", {
-                term: request.term
-            }, function (data) {
-                // assuming data is a JavaScript array such as
-                // ["one@abc.de", "onf@abc.de","ong@abc.de"]
-                // and not a string
-                response(data);
-            });
-        },
-        minLength: 3
-    });
-
 </script>
 
 @section Scripts {

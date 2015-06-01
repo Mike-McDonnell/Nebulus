@@ -12,6 +12,7 @@ namespace Nebulus.Models
         public int Id { get; set; }
         //General
         public bool ActiveDirectoryQueryEnabled { get; set; }
+        public string ADSsytemName { get; set; }
         public string ADConnectionString { get; set; }
 
         public string DatabaseConnectionString { get; set; }

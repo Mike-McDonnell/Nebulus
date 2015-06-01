@@ -13,6 +13,7 @@ namespace Nebulus
     public class AppConfiguration
     {
         public static NebulusContext NebulusDBContext;
+        public static PrincipalContext ADPrincipalContext;
 
         public static ConfigureModel Settings = new Models.ConfigureModel();
         internal static void ConfigureAppSettings()
@@ -29,6 +30,7 @@ namespace Nebulus
             try
             {
                 Settings.ActiveDirectoryQueryEnabled = ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"]) : false;
+                Settings.ADSsytemName = ConfigurationManager.AppSettings["ADSsytemName"] != null ? ConfigurationManager.AppSettings["ADSsytemName"] : string.Empty;
                 Settings.ADConnectionString = ConfigurationManager.AppSettings["ADConnectionString"] != null ? ConfigurationManager.AppSettings["ADConnectionString"] : string.Empty;
 
                 Settings.ComputerTAGsEnabled = ConfigurationManager.AppSettings["ComputerTAGsEnabled"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["ComputerTAGsEnabled"]) : false;
@@ -45,7 +47,7 @@ namespace Nebulus
 
                 Settings.SubNetTAGsEnabled = ConfigurationManager.AppSettings["SubNetTAGsEnabled"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["SubNetTAGsEnabled"]) : false;
                 Settings.SubNetTAGsDateSourceType = ConfigurationManager.AppSettings["SubNetTAGsDateSourceType "] != null ? (TAGsDateSourceType)Enum.Parse(typeof(TAGsDateSourceType), ConfigurationManager.AppSettings["SubNetTAGsDateSourceType "]) : TAGsDateSourceType.DataBase;
-                Settings.UserTAGsDateSource = ConfigurationManager.AppSettings["UserTAGsDateSource"] != null ? ConfigurationManager.AppSettings["UserTAGsDateSource"] : string.Empty;
+                Settings.SubNetTAGsDateSource = ConfigurationManager.AppSettings["SubNetTAGsDateSource"] != null ? ConfigurationManager.AppSettings["SubNetTAGsDateSource"] : string.Empty;
 
                 Settings.ServiceBUSQueueName = ConfigurationManager.AppSettings["ServiceBUSQueueName"] != null ? ConfigurationManager.AppSettings["ServiceBUSQueueName"] : string.Empty;
 
@@ -55,6 +57,20 @@ namespace Nebulus
             catch (Exception ex)
             {
                 AppLogging.Instance.Error("Error: Configuring App Settings", ex);
+            }
+
+            try
+            {
+                if (Settings.ADSsytemName != string.Empty)
+                {
+                    ADPrincipalContext = new PrincipalContext(ContextType.Domain, Settings.ADSsytemName, Settings.ADConnectionString);
+                }
+                else
+                    ADPrincipalContext = new PrincipalContext(ContextType.Domain);
+            }
+            catch(Exception ex)
+            {
+                AppLogging.Instance.Error("Error: Loading Pricipal Context", ex);
             }
 
             try
@@ -79,6 +95,7 @@ namespace Nebulus
                 ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"] = Settings.ActiveDirectoryQueryEnabled.ToString();
                 if (Settings.ActiveDirectoryQueryEnabled)
                 {
+                    ConfigurationManager.AppSettings["ADSsytemName"] = Settings.ADSsytemName;
                     ConfigurationManager.AppSettings["ADConnectionString"] = Settings.ADConnectionString;
                 }
 
