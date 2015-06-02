@@ -160,8 +160,8 @@
         <div class="form-group">
             @Html.LabelFor(model => model.PrintServiceSettings.PrintServerNames, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.ListBoxFor(model => model.PrintServiceSettings.PrintServerNames, new MultiSelectList(@Model.PrintServiceSettings.PrintServerNames))
-                @Html.ValidationMessageFor(model => model.PrintServiceSettings.PrintServerNames, "", new { @class = "text-danger" })
+                @Html.ListBoxFor(model => model.PrintServiceSettings.PrintServerNamesList, new MultiSelectList(@Model.PrintServiceSettings.PrintServerNamesList))
+                @Html.ValidationMessageFor(model => model.PrintServiceSettings.PrintServerNamesList, "", new { @class = "text-danger" })
 
                 <input id="newPrinterServerItem" type="text" />
                 <input type="button" id="addPrinterServerName" value="add">

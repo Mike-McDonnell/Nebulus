@@ -27,6 +27,34 @@ namespace Nebulus
                 AppLogging.Instance.Error("Error: Connecting to Nebulus Database", ex);
             }
 
+            LoadSettings();
+
+            try
+            {
+                if (Settings.ADSsytemName != string.Empty)
+                {
+                    ADPrincipalContext = new PrincipalContext(ContextType.Domain, Settings.ADSsytemName, Settings.ADConnectionString);
+                }
+                else
+                    ADPrincipalContext = new PrincipalContext(ContextType.Domain);
+            }
+            catch(Exception ex)
+            {
+                AppLogging.Instance.Error("Error: Loading Pricipal Context", ex);
+            }
+
+            try
+            {
+                AppConfiguration.Settings.PrintServiceSettings = NebulusDBContext.PrintServiceConfiguration.FirstOrDefault();
+            }
+            catch(Exception ex)
+            {
+                AppLogging.Instance.Error("Error: Configuring PrintService Settings", ex);
+            }
+        }
+
+        internal static void LoadSettings()
+        {
             try
             {
                 Settings.ActiveDirectoryQueryEnabled = ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"]) : false;
@@ -53,38 +81,11 @@ namespace Nebulus
 
                 Settings.ServiceBUSConenctionString = ConfigurationManager.ConnectionStrings["NebulusHUBConnectionString"] != null ? ConfigurationManager.ConnectionStrings["NebulusHUBConnectionString"].ConnectionString : String.Empty;
                 Settings.DatabaseConnectionString = ConfigurationManager.ConnectionStrings["NebulusContext"] != null ? ConfigurationManager.ConnectionStrings["NebulusContext"].ConnectionString : string.Empty;
+                
             }
             catch (Exception ex)
             {
                 AppLogging.Instance.Error("Error: Configuring App Settings", ex);
-            }
-
-            try
-            {
-                if (Settings.ADSsytemName != string.Empty)
-                {
-                    ADPrincipalContext = new PrincipalContext(ContextType.Domain, Settings.ADSsytemName, Settings.ADConnectionString);
-                }
-                else
-                    ADPrincipalContext = new PrincipalContext(ContextType.Domain);
-            }
-            catch(Exception ex)
-            {
-                AppLogging.Instance.Error("Error: Loading Pricipal Context", ex);
-            }
-
-            try
-            {
-                Settings.PrintServiceSettings = NebulusDBContext.PrintServiceConfiguration.FirstOrDefault();
-                if(Settings.PrintServiceSettings == null)
-                {
-                    Settings.PrintServiceSettings = new PrintServiceSettingsModel();
-                    Settings.PrintServiceSettings.PrintServerNames = new List<string>();
-                }
-            }
-            catch(Exception ex)
-            {
-                AppLogging.Instance.Error("Error: Configuring PrintService Settings", ex);
             }
         }
 
@@ -92,58 +93,86 @@ namespace Nebulus
         {
             try
             {
-                ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"] = Settings.ActiveDirectoryQueryEnabled.ToString();
-                if (Settings.ActiveDirectoryQueryEnabled)
-                {
-                    ConfigurationManager.AppSettings["ADSsytemName"] = Settings.ADSsytemName;
-                    ConfigurationManager.AppSettings["ADConnectionString"] = Settings.ADConnectionString;
-                }
-
-                ConfigurationManager.AppSettings["ComputerTAGsEnabled"] = Settings.ComputerTAGsEnabled.ToString();
-                if (Settings.ComputerTAGsEnabled)
-                {
-                    Settings.ComputerTAGsDateSourceType = (TAGsDateSourceType)Enum.Parse(typeof(TAGsDateSourceType), ConfigurationManager.AppSettings["ComputerTAGsDateSourceType"]);
-                    Settings.ComputerTAGsDateSource = ConfigurationManager.AppSettings["ComputerTAGsDateSource"];
-                }
-
-                ConfigurationManager.AppSettings["GroupTAGsEnabled"] = Settings.GroupTAGsEnabled.ToString();
-                if (Settings.GroupTAGsEnabled)
-                {
-                    ConfigurationManager.AppSettings["GroupTAGsDateSourceType"] = Settings.GroupTAGsDateSourceType.ToString();
-                    ConfigurationManager.AppSettings["GroupTAGsDateSource"] = Settings.GroupTAGsDateSource;
-                }
-
-                ConfigurationManager.AppSettings["UserTAGsEnabled"] = Settings.UserTAGsEnabled.ToString();
-                if (Settings.UserTAGsEnabled)
-                {
-                    ConfigurationManager.AppSettings["UserTAGsDateSourceType"] = Settings.UserTAGsDateSourceType.ToString();
-                    ConfigurationManager.AppSettings["UserTAGsDateSource"] = Settings.UserTAGsDateSource;
-                }
-
-                ConfigurationManager.AppSettings["SubNetTAGsEnabled"] = Settings.SubNetTAGsEnabled.ToString();
-                if (Settings.SubNetTAGsEnabled)
-                {
-                    ConfigurationManager.AppSettings["SubNetTAGsDateSourceType "] = Settings.SubNetTAGsDateSourceType.ToString();
-                    ConfigurationManager.AppSettings["UserTAGsDateSource"] = Settings.UserTAGsDateSource;
-                }
-
-                ConfigurationManager.AppSettings["ServiceBUSQueueName"] = Settings.ServiceBUSQueueName;
-
                 var cfg = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration(@"/");
 
-                bool updated = false;
-                if (cfg.ConnectionStrings.ConnectionStrings["NebulusHUBConnectionString"].ConnectionString != Settings.ServiceBUSConenctionString || cfg.ConnectionStrings.ConnectionStrings["NebulusContext"].ConnectionString != Settings.DatabaseConnectionString)
+                if (cfg.AppSettings.Settings["ActiveDirectoryQueryEnabled"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ActiveDirectoryQueryEnabled", ""));
+                cfg.AppSettings.Settings["ActiveDirectoryQueryEnabled"].Value = Settings.ActiveDirectoryQueryEnabled.ToString();
+                if (Settings.ActiveDirectoryQueryEnabled)
                 {
-                    updated = true;
+                    if (cfg.AppSettings.Settings["ADSsytemName"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ADSsytemName", ""));
+                    cfg.AppSettings.Settings["ADSsytemName"].Value = Settings.ADSsytemName;
+                    if (cfg.AppSettings.Settings["ADConnectionString"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ADConnectionString", ""));
+                    cfg.AppSettings.Settings["ADConnectionString"].Value = Settings.ADConnectionString;
                 }
+
+                if (cfg.AppSettings.Settings["ComputerTAGsEnabled"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ComputerTAGsEnabled", ""));
+                cfg.AppSettings.Settings["ComputerTAGsEnabled"].Value = Settings.ComputerTAGsEnabled.ToString();
+                if (Settings.ComputerTAGsEnabled)
+                {
+                    if (cfg.AppSettings.Settings["ComputerTAGsDateSourceType"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ComputerTAGsDateSourceType", ""));
+                    cfg.AppSettings.Settings["ComputerTAGsDateSourceType"].Value = Settings.ComputerTAGsDateSourceType.ToString();
+                    if (cfg.AppSettings.Settings["ComputerTAGsDateSource"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ComputerTAGsDateSource", ""));
+                    cfg.AppSettings.Settings["ComputerTAGsDateSource"].Value = Settings.ComputerTAGsDateSource;
+                }
+                if (cfg.AppSettings.Settings["GroupTAGsEnabled"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("GroupTAGsEnabled", ""));
+                cfg.AppSettings.Settings["GroupTAGsEnabled"].Value = Settings.GroupTAGsEnabled.ToString();
+                if (Settings.GroupTAGsEnabled)
+                {
+                    if (cfg.AppSettings.Settings["GroupTAGsDateSourceType"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("GroupTAGsDateSourceType", ""));
+                    cfg.AppSettings.Settings["GroupTAGsDateSourceType"].Value = Settings.GroupTAGsDateSourceType.ToString();
+                    if (cfg.AppSettings.Settings["GroupTAGsDateSource"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("GroupTAGsDateSource", ""));
+                    cfg.AppSettings.Settings["GroupTAGsDateSource"].Value = Settings.GroupTAGsDateSource;
+                }
+
+                if (cfg.AppSettings.Settings["UserTAGsEnabled"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("UserTAGsEnabled", ""));
+                cfg.AppSettings.Settings["UserTAGsEnabled"].Value = Settings.UserTAGsEnabled.ToString();
+                if (Settings.UserTAGsEnabled)
+                {
+                    if (cfg.AppSettings.Settings["UserTAGsDateSourceType"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("UserTAGsDateSourceType", ""));
+                    cfg.AppSettings.Settings["UserTAGsDateSourceType"].Value = Settings.UserTAGsDateSourceType.ToString();
+                    if (cfg.AppSettings.Settings["UserTAGsDateSource"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("UserTAGsDateSource", ""));
+                    cfg.AppSettings.Settings["UserTAGsDateSource"].Value = Settings.UserTAGsDateSource;
+                }
+
+                if (cfg.AppSettings.Settings["SubNetTAGsEnabled"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("SubNetTAGsEnabled", ""));
+                cfg.AppSettings.Settings["SubNetTAGsEnabled"].Value = Settings.SubNetTAGsEnabled.ToString();
+                if (Settings.SubNetTAGsEnabled)
+                {
+                    if (cfg.AppSettings.Settings["SubNetTAGsDateSourceType"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("SubNetTAGsDateSourceType", ""));     
+                    cfg.AppSettings.Settings["SubNetTAGsDateSourceType"].Value = Settings.SubNetTAGsDateSourceType.ToString();
+                    
+                    if (cfg.AppSettings.Settings["SubNetTAGsDateSource"] == null)
+                        cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("SubNetTAGsDateSource", ""));
+                    cfg.AppSettings.Settings["SubNetTAGsDateSource"].Value = Settings.SubNetTAGsDateSource;
+                }
+
+                if (cfg.AppSettings.Settings["ServiceBUSQueueName"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ServiceBUSQueueName", ""));
+                cfg.AppSettings.Settings["ServiceBUSQueueName"].Value = Settings.ServiceBUSQueueName;
+
+                if (cfg.ConnectionStrings.ConnectionStrings["NebulusHUBConnectionString"] == null)
+                    cfg.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("NebulusHUBConnectionString", ""));
                 cfg.ConnectionStrings.ConnectionStrings["NebulusHUBConnectionString"].ConnectionString = Settings.ServiceBUSConenctionString;
+                if (cfg.ConnectionStrings.ConnectionStrings["NebulusContext"] == null)
+                    cfg.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("NebulusContext", ""));
                 cfg.ConnectionStrings.ConnectionStrings["NebulusContext"].ConnectionString = Settings.DatabaseConnectionString;
 
-                if (updated)
-                {
-                    cfg.Save();
-                }
 
+                cfg.Save();
             }
             catch(Exception ex)
             {

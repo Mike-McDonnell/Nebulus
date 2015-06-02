@@ -8,6 +8,11 @@ namespace Nebulus.Models
 {
     public class ConfigureModel
     {
+        public ConfigureModel()
+        {
+            PrintServiceSettings = new PrintServiceSettingsModel();
+        }
+
         [Key]
         public int Id { get; set; }
         //General
