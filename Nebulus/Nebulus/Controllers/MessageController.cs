@@ -34,9 +34,10 @@ namespace Nebulus.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Create(MessageItem messageItem, FormCollection Form)
+        public ActionResult Create(MessageItem messageItem, List<string> tag)
         {
             messageItem.MessageItemId = Guid.NewGuid().ToString();
+            messageItem.TargetGroup = string.Join("|", tag);
             Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
             Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
             return RedirectToAction("Index");

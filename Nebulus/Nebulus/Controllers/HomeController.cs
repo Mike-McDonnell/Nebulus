@@ -20,13 +20,13 @@ namespace Nebulus.Controllers
         {
             ViewBag.Title = "Configure Page";
 
-            if(AppConfiguration.Settings.PrintServiceSettings.PrintServerNames != null)
+            if (AppConfiguration.Settings.PrintServiceSettings.PrintServerNames != null)
             {
                 AppConfiguration.Settings.PrintServiceSettings.PrintServerNamesList = AppConfiguration.Settings.PrintServiceSettings.PrintServerNames.Split('|');
             }
             else
             {
-                AppConfiguration.Settings.PrintServiceSettings = new Models.PrintServiceSettingsModel();
+                AppConfiguration.Settings.PrintServiceSettings.PrintServerNamesList = new List<string>(); 
             }
 
             return View(AppConfiguration.Settings);
@@ -36,15 +36,17 @@ namespace Nebulus.Controllers
         {
             AppConfiguration.Settings = NewConfig;
 
-            var oldPrinterList = AppConfiguration.NebulusDBContext.PrintServiceConfiguration.First();
+            var printerconfig = AppConfiguration.NebulusDBContext.PrintServiceConfiguration.FirstOrDefault();
 
-            AppConfiguration.NebulusDBContext.PrintServiceConfiguration.Remove(oldPrinterList);
+            //AppConfiguration.NebulusDBContext.PrintServiceConfiguration.Remove(printerconfig);
 
-            oldPrinterList.PrintServerNames = String.Join("|", NewConfig.PrintServiceSettings.PrintServerNamesList);
-            oldPrinterList.printServerServiceAccount = NewConfig.PrintServiceSettings.printServerServiceAccount;
-            oldPrinterList.printServerServiceAccountPassword = NewConfig.PrintServiceSettings.printServerServiceAccountPassword;
+            printerconfig.PrintServerNames = String.Join("|", NewConfig.PrintServiceSettings.PrintServerNamesList);
+            printerconfig.printServerServiceAccount = NewConfig.PrintServiceSettings.printServerServiceAccount;
+            printerconfig.printServerServiceAccountPassword = NewConfig.PrintServiceSettings.printServerServiceAccountPassword;
 
-            AppConfiguration.NebulusDBContext.PrintServiceConfiguration.Add(oldPrinterList);
+            //AppConfiguration.NebulusDBContext.PrintServiceConfiguration.Add(printerconfig);
+
+            AppConfiguration.NebulusDBContext.Entry(printerconfig).State = System.Data.Entity.EntityState.Modified;
 
             AppConfiguration.NebulusDBContext.SaveChanges();
 

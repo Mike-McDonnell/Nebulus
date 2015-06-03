@@ -17,7 +17,7 @@
                 <div id="MessageWrapper">
                     <fieldset>
                         <legend>MESSAGE</legend>
-                        <div id="" class="FloatDivLeft">
+                        <div class="FloatDivLeft">
                             <p>
                                 <label for="MessageTitle">Message Title:</label>
                                 @Html.EditorFor(model => model.MessageTitle, null)
@@ -25,7 +25,7 @@
                             </p>
                         </div>
 
-                        <div id="" class="FloatDivLeft">
+                        <div class="FloatDivLeft">
                             <p>
                                 <label for="MessagePriority">Message Priority:</label>
                                 @Html.EnumDropDownListFor(model => model.MessagePriority)
@@ -33,7 +33,7 @@
                             </p>
                         </div>
 
-                        <div id="" class="FloatDivRight">
+                        <div class="FloatDivRight">
                             <p>
                                 <label for="MessageType">Message Type:</label>
                                 @Html.EnumDropDownListFor(model => model.MessageType)
@@ -41,7 +41,7 @@
                             </p>
                         </div>
 
-                        <div id="" class="ClearBoth">
+                        <div class="ClearBoth">
                             <p>
                                 <label for="MessageBody">Message:</label><br />
                                 @Html.TextAreaFor(Model => Model.MessageBody, new { @class = "ckeditor" })
@@ -55,8 +55,8 @@
                     <fieldset>
                         <legend>ADVANCED</legend>
                         <fieldset class="odd">
-                            <div id="" class="ClearBoth">
-                                <div id="" class="FloatDivLeft">
+                            <div class="ClearBoth">
+                                <div class="FloatDivLeft">
                                     <p>
                                         <label for="ScheduleStart">Schedule:</label><br>
                                         @Html.EditorFor(model => model.ScheduleStart)
@@ -64,7 +64,7 @@
                                     </p>
                                 </div>
 
-                                <div id="Calendar" class="FloatDivLeft">
+                                @*<div class="FloatDivLeft">
                                     <fieldset>
                                         <legend>Calendar:</legend>
                                         @Html.DayPilotMonth("dp", new DayPilotMonthConfig
@@ -72,7 +72,7 @@
                                             BackendUrl = Url.Content("~/Message/Backend"),
                                         })
                                     </fieldset>
-                                </div>
+                                </div>*@
 
                                 <div id="Repeat" class="FloatDivRight">
                                     <fieldset>
@@ -86,20 +86,20 @@
                             </div>
                         </fieldset>
                         <fieldset>
-                            <div id="" class="ClearBoth">
+                            <div class="ClearBoth">
                                 <div id="FirstHortDiv" class="FloatDivLeft">
                                     <p>Screen Location/Coordinates:</p>
                                     @Html.EnumDropDownListFor(model => model.MessageLocation)
                                     @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
                                 </div>
 
-                                <div id="SecondHortDiv" class="FloatDivLeft">
+                                <div class="FloatDivLeft">
                                     <p>Expiration:</p>
                                     @Html.EditorFor(model => model.Expiration)
                                     @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
                                 </div>
 
-                                <div id="ThirdHortDiv" class="FloatDivRight">
+                                <div class="FloatDivRight">
                                     <p>Duration:</p>
                                     @Html.EditorFor(model => model.duration)
                                     @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
@@ -110,7 +110,7 @@
                             <div id="Tags" class="ClearBoth">
                                 @if(AppConfiguration.Settings.GroupTAGsEnabled)
                                 { 
-                                <div id="" class="FloatDivLeft">
+                                <div class="FloatDivLeft">
                                     <p>
                                         <label for="">AD	Group:</label>
                                         <input id="ADGroupSearch" type="text" name="" />
@@ -119,7 +119,7 @@
                                 }
                                 @if(AppConfiguration.Settings.UserTAGsEnabled)
                                 {
-                                <div  class="FloatDivRight">
+                                <div class="FloatDivRight">
                                     <p>
                                         <label for="">Username:</label>
                                         <input id="userNameSearch" type="text" name="">
@@ -128,7 +128,7 @@
                                 }
                                 @if(AppConfiguration.Settings.ComputerTAGsEnabled)
                                 {
-                                <div  class="FloatDivRight">
+                                <div class="FloatDivRight">
                                     <p>
                                         <label for="">Computer Name:</label>
                                         <input id="computerSearch" type="text" name="">
@@ -144,6 +144,8 @@
                                     </p>
                                 </div>
                                 }
+                                @Html.ListBoxFor(model => model.TargetGroup)    
+                                <select multiple data-role="tagsinput" id="tag" name="tag"></select>
                             </div>
                         </fieldset>
                     </fieldset>
@@ -168,7 +170,21 @@
                     response(data);
                 });
             },
-            minLength: 3
+            minLength: 3,
+            delay: 500,
+            autoFocus: true
+        }).keyup(function (event) {
+            if (event.which == 13) {
+                $("#Tags").append($('<button/>',
+                {
+                    text: $(this).val(),
+                    click: function () { $(this).remove(); }
+                })).end()
+            }
+        }).keydown(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+            }
         });
     </script>
 }
@@ -184,7 +200,24 @@
                     response(data);
                 });
             },
-            minLength: 3
+            minLength: 3,
+            delay: 500,
+            autoFocus: true
+        }).keyup(function (event) {
+            if (event.which == 13) {
+                $("#tag").tagsinput('add', $(this).val());
+                //$("#Tags").append($('<input />',
+                //{
+                //    id: "tag",
+                //    name: "tag",
+                //    value: $(this).val(),
+                //    click: function () { $(this).remove(); }
+                //})).end()
+            }
+        }).keydown(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+            }
         });
     </script>
 }
@@ -200,7 +233,23 @@
                     response(data);
                 });
             },
-            minLength: 3
+            minLength: 3,
+            delay: 500,
+            autoFocus: true
+        }).keyup(function (event) {
+            if (event.which == 13) {
+                $("#Tags").append($('<button/>',
+                {
+                    id: "TargetGroup",
+                    name: "TargetGroup",
+                    text: $(this).val(),
+                    click: function () { $(this).remove(); }
+                })).end()
+            }
+        }).keydown(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+            }
         });
     </script>
 }
@@ -216,7 +265,21 @@
                     response(data);
                 });
             },
-            minLength: 3
+            minLength: 3,
+            ddelay: 500,
+            autoFocus: true
+        }).keyup(function (event) {
+            if (event.which == 13) {
+                $("#Tags").append($('<button/>',
+                {
+                    text: $(this).val(),
+                    click: function () { $(this).remove(); }
+                })).end()
+            }
+        }).keydown(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+            }
         });
     </script>
 }

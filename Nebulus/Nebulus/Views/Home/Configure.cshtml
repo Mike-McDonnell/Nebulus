@@ -207,18 +207,18 @@
 
 <script type="text/javascript">
     $("#addPrinterServerName").click(function () {
-        $('#PrintServiceSettings_PrintServerNames').append($('<option>', {
+        $('#PrintServiceSettings_PrintServerNamesList').append($('<option>', {
             value: $("#newPrinterServerItem").val(),
             text: $("#newPrinterServerItem").val()
         }));
     });
     $("#removePrinterServerName").click(function () {
-        $('#PrintServiceSettings_PrintServerNames option:eq(' + $("#PrintServiceSettings_PrintServerNames option").index($("#PrintServiceSettings_PrintServerNames option:selected"))  + ')').remove();
+        $('#PrintServiceSettings_PrintServerNamesList option:eq(' + $("#PrintServiceSettings_PrintServerNames option").index($("#PrintServiceSettings_PrintServerNames option:selected"))  + ')').remove();
     });
     
     $(function () {
         $("form").submit(function (e) {
-            $("#PrintServiceSettings_PrintServerNames option").attr("selected", "selected");
+            $("#PrintServiceSettings_PrintServerNamesList option").attr("selected", "selected");
         });
     });
 

@@ -18,13 +18,13 @@ namespace Nebulus
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-tagsinput.min.js",
                       "~/Scripts/respond.js"
                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/AppScripts").Include(
                       "~/Scripts/gridmvc.js",
                       "~/Scripts/ckeditor/ckeditor.js",
-                      
                       "~/Scripts/DayPilot/daypilot-all.min.js",
                       "~/Scripts/jquery.datetimepicker.js",
                       "~/Scripts/jquery-ui.min.js"
@@ -32,6 +32,7 @@ namespace Nebulus
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-tagsinput.css",
                       "~/Content/site.css",
                       "~/Content/Gridmvc.css",
                       "~/Content/jquery.datetimepicker.css",

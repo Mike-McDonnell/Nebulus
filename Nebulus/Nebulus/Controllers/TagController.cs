@@ -30,7 +30,7 @@ namespace Nebulus.Controllers
                         insPrincipal = new GroupPrincipal(new PrincipalContext(ContextType.Domain, AppConfiguration.ADPrincipalContext.ConnectedServer, AppConfiguration.Settings.GroupTAGsDateSource));
                     }
 
-                    insPrincipal.Name = term + "*";
+                    insPrincipal.SamAccountName = term + "*";
 
                     insPrincipalSearcher.QueryFilter = insPrincipal;
 
@@ -63,18 +63,18 @@ namespace Nebulus.Controllers
                 {
                     PrincipalSearcher insPrincipalSearcher = new PrincipalSearcher();
 
-                    GroupPrincipal insPrincipal = new GroupPrincipal(AppConfiguration.ADPrincipalContext);
+                    UserPrincipal insPrincipal = new UserPrincipal(AppConfiguration.ADPrincipalContext);
 
                     if (AppConfiguration.Settings.UserTAGsDateSource != string.Empty)
                     {
-                        insPrincipal = new GroupPrincipal(new PrincipalContext(ContextType.Domain, AppConfiguration.ADPrincipalContext.ConnectedServer, AppConfiguration.Settings.UserTAGsDateSource));
+                        insPrincipal = new UserPrincipal(new PrincipalContext(ContextType.Domain, AppConfiguration.ADPrincipalContext.ConnectedServer, AppConfiguration.Settings.UserTAGsDateSource));
                     }
 
                     insPrincipal.Name = term + "*";
 
                     insPrincipalSearcher.QueryFilter = insPrincipal;
 
-                    var results = insPrincipalSearcher.FindAll().Take(10).Select(p => p.SamAccountName);
+                    var results = insPrincipalSearcher.FindAll().Take(10).Select(p => p.Name);
 
                     return Json(results, JsonRequestBehavior.AllowGet);
                 }
@@ -95,7 +95,7 @@ namespace Nebulus.Controllers
             return new JsonResult();
         }
 
-        public JsonResult GetADComputer(string term)
+        public JsonResult GetADComputers(string term)
         {
             if (AppConfiguration.Settings.ComputerTAGsDateSourceType == Models.TAGsDateSourceType.ActiveDirectory)
             {
@@ -103,14 +103,14 @@ namespace Nebulus.Controllers
                 {
                     PrincipalSearcher insPrincipalSearcher = new PrincipalSearcher();
 
-                    GroupPrincipal insPrincipal = new GroupPrincipal(AppConfiguration.ADPrincipalContext);
+                    ComputerPrincipal insPrincipal = new ComputerPrincipal(AppConfiguration.ADPrincipalContext);
 
                     if (AppConfiguration.Settings.ComputerTAGsDateSource != string.Empty)
                     {
-                        insPrincipal = new GroupPrincipal(new PrincipalContext(ContextType.Domain, AppConfiguration.ADPrincipalContext.ConnectedServer, AppConfiguration.Settings.ComputerTAGsDateSource));
+                        insPrincipal = new ComputerPrincipal(new PrincipalContext(ContextType.Domain, AppConfiguration.ADPrincipalContext.ConnectedServer, AppConfiguration.Settings.ComputerTAGsDateSource));
                     }
                     
-                    insPrincipal.Name = term + "*";
+                    insPrincipal.SamAccountName = term + "*";
 
                     insPrincipalSearcher.QueryFilter = insPrincipal;
 

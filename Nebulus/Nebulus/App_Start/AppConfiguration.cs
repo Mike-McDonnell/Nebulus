@@ -46,6 +46,13 @@ namespace Nebulus
             try
             {
                 AppConfiguration.Settings.PrintServiceSettings = NebulusDBContext.PrintServiceConfiguration.FirstOrDefault();
+
+                if(AppConfiguration.Settings.PrintServiceSettings == null) 
+                {
+                    AppConfiguration.Settings.PrintServiceSettings = new PrintServiceSettingsModel();
+                    NebulusDBContext.PrintServiceConfiguration.Add(AppConfiguration.Settings.PrintServiceSettings);
+                    NebulusDBContext.SaveChanges();
+                }
             }
             catch(Exception ex)
             {
