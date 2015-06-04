@@ -14,6 +14,7 @@
     @*<div class="form-horizontal">*@
         <div id="Wrapper">
             <form action="">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div id="MessageWrapper">
                     <fieldset>
                         <legend>MESSAGE</legend>
@@ -64,23 +65,10 @@
                                     </p>
                                 </div>
 
-                                @*<div class="FloatDivLeft">
-                                    <fieldset>
-                                        <legend>Calendar:</legend>
-                                        @Html.DayPilotMonth("dp", new DayPilotMonthConfig
-                                        {
-                                            BackendUrl = Url.Content("~/Message/Backend"),
-                                        })
-                                    </fieldset>
-                                </div>*@
-
-                                <div id="Repeat" class="FloatDivRight">
+                                <div class="FloatDivRight">
                                     <fieldset>
                                         <legend>Repeat:</legend>
-                                        <p>Hourly: <input type="radio" value="hourly" name="repetition" id="hourly"></p>
-                                        <p>Daily: <input type="radio" value="daily" name="repetition" id="daily"></p>
-                                        <p>Weekly: <input type="radio" value="weekly" name="repetition" id="weekly"></p>
-                                        <p>Monthly: <input type="radio" value="monthly" name="repetition" id="monthly"></p>
+                                        @Html.EnumDropDownListFor(model => model.ScheduleInterval);
                                     </fieldset>
                                 </div>
                             </div>
@@ -144,8 +132,7 @@
                                     </p>
                                 </div>
                                 }
-                                @Html.ListBoxFor(model => model.TargetGroup)    
-                                <select multiple data-role="tagsinput" id="tag" name="tag"></select>
+                                @Html.ListBox("tags", new MultiSelectList(new List<string>()), new { @data_role="tagsinput"})    
                             </div>
                         </fieldset>
                     </fieldset>
@@ -175,11 +162,7 @@
             autoFocus: true
         }).keyup(function (event) {
             if (event.which == 13) {
-                $("#Tags").append($('<button/>',
-                {
-                    text: $(this).val(),
-                    click: function () { $(this).remove(); }
-                })).end()
+                $("#tags").tagsinput('add', $(this).val());
             }
         }).keydown(function (event) {
             if (event.which == 13) {
@@ -205,14 +188,7 @@
             autoFocus: true
         }).keyup(function (event) {
             if (event.which == 13) {
-                $("#tag").tagsinput('add', $(this).val());
-                //$("#Tags").append($('<input />',
-                //{
-                //    id: "tag",
-                //    name: "tag",
-                //    value: $(this).val(),
-                //    click: function () { $(this).remove(); }
-                //})).end()
+                $("#tags").tagsinput('add', $(this).val());
             }
         }).keydown(function (event) {
             if (event.which == 13) {
@@ -238,13 +214,7 @@
             autoFocus: true
         }).keyup(function (event) {
             if (event.which == 13) {
-                $("#Tags").append($('<button/>',
-                {
-                    id: "TargetGroup",
-                    name: "TargetGroup",
-                    text: $(this).val(),
-                    click: function () { $(this).remove(); }
-                })).end()
+                $("#tags").tagsinput('add', $(this).val());
             }
         }).keydown(function (event) {
             if (event.which == 13) {
@@ -270,11 +240,7 @@
             autoFocus: true
         }).keyup(function (event) {
             if (event.which == 13) {
-                $("#Tags").append($('<button/>',
-                {
-                    text: $(this).val(),
-                    click: function () { $(this).remove(); }
-                })).end()
+                $("#tags").tagsinput('add', $(this).val());
             }
         }).keydown(function (event) {
             if (event.which == 13) {

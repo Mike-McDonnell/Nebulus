@@ -34,14 +34,15 @@ namespace Nebulus.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Create(MessageItem messageItem, List<string> tag)
+        public ActionResult Create(MessageItem messageItem, FormCollection form, string[] tags)
         {
             messageItem.MessageItemId = Guid.NewGuid().ToString();
-            messageItem.TargetGroup = string.Join("|", tag);
+            messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
             Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
             Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
             return RedirectToAction("Index");
         }
+
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -75,5 +76,17 @@ namespace Nebulus.Controllers
         {
             return dpm.CallBack(this);
         }
+
+        //private int ConvertToScheduleInterval(string value)
+        //{
+        //    switch (value)
+        //    {
+        //        case "hourly":
+        //        case "":
+        //        case "":
+        //        case "":
+
+        //    }
+        //}
     }
 }

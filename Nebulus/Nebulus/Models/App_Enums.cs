@@ -21,4 +21,9 @@ namespace Nebulus.Models
     {
         Info, Warning, Severe
     }
+
+    public enum ScheduleIntervalType
+    {
+        Never, Hourly, Daily, Weekly, Monthly
+    }
 }
