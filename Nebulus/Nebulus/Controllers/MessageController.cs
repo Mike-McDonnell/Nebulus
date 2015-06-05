@@ -34,13 +34,18 @@ namespace Nebulus.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Create(MessageItem messageItem, FormCollection form, string[] tags)
+        public ActionResult Create(MessageItem messageItem, string[] tags)
         {
-            messageItem.MessageItemId = Guid.NewGuid().ToString();
-            messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
-            Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
-            Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+
+                messageItem.MessageItemId = Guid.NewGuid().ToString();
+                messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
+                Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
+                Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(messageItem);
         }
 
         [HttpGet]
@@ -50,12 +55,18 @@ namespace Nebulus.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(MessageItem messageItem)
+        [ValidateInput(false)]
+        public ActionResult Edit(MessageItem messageItem, string[] tags)
         {
-            Nebulus.AppConfiguration.NebulusDBContext.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
-            Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
+                Nebulus.AppConfiguration.NebulusDBContext.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
+                Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            return View(messageItem);
         }
 
         [HttpGet]
@@ -76,17 +87,5 @@ namespace Nebulus.Controllers
         {
             return dpm.CallBack(this);
         }
-
-        //private int ConvertToScheduleInterval(string value)
-        //{
-        //    switch (value)
-        //    {
-        //        case "hourly":
-        //        case "":
-        //        case "":
-        //        case "":
-
-        //    }
-        //}
     }
 }
