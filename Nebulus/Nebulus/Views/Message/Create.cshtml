@@ -146,7 +146,30 @@
      @*</div>*@
 }
 
-<script>
+<script type="text/javascript">
+
+    $("#MessageType").change(
+        function()
+        {
+            if (CKEDITOR.instances.MessageBody) { CKEDITOR.instances.MessageBody.destroy(true); }
+            if($(this).val() == 0)
+            {
+                CKEDITOR.config.extraPlugins = 'font';
+                CKEDITOR.config.fontSize_sizes = "72/72px";
+                
+                CKEDITOR.config.fontSize_defaultLabel = '72';
+                CKEDITOR.config.height = 100;
+            }
+            if($(this).val() == 1)
+            {
+                CKEDITOR.config.extraPlugins = 'font';
+                CKEDITOR.config.fontSize_sizes = '8/8px;9/9px;10/10px;11/11px;12/12px;14/14px;16/16px;18/18px;20/20px;22/22px;24/24px;26/26px;28/28px;36/36px;48/48px;72/72px';
+                CKEDITOR.config.height = 200;
+            }
+
+            CKEDITOR.replace('MessageBody', CKEDITOR.config);
+        });
+
     var roxyFileman = '/fileman/index.html';
     $(function () {
         CKEDITOR.replace('MessageBody', {
