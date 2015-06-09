@@ -227,6 +227,7 @@
     <Content Include="Content\Daypilot\navigator_green.css" />
     <Content Include="Content\Daypilot\navigator_transparent.css" />
     <Content Include="Content\Daypilot\navigator_white.css" />
+    <Content Include="Content\display-monitor.css" />
     <Content Include="Content\forms.css" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\jquery-ui.min.css" />

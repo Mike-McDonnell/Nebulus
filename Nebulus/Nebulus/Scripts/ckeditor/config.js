@@ -38,5 +38,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.extraPlugins = 'font';
 
+	CKEDITOR.on('instanceReady', function (ev) { ev.editor.setData('<span style="font-size:72px;">&shy;</span>') })
+
 	config.hegiht = 100;
 };
