@@ -57,7 +57,7 @@
                                     <div class="screen monitor">
                                         <div class="content">
                                             <div id="display-monitor" class="pg-marquee">
-                                                <ul>
+                                                <ul id="display-monitor-content">
                                                     <li></li>
                                                 </ul>
                                             </div>
@@ -166,9 +166,7 @@
 
 <script type="text/javascript">
 
-    //CKEDITOR.dom.ed
-    
-
+    CKEDITOR.on('instanceReady', function (ev) { ev.editor.on('change', function () { $("#display-monitor-content li").replaceWith('<li>' + ev.editor.getData() + '</li>'); }) });
     $("#MessageType").change(
         function()
         {
