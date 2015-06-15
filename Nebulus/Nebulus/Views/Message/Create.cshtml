@@ -170,7 +170,6 @@
         ev.editor.on('change', function () {
             if ($("#MessageType").val() == 0) {
                 $("#display-monitor-content li").replaceWith('<li><marquee class="marquee-inner" direction="left" scrollamount="10" behavior="scroll">' + ev.editor.getData() + '</marquee></li>');
-                //$("#display-monitor-content").css('width', ev.editor.getData().length * 100);
             }
             else
             {
@@ -190,13 +189,33 @@
             }
             if($(this).val() == 1)
             {
-                $("#display-monitor").removeClass().addClass('pg-top');
+                $("#display-monitor").removeClass().addClass('pg-center');
                 CKEDITOR.config.height = 300;
             }
 
             CKEDITOR.config.extraPlugins = 'font';
             CKEDITOR.replace('MessageBody', CKEDITOR.config);
         });
+
+    $("#MessageLocation").change(
+       function () {
+           if ($(this).val() == 0) {
+               $("#display-monitor").removeClass().addClass('pg-center');
+           }
+           if ($(this).val() == 1) {
+               $("#display-monitor").removeClass().addClass('pg-bottom');
+           }
+           if ($(this).val() == 2) {
+               $("#display-monitor").removeClass().addClass('pg-top');
+           }
+           if ($(this).val() == 3) {
+               $("#display-monitor").removeClass().addClass('pg-right');
+           }
+           if ($(this).val() == 4) {
+               $("#display-monitor").removeClass().addClass('pg-left');
+           }
+       });
+
 
     var roxyFileman = '/fileman/index.html';
     $(function () {
