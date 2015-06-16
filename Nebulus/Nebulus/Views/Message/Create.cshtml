@@ -165,6 +165,14 @@
 }
 
 <script type="text/javascript">
+    var roxyFileman = '/fileman/index.html';
+    $(function () {
+        CKEDITOR.replace('MessageBody', {
+            filebrowserBrowseUrl: roxyFileman,
+            filebrowserImageBrowseUrl: roxyFileman + '?type=image',
+            removeDialogTabs: 'link:upload;image:upload'
+        });
+    });
     CKEDITOR.on('instanceReady', function (ev) { ev.editor.setData('<span style="font-size:72px;">&shy;</span>') })
     CKEDITOR.on('instanceReady', function (ev) {
         ev.editor.on('change', function () {
@@ -214,17 +222,10 @@
            if ($(this).val() == 4) {
                $("#display-monitor").removeClass().addClass('pg-left');
            }
+           if ($(this).val() == 5) {
+               $("#display-monitor").removeClass().addClass('pg-fullscreen');
+           }
        });
-
-
-    var roxyFileman = '/fileman/index.html';
-    $(function () {
-        CKEDITOR.replace('MessageBody', {
-            filebrowserBrowseUrl: roxyFileman,
-            filebrowserImageBrowseUrl: roxyFileman + '?type=image',
-            removeDialogTabs: 'link:upload;image:upload'
-        });
-    });
 </script>
 
 @if (AppConfiguration.Settings.GroupTAGsEnabled)

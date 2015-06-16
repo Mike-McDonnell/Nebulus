@@ -177,14 +177,28 @@
   box-shadow: 0 5px 0 #819FF7;
 }
 
-.pg-left > ul , .pg-right > ul {
+.pg-fullscreen {
+  width: 100%;
+  height: 95%;
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  margin: 0 0 0 0;
+  background: #ffffff;
+  border: 1px solid #f4f5f7;
+  border-top: 20px solid #f4f5f7;
+  border-radius: 5px;
+  box-shadow: 0 5px 0 #819FF7;
+}
+
+.pg-left > ul , .pg-right > ul, .pg-fullscreen > ul {
     list-style-type : none;
     margin: 10px auto;
     padding: 0;  
     width: 100%;
 }
 
-.pg-left > li, .pg-right > li {
+.pg-left > li, .pg-right > li, .pg-fullscreen > li {
   background: #f3f5f7;
   width: 100%;
   display: inline;  
