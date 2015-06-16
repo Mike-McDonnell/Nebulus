@@ -28,6 +28,14 @@
                         </div>
 
                         <div class="FloatDivLeft">
+                            <p>Screen Location/Coordinates:</p>
+                            <p>
+                                @Html.EnumDropDownListFor(model => model.MessageLocation)
+                                @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
+                            </p>
+                        </div>
+
+                        <div class="FloatDivLeft">
                             <p>
                                 <label for="MessagePriority">Message Priority:</label>
                                 @Html.EnumDropDownListFor(model => model.MessagePriority)
@@ -94,12 +102,6 @@
                         <fieldset>
                             <div class="ClearBoth">
                                 <div id="FirstHortDiv" class="FloatDivLeft">
-                                    <p>Screen Location/Coordinates:</p>
-                                    @Html.EnumDropDownListFor(model => model.MessageLocation)
-                                    @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
-                                </div>
-
-                                <div class="FloatDivLeft">
                                     <p>Expiration:</p>
                                     @Html.EditorFor(model => model.Expiration)
                                     @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
@@ -165,14 +167,11 @@
 }
 
 <script type="text/javascript">
-    var roxyFileman = '/fileman/index.html';
-    $(function () {
-        CKEDITOR.replace('MessageBody', {
-            filebrowserBrowseUrl: roxyFileman,
-            filebrowserImageBrowseUrl: roxyFileman + '?type=image',
-            removeDialogTabs: 'link:upload;image:upload'
-        });
-    });
+    
+    CKEDITOR.config.height = 100;
+    CKEDITOR.config.extraPlugins = 'flash,font,iframe,forms,justify,colordialog,bidi,colorbutton,lineutils,youtube,wenzgmap';
+
+    $("#MessageLocation").attr('disabled', true);
     CKEDITOR.on('instanceReady', function (ev) { ev.editor.setData('<span style="font-size:72px;">&shy;</span>') })
     CKEDITOR.on('instanceReady', function (ev) {
         ev.editor.on('change', function () {
@@ -185,7 +184,6 @@
             }
         })
     });
-    CKEDITOR.config.height = 100;
     $("#MessageType").change(
         function()
         {
@@ -193,15 +191,16 @@
             if($(this).val() == 0)
             {
                 $("#display-monitor").removeClass().addClass('pg-marquee');
+                $("#MessageLocation").attr('disabled', true);
                 CKEDITOR.config.height = 100;
             }
             if($(this).val() == 1)
             {
-                $("#display-monitor").removeClass().addClass('pg-center');
+                $("#MessageLocation").trigger("change");
                 CKEDITOR.config.height = 300;
+                $("#MessageLocation").removeAttr('disabled');
             }
 
-            CKEDITOR.config.extraPlugins = 'font';
             CKEDITOR.replace('MessageBody', CKEDITOR.config);
         });
 
