@@ -6,6 +6,8 @@
 }
 
 <link href="@Url.Content("~/Content/display-monitor.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/message-layout.css")" rel="stylesheet" type="text/css" />
+
 
 @using (Html.BeginForm()) 
 {
@@ -27,12 +29,24 @@
                             </p>
                         </div>
 
-                        <div class="FloatDivLeft">
-                            <p>Screen Location/Coordinates:</p>
+                        <div class="FloatDivRight">
                             <p>
+                                <label for="MessageType">Message Type:</label>
+                                @Html.EnumDropDownListFor(model => model.MessageType)
+                                @Html.ValidationMessageFor(model => model.MessageType, "", new { @class = "text-danger" })
+                            </p>
+                        </div>
+
+                        <div class="ClearBoth FloatDivRight">
+                            <p>
+                                <label for="MessageLocation">Message Location:</label>
                                 @Html.EnumDropDownListFor(model => model.MessageLocation)
                                 @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
                             </p>
+                            @Html.HiddenFor(model => model.MessageHeight)
+                            @Html.HiddenFor(model => model.MessageWidth)
+                            @Html.HiddenFor(model => model.MessageTop)
+                            @Html.HiddenFor(model => model.MessageLeft)
                         </div>
 
                         <div class="FloatDivLeft">
@@ -43,17 +57,8 @@
                             </p>
                         </div>
 
-                        <div class="FloatDivRight">
-                            <p>
-                                <label for="MessageType">Message Type:</label>
-                                @Html.EnumDropDownListFor(model => model.MessageType)
-                                @Html.ValidationMessageFor(model => model.MessageType, "", new { @class = "text-danger" })
-                            </p>
-                        </div>
-
                         <div class="ClearBoth">
                             <p>
-                                <label for="MessageBody">Message:</label><br />
                                 @Html.TextAreaFor(Model => Model.MessageBody, new { @class = "ckeditor" })
                                 @*@Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })*@
                             </p>
@@ -101,7 +106,7 @@
                         </fieldset>
                         <fieldset>
                             <div class="ClearBoth">
-                                <div id="FirstHortDiv" class="FloatDivLeft">
+                                <div class="FloatDivLeft">
                                     <p>Expiration:</p>
                                     @Html.EditorFor(model => model.Expiration)
                                     @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
@@ -116,43 +121,45 @@
                         </fieldset>
                         <fieldset class="odd">
                             <div id="Tags" class="ClearBoth">
-                                @if(AppConfiguration.Settings.GroupTAGsEnabled)
-                                { 
-                                <div class="FloatDivLeft">
-                                    <p>
-                                        <label for="">AD	Group:</label>
-                                        <input id="ADGroupSearch" type="text" name="" />
-                                    </p>
-                                </div>
-                                }
-                                @if(AppConfiguration.Settings.UserTAGsEnabled)
+                                @if (AppConfiguration.Settings.GroupTAGsEnabled)
                                 {
-                                <div class="FloatDivRight">
-                                    <p>
-                                        <label for="">Username:</label>
-                                        <input id="userNameSearch" type="text" name="">
-                                    </p>
-                                </div>
+                                    <div class="ClearBoth FloatDivLeft">
+                                        <p>
+                                            <label for="">AD	Group:</label>
+                                            <input id="ADGroupSearch" type="text" name="" />
+                                        </p>
+                                    </div>
                                 }
-                                @if(AppConfiguration.Settings.ComputerTAGsEnabled)
+                                @if (AppConfiguration.Settings.UserTAGsEnabled)
                                 {
-                                <div class="FloatDivRight">
-                                    <p>
-                                        <label for="">Computer Name:</label>
-                                        <input id="computerSearch" type="text" name="">
-                                    </p>
-                                </div>
+                                    <div class="FloatDivRight">
+                                        <p>
+                                            <label for="">Username:</label>
+                                            <input id="userNameSearch" type="text" name="">
+                                        </p>
+                                    </div>
                                 }
-                                @if(AppConfiguration.Settings.SubNetTAGsEnabled)
+                                @if (AppConfiguration.Settings.ComputerTAGsEnabled)
                                 {
-                                <div class="ClearBoth FloatDivLeft" style="margin-left:23px">
-                                    <p>
-                                        <label for="">Subnet:</label>
-                                        <input id="subNetSearch" type="text" name="">
-                                    </p>
-                                </div>
+                                    <div class="ClearBoth FloatDivLeft">
+                                        <p>
+                                            <label for="">Computer Name:</label>
+                                            <input id="computerSearch" type="text" name="">
+                                        </p>
+                                    </div>
                                 }
-                                @Html.ListBox("tags", new MultiSelectList(new List<string>()), new { @data_role="tagsinput"})    
+                                @if (AppConfiguration.Settings.SubNetTAGsEnabled)
+                                {
+                                    <div class="FloatDivRight" style="margin-left:23px">
+                                        <p>
+                                            <label for="">Subnet:</label>
+                                            <input id="subNetSearch" type="text" name="">
+                                        </p>
+                                    </div>
+                                }
+                            </div>
+                            <div id="tags-input" class="ClearBoth">
+                                @Html.ListBox("tags", new MultiSelectList(new List<string>()), new { @data_role = "tagsinput" })
                             </div>
                         </fieldset>
                     </fieldset>
@@ -190,7 +197,7 @@
             if (CKEDITOR.instances.MessageBody) { CKEDITOR.instances.MessageBody.destroy(true); }
             if($(this).val() == 0)
             {
-                $("#display-monitor").removeClass().addClass('pg-marquee');
+                $("#display-monitor").removeClass().removeAttr('style').addClass('pg-marquee');
                 $("#MessageLocation").attr('disabled', true);
                 CKEDITOR.config.height = 100;
             }
@@ -206,25 +213,39 @@
 
     $("#MessageLocation").change(
        function () {
+           $("#display-monitor").draggable({ disabled: true, drag: function (event, ui) { setPostionValue(ui); } }).resizable({ disabled: true, resize: function (event, ui) { setSizeValue(ui); } });
+
            if ($(this).val() == 0) {
-               $("#display-monitor").removeClass().addClass('pg-center');
+               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-center');
            }
            if ($(this).val() == 1) {
-               $("#display-monitor").removeClass().addClass('pg-bottom');
+               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-bottom');
            }
            if ($(this).val() == 2) {
-               $("#display-monitor").removeClass().addClass('pg-top');
+               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-top');
            }
            if ($(this).val() == 3) {
-               $("#display-monitor").removeClass().addClass('pg-right');
+               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-right');
            }
            if ($(this).val() == 4) {
-               $("#display-monitor").removeClass().addClass('pg-left');
+               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-left');
            }
            if ($(this).val() == 5) {
-               $("#display-monitor").removeClass().addClass('pg-fullscreen');
+               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-fullscreen');
+           }
+           if ($(this).val() == 6) {
+               $("#display-monitor").draggable("enable").resizable("enable");
            }
        });
+    function setPostionValue(ui)
+    {
+        $("#MessageTop").val(parseInt(ui.position.top)); $("#MessageLeft").val(parseInt(ui.position.left));
+    }
+    function setSizeValue(ui)
+    {
+        $("#MessageHeight").val(parseInt(ui.size.height)); $("#MessageWidth").val(parseInt(ui.size.width));
+    }
+
 </script>
 
 @if (AppConfiguration.Settings.GroupTAGsEnabled)

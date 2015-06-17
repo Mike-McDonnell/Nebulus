@@ -23,5 +23,9 @@ namespace Nebulus.Models
         public double duration { get; set; }
         public DateTimeOffset Expiration { get; set; }
         public string TargetGroup { get; set; }
+        public string MessageHeight { get; set; }
+        public string MessageWidth { get; set; }
+        public string MessageTop { get; set; }
+        public string MessageLeft { get; set; }
     }
 }
