@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebulus", "Nebulus\Nebulus.csproj", "{321D18F1-B080-4FF1-84CD-927A10B45865}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulusClient", "NebulusClient\NebulusClient\NebulusClient.csproj", "{675FE40B-A978-4A96-8332-A5F15AC686F4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulusClient", "NebulusClient\NebulusClient.csproj", "{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -16,9 +16,9 @@ Global
 		SccProjectUniqueName1 = Nebulus\\Nebulus.csproj
 		SccProjectName1 = Nebulus
 		SccLocalPath1 = Nebulus
-		SccProjectUniqueName2 = NebulusClient\\NebulusClient\\NebulusClient.csproj
-		SccProjectName2 = NebulusClient/NebulusClient
-		SccLocalPath2 = NebulusClient\\NebulusClient
+		SccProjectUniqueName2 = NebulusClient\\NebulusClient.csproj
+		SccProjectName2 = NebulusClient
+		SccLocalPath2 = NebulusClient
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +29,10 @@ Global
 		{321D18F1-B080-4FF1-84CD-927A10B45865}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{321D18F1-B080-4FF1-84CD-927A10B45865}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{321D18F1-B080-4FF1-84CD-927A10B45865}.Release|Any CPU.Build.0 = Release|Any CPU
-		{675FE40B-A978-4A96-8332-A5F15AC686F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{675FE40B-A978-4A96-8332-A5F15AC686F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{675FE40B-A978-4A96-8332-A5F15AC686F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{675FE40B-A978-4A96-8332-A5F15AC686F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
