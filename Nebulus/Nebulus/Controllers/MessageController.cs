@@ -2,6 +2,7 @@
 using Nebulus.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -61,6 +62,8 @@ namespace Nebulus.Controllers
             if (ModelState.IsValid)
             {
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
+
+                ((IObjectContextAdapter)Nebulus.AppConfiguration.NebulusDBContext).ObjectContext.Detach(Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Find(messageItem.MessageItemId));
                 Nebulus.AppConfiguration.NebulusDBContext.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
                 Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
 

@@ -83,7 +83,7 @@
     }
 
     #AdvancedWrapper {
-        margin-top: 1em;
+        margin-top: 1.5em;
     }
 
     #Calendar {
@@ -141,15 +141,41 @@
         border-radius: 10px;
     }
 
-    #MessageWrapper:after {
-        content: ' ';
+    #AdvancedArrow {
+        margin-top: -10px
+    }
+
+    #AdvancedArrow:first-child:after {
+        border-top-color: #333;
+        border: 30px solid transparent;
+        
+        content: '';
+	    height: 0;
+	    position: absolute;
+	    width: 0;
+    }
+
+    #AdvancedArrow:after {
+        content: '';
 	    height: 0;
 	    position: absolute;
 	    width: 0;
 
-	    border: 25px solid transparent;
+	    border: 50px solid transparent;
 	    border-top-color: #fff;
-        margin-left: 10px;
+        margin-left: 50.25%;
+        
+    }
 
+    #AdvancedArrow:before {
+        content: '';
+	    height: 0;
+	    position: absolute;
+	    width: 0;
+
+	    border: 54px solid transparent;
+	    border-top-color: #333;
+        margin-left: 50%;
+        
     }
 

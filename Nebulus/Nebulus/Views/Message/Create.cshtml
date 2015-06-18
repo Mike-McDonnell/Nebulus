@@ -81,6 +81,7 @@
                         </div>
 
                     </fieldset>
+                <div id="AdvancedArrow"><div /></div>
                 </div><!--end of MessageWrapper-->
 
                 <div id="AdvancedWrapper">
@@ -245,6 +246,9 @@
     {
         $("#MessageHeight").val(parseInt(ui.size.height)); $("#MessageWidth").val(parseInt(ui.size.width));
     }
+
+    $("#AdvancedWrapper").hide();
+    $("#AdvancedArrow").click(function () { $("#AdvancedArrow").hide(); $("#AdvancedWrapper").slideDown(); })
 
 </script>
 

@@ -5,111 +5,378 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Edit</h2>
-
+<link href="@Url.Content("~/Content/display-monitor.css")" rel="stylesheet" type="text/css" />
+<link href="@Url.Content("~/Content/message-layout.css")" rel="stylesheet" type="text/css" />
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.MessageItemId, null)
     
-    <div class="form-horizontal">
-        <h4>MessageItem</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.MessageItemId)
+    <div id="Wrapper">
+        <form action="">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div id="MessageWrapper">
+                <fieldset>
+                    <legend>Edit MESSAGE</legend>
+                    <div class="FloatDivLeft">
+                        <p>
+                            <label for="MessageTitle">Message Title:</label>
+                            @Html.EditorFor(model => model.MessageTitle, null)
+                            @Html.ValidationMessageFor(model => model.MessageTitle)
+                        </p>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MessageTitle, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MessageTitle, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="FloatDivRight">
+                        <p>
+                            <label for="MessageType">Message Type:</label>
+                            @Html.EnumDropDownListFor(model => model.MessageType)
+                            @Html.ValidationMessageFor(model => model.MessageType, "", new { @class = "text-danger" })
+                        </p>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageBody, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MessageBody, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="ClearBoth FloatDivRight">
+                        <p>
+                            <label for="MessageLocation">Message Location:</label>
+                            @Html.EnumDropDownListFor(model => model.MessageLocation)
+                            @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
+                        </p>
+                        @Html.HiddenFor(model => model.MessageHeight)
+                        @Html.HiddenFor(model => model.MessageWidth)
+                        @Html.HiddenFor(model => model.MessageTop)
+                        @Html.HiddenFor(model => model.MessageLeft)
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.MessageType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MessageType, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="FloatDivLeft">
+                        <p>
+                            <label for="MessagePriority">Message Priority:</label>
+                            @Html.EnumDropDownListFor(model => model.MessagePriority)
+                            @Html.ValidationMessageFor(model => model.MessagePriority, "", new { @class = "text-danger" })
+                        </p>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessageLocation, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.MessageLocation, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="ClearBoth">
+                        <p>
+                            @Html.TextAreaFor(Model => Model.MessageBody, new { @class = "ckeditor" })
+                            @*@Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })*@
+                        </p>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.MessagePriority, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.MessagePriority, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.MessagePriority, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="ClearBoth">
+                        <p>
+                            <div class="display-container">
+                                <div class="screen monitor">
+                                    <div class="content">
+                                        <div id="display-monitor">
+                                            <ul id="display-monitor-content" class="marquee-outer">
+                                                <li></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ScheduleStart, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ScheduleStart, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ScheduleStart, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                </fieldset>
+                <div id="AdvancedArrow"><div /></div>
+            </div><!--end of MessageWrapper-->
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ScheduleInterval, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ScheduleInterval, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ScheduleInterval, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            <div id="AdvancedWrapper">
+                <fieldset>
+                    <legend>ADVANCED</legend>
+                    <fieldset class="odd">
+                        <div class="ClearBoth">
+                            <div class="FloatDivLeft">
+                                <p>
+                                    <label for="ScheduleStart">Schedule:</label><br>
+                                    @Html.EditorFor(model => model.ScheduleStart)
+                                    @Html.ValidationMessageFor(model => model.ScheduleStart, "", new { @class = "text-danger" })
+                                </p>
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.duration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.duration, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                            <div class="FloatDivRight">
+                                <fieldset>
+                                    <legend>Repeat:</legend>
+                                    @Html.EnumDropDownListFor(model => model.ScheduleInterval)
+                                </fieldset>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <div class="ClearBoth">
+                            <div class="FloatDivLeft">
+                                <p>Expiration:</p>
+                                @Html.EditorFor(model => model.Expiration)
+                                @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
+                            </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Expiration, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Expiration, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                            <div class="FloatDivRight">
+                                <p>Duration:</p>
+                                @Html.EditorFor(model => model.duration)
+                                @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="odd">
+                        <div id="Tags" class="ClearBoth">
+                            @if (AppConfiguration.Settings.GroupTAGsEnabled)
+                            {
+                                <div class="ClearBoth FloatDivLeft">
+                                    <p>
+                                        <label for="">AD	Group:</label>
+                                        <input id="ADGroupSearch" type="text" name="" />
+                                    </p>
+                                </div>
+                            }
+                            @if (AppConfiguration.Settings.UserTAGsEnabled)
+                            {
+                                <div class="FloatDivRight">
+                                    <p>
+                                        <label for="">Username:</label>
+                                        <input id="userNameSearch" type="text" name="">
+                                    </p>
+                                </div>
+                            }
+                            @if (AppConfiguration.Settings.ComputerTAGsEnabled)
+                            {
+                                <div class="ClearBoth FloatDivLeft">
+                                    <p>
+                                        <label for="">Computer Name:</label>
+                                        <input id="computerSearch" type="text" name="">
+                                    </p>
+                                </div>
+                            }
+                            @if (AppConfiguration.Settings.SubNetTAGsEnabled)
+                            {
+                                <div class="FloatDivRight" style="margin-left:23px">
+                                    <p>
+                                        <label for="">Subnet:</label>
+                                        <input id="subNetSearch" type="text" name="">
+                                    </p>
+                                </div>
+                            }
+                        </div>
+                        <div id="tags-input" class="ClearBoth">
+                            @Html.HiddenFor(model => model.TargetGroup)
+                            @Html.ListBox("tags", new MultiSelectList(new List<string>()), new { @data_role = "tagsinput" })
+                        </div>
+                    </fieldset>
+                </fieldset>
+            </div><!--end of AdvancedWrapper-->
+            <button type="button" value="">Cancel</button>
+            <button type="submit">Save</button>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TargetGroup, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TargetGroup, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.TargetGroup, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        </form>
+    </div><!--end of wrapper-->
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+}
+        <script type="text/javascript">
+
+            CKEDITOR.config.extraPlugins = 'flash,font,iframe,forms,justify,colordialog,bidi,colorbutton,lineutils,youtube,wenzgmap';
+            if($("#MessageType").val() == 0) 
+            {
+                $("#MessageLocation").attr('disabled', true);
+                CKEDITOR.config.height = 100;
+            }
+            CKEDITOR.on('instanceReady', function (ev) {
+                ev.editor.on('change', function () {
+                    if ($("#MessageType").val() == 0) {
+                        $("#display-monitor-content li").replaceWith('<li><marquee class="marquee-inner" direction="left" scrollamount="10" behavior="scroll">' + ev.editor.getData() + '</marquee></li>');
+                    }
+                    else {
+                        $("#display-monitor-content li").replaceWith('<li>' + ev.editor.getData() + '</li>');
+                    }
+                })
+            });
+            CKEDITOR.on('instanceReady', function (ev) {
+                if ($("#MessageType").val() == 0) {
+                    $("#display-monitor-content li").replaceWith('<li><marquee class="marquee-inner" direction="left" scrollamount="10" behavior="scroll">' + ev.editor.getData() + '</marquee></li>');
+                }
+                else {
+                    $("#display-monitor-content li").replaceWith('<li>' + ev.editor.getData() + '</li>');
+                }
+            })
+            $("#MessageType").change(
+                function () {
+                    if (CKEDITOR.instances.MessageBody) { CKEDITOR.instances.MessageBody.destroy(true); }
+                    if ($(this).val() == 0) {
+                        $("#display-monitor").removeClass().removeAttr('style').addClass('pg-marquee');
+                        $("#MessageLocation").attr('disabled', true);
+                        CKEDITOR.config.height = 100;
+                    }
+                    if ($(this).val() == 1) {
+                        $("#MessageLocation").trigger("change");
+                        CKEDITOR.config.height = 300;
+                        $("#MessageLocation").removeAttr('disabled');
+                    }
+
+                    CKEDITOR.replace('MessageBody', CKEDITOR.config);
+                });
+
+            $("#MessageLocation").change(
+               function () {
+                   $("#display-monitor").draggable({ disabled: true, drag: function (event, ui) { setPostionValue(ui); } }).resizable({ disabled: true, resize: function (event, ui) { setSizeValue(ui); } });
+
+                   if ($(this).val() == 0) {
+                       $("#display-monitor").removeClass().removeAttr('style').addClass('pg-center');
+                   }
+                   if ($(this).val() == 1) {
+                       $("#display-monitor").removeClass().removeAttr('style').addClass('pg-bottom');
+                   }
+                   if ($(this).val() == 2) {
+                       $("#display-monitor").removeClass().removeAttr('style').addClass('pg-top');
+                   }
+                   if ($(this).val() == 3) {
+                       $("#display-monitor").removeClass().removeAttr('style').addClass('pg-right');
+                   }
+                   if ($(this).val() == 4) {
+                       $("#display-monitor").removeClass().removeAttr('style').addClass('pg-left');
+                   }
+                   if ($(this).val() == 5) {
+                       $("#display-monitor").removeClass().removeAttr('style').addClass('pg-fullscreen');
+                   }
+                   if ($(this).val() == 6) {
+                       $("#display-monitor").draggable("enable").resizable("enable");
+                   }
+               });
+            function setPostionValue(ui) {
+                $("#MessageTop").val(parseInt(ui.position.top)); $("#MessageLeft").val(parseInt(ui.position.left));
+            }
+            function setSizeValue(ui) {
+                $("#MessageHeight").val(parseInt(ui.size.height)); $("#MessageWidth").val(parseInt(ui.size.width));
+            }
+
+            $("#AdvancedWrapper").hide();
+            $("#AdvancedArrow").click(function () { $("#AdvancedArrow").hide(); $("#AdvancedWrapper").slideDown(); })
+
+        </script>
+
+<script type="text/javascript">
+    $(document).ready( function() { $("#TargetGroup").val().split('|').forEach(function (i) {
+        if (i != "") {
+            $("#tags").append($('<option>', {
+                value: i,
+            }));
+        }
+    })
+        $("#MessageType").trigger("change");
+        if($("#MessageLocation").val() == 6)
+        {
+            $("#display-monitor").removeClass().addClass('pg-center').css({ 'top': $("#MessageTop").val() + "px", 'left': $("#MessageLeft").val() + "px", 'width': $("#MessageWidth").val(), 'height': $("#MessageHeight").val()});
+        }
+    });
+</script>
+
+        @if (AppConfiguration.Settings.GroupTAGsEnabled)
+{
+            <script type="text/javascript">
+                $("#ADGroupSearch").autocomplete({
+                    source: function (request, response) {
+                        jQuery.get("/Tag/GetADGroups", {
+                            term: request.term
+                        }, function (data) {
+                            response(data);
+                        });
+                    },
+                    minLength: 3,
+                    delay: 500,
+                    autoFocus: true
+                }).keyup(function (event) {
+                    if (event.which == 13) {
+                        $("#tags").tagsinput('add', $(this).val());
+                    }
+                }).keydown(function (event) {
+                    if (event.which == 13) {
+                        event.preventDefault();
+                    }
+                });
+            </script>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+        @if (AppConfiguration.Settings.UserTAGsEnabled)
+{
+            <script type="text/javascript">
+                $("#userNameSearch").autocomplete({
+                    source: function (request, response) {
+                        jQuery.get("/Tag/GetADUsers", {
+                            term: request.term
+                        }, function (data) {
+                            response(data);
+                        });
+                    },
+                    minLength: 3,
+                    delay: 500,
+                    autoFocus: true
+                }).keyup(function (event) {
+                    if (event.which == 13) {
+                        $("#tags").tagsinput('add', $(this).val());
+                    }
+                }).keydown(function (event) {
+                    if (event.which == 13) {
+                        event.preventDefault();
+                    }
+                });
+            </script>
 }
+
+        @if (AppConfiguration.Settings.ComputerTAGsEnabled)
+{
+            <script type="text/javascript">
+                $("#computerSearch").autocomplete({
+                    source: function (request, response) {
+                        jQuery.get("/Tag/GetADComputers", {
+                            term: request.term
+                        }, function (data) {
+                            response(data);
+                        });
+                    },
+                    minLength: 3,
+                    delay: 500,
+                    autoFocus: true
+                }).keyup(function (event) {
+                    if (event.which == 13) {
+                        $("#tags").tagsinput('add', $(this).val());
+                    }
+                }).keydown(function (event) {
+                    if (event.which == 13) {
+                        event.preventDefault();
+                    }
+                });
+            </script>
+}
+
+        @if (AppConfiguration.Settings.SubNetTAGsEnabled)
+{
+            <script type="text/javascript">
+                $("#subNetSearch").autocomplete({
+                    source: function (request, response) {
+                        jQuery.get("/Tag/GetSubNetList", {
+                            term: request.term
+                        }, function (data) {
+                            response(data);
+                        });
+                    },
+                    minLength: 3,
+                    ddelay: 500,
+                    autoFocus: true
+                }).keyup(function (event) {
+                    if (event.which == 13) {
+                        $("#tags").tagsinput('add', $(this).val());
+                    }
+                }).keydown(function (event) {
+                    if (event.which == 13) {
+                        event.preventDefault();
+                    }
+                });
+            </script>
+}
+
+        <script type="text/javascript">
+            $("#ScheduleStart").datetimepicker({ inline: true, minDate: 'yesterday' });
+            $("#Expiration").datetimepicker({ inline: true, minDate: 'tommorow' });
+        </script>
+
+        @section Scripts {
+            @Scripts.Render("~/bundles/jqueryval")
+        }
