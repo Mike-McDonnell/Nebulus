@@ -2951,6 +2951,7 @@
     <Content Include="fileman\lang\it.json" />
     <Content Include="fileman\lang\pl.json" />
     <Content Include="fileman\lang\pt.json" />
+    <None Include="Properties\PublishProfiles\sprech.pubxml" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

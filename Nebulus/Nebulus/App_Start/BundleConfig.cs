@@ -27,7 +27,6 @@ namespace Nebulus
 
             bundles.Add(new ScriptBundle("~/bundles/AppScripts").Include(
                       "~/Scripts/gridmvc.js",
-                      "~/Scripts/ckeditor/ckeditor.js",
                       "~/Scripts/DayPilot/daypilot-all.min.js",
                       "~/Scripts/jquery.datetimepicker.js",
                       "~/Scripts/jquery-ui.min.js"

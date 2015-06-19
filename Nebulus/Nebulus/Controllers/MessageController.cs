@@ -44,6 +44,10 @@ namespace Nebulus.Controllers
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
                 Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
                 Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
+
+                BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
+                NSBQ.NSBQClient.Send(sendMessage);
+
                 return RedirectToAction("Index");
             }
             return View(messageItem);
