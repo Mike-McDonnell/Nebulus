@@ -236,6 +236,8 @@
            }
            if ($(this).val() == 6) {
                $("#display-monitor").draggable("enable").resizable("enable");
+               $("#MessageTop").val(parseInt($("#display-monitor").css('top'))); $("#MessageLeft").val(parseInt($("#display-monitor").css('left')));
+               $("#MessageHeight").val(parseInt($("#display-monitor").css('height'))); $("#MessageWidth").val(parseInt($("#display-monitor").css('width')));
            }
        });
     function setPostionValue(ui)
@@ -249,7 +251,6 @@
 
     $("#AdvancedWrapper").hide();
     $("#AdvancedArrow").click(function () { $("#AdvancedArrow").hide(); $("#AdvancedWrapper").slideDown(); })
-
 </script>
 
 @if (AppConfiguration.Settings.GroupTAGsEnabled)

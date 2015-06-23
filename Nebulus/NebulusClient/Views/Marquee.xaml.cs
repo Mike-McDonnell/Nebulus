@@ -19,9 +19,36 @@ namespace NebulusClient
     /// </summary>
     public partial class Marquee : Window
     {
+        private System.Windows.Threading.DispatcherTimer CloseOptionTimer = new System.Windows.Threading.DispatcherTimer();
         public Marquee()
         {
             InitializeComponent();
+
+            this.Height = 120;
+
+            var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
+
+            this.Width = desktopWorkingArea.Width;
+            this.Left = desktopWorkingArea.Right - this.Width;
+            this.Top = desktopWorkingArea.Bottom - this.Height;
+
+            CloseOptionTimer.Tick += (o, e) =>
+            {
+                this.WindowStyle = System.Windows.WindowStyle.ToolWindow;
+                this.CloseOptionTimer.Stop();
+            };
+
+            CloseOptionTimer.Interval = new TimeSpan(0, 0, 30);
+            CloseOptionTimer.Start();
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            var desktopWorkingArea = System.Windows.SystemParameters.WorkArea;
+
+            this.Width = desktopWorkingArea.Width;
+            this.Left = desktopWorkingArea.Right - this.Width;
+            this.Top = desktopWorkingArea.Bottom - this.Height;
         }
     }
 }

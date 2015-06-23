@@ -53,7 +53,7 @@ CKEDITOR.dialog.add( 'wenzgmapDialog', function( editor ) {
 			
             oTag.setAttribute('width', mapWidth);
             oTag.setAttribute('height', mapHeight);
-			oTag.setAttribute('src', '//maps.google.com/maps?q=' + url + '&num=1&t=m&ie=UTF8&z=14&output=embed');
+			oTag.setAttribute('src', 'https://maps.google.com/maps?q=' + url + '&num=1&t=m&ie=UTF8&z=14&output=embed');
 			oTag.setAttribute( 'frameborder', '0' );
 			oTag.setAttribute('scrolling', 'no');
 

@@ -19,7 +19,7 @@ namespace Nebulus
 
                 NSBQClient = messageFactory.CreateQueueClient(NebulusClient.App.ClientConfiguration.ServiceBUSQueueName, ReceiveMode.ReceiveAndDelete);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
             }

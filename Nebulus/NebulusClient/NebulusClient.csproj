@@ -88,7 +88,9 @@
     <Compile Include="App_Code\App_Enums.cs" />
     <Compile Include="App_Code\ClientConfig.cs" />
     <Compile Include="App_Code\MessageItem.cs" />
+    <Compile Include="App_Code\PopUpCreator.cs" />
     <Compile Include="App_start\ClientConfiguration.cs" />
+    <Compile Include="App_Code\MessageBopUp.cs" />
     <Compile Include="Views\Marquee.xaml.cs">
       <DependentUpon>Marquee.xaml</DependentUpon>
     </Compile>

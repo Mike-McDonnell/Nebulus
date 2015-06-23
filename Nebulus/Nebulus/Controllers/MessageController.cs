@@ -30,6 +30,7 @@ namespace Nebulus.Controllers
             var messageItem = new MessageItem();
             messageItem.ScheduleStart = DateTimeOffset.Now;
             messageItem.Expiration = DateTimeOffset.Now.AddHours(2);
+            messageItem.duration = 2;
 
             return View(messageItem);
         }
@@ -45,9 +46,15 @@ namespace Nebulus.Controllers
                 Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
                 Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
 
-                BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
-                NSBQ.NSBQClient.Send(sendMessage);
-
+                try
+                {
+                    BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
+                    NSBQ.NSBQClient.Send(sendMessage);
+                    AppLogging.Instance.Info("Message sent");
+                }
+                catch(Exception ex) {
+                    AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
+                }
                 return RedirectToAction("Index");
             }
             return View(messageItem);
