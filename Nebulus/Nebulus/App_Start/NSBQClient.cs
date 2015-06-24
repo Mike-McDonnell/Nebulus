@@ -9,7 +9,7 @@ namespace Nebulus
 {
     class NSBQ
     {
-        public static QueueClient NSBQClient;
+        public static TopicClient NSBQClient;
         internal static void ConfigureServiceHUB()
         {
             
@@ -21,12 +21,12 @@ namespace Nebulus
 
                 string QueueName = AppConfiguration.Settings.ServiceBUSQueueName;
 
-                if (!namespaceManager.QueueExists(QueueName))
+                if (!namespaceManager.TopicExists(QueueName))
                 {
-                    namespaceManager.CreateQueue(QueueName);
+                    namespaceManager.CreateTopic(QueueName);
                 }
 
-                NSBQClient = messageFactory.CreateQueueClient(QueueName);
+                NSBQClient = messageFactory.CreateTopicClient(QueueName);
             }
             catch(Exception ex)
             {

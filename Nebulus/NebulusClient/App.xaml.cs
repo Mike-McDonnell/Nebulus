@@ -46,6 +46,7 @@ namespace NebulusClient
                             {
                                 Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
                                 {
+                                    CloseOpenMarquee();
                                     MessageList.Add(PopUpCreator.StartMarquee(message));
                                 }));
 
@@ -77,6 +78,16 @@ namespace NebulusClient
             ListTimer.Tick += CheckPopUpExperation;
             ListTimer.Interval = new TimeSpan(0, 0, 5);
             ListTimer.Start();
+        }
+
+        private void CloseOpenMarquee()
+        {
+            var cMarquee = MessageList.Where(popup => popup.MessageItem.MessageType == Nebulus.Models.MessageType.Marquee).FirstOrDefault();
+            if(cMarquee != null)
+            {
+                cMarquee.PopUpWindows.Close();
+                MessageList.Remove(cMarquee);
+            }
         }
 
         private void CheckPopUpExperation(object sender, EventArgs e)
@@ -114,8 +125,7 @@ namespace NebulusClient
                           }));
                 }
 
-                MessageList.RemoveAll(popup => popup.MessageItem.Expiration < DateTimeOffset.Now);
-                MessageList.RemoveAll(popup => popup.StartedTime.AddHours(popup.MessageItem.duration) < DateTime.Now);
+                MessageList.RemoveAll(popup => !popup.PopUpWindows.IsLoaded);
             }
             catch (Exception ex)
             {
