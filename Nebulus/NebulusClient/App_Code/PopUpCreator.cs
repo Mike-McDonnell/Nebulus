@@ -76,7 +76,7 @@ namespace NebulusClient
                 popup.Loaded += (o, evt) =>
                 {
 
-                    popup.browser.NavigateToString("<!doctype html>" + "<html><head><title></title></head><body>" + message.MessageBody + "</body></html>");
+                    popup.browser.NavigateToString("<!doctype html>" + "<html><head><title></title></head><body style='transform: scale(" + WidthFactor + "," + HegihtFactor + "); -ms-transform: scale(" + WidthFactor + "," + HegihtFactor + "); -webkit-transform: scale(" + WidthFactor + "," + HegihtFactor + ");'>" + message.MessageBody + "</body></html>");
 
                 };
 

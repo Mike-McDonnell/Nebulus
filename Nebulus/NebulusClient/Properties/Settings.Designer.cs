@@ -34,5 +34,14 @@ namespace NebulusClient.Properties {
                 this["ClientConfigConnectionString"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SubscriptionNameLevel {
+            get {
+                return ((int)(this["SubscriptionNameLevel"]));
+            }
+        }
     }
 }

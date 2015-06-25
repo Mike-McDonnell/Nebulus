@@ -17,6 +17,10 @@ namespace Nebulus.Controllers
             var newClientConfig = new ClientConfig();
             newClientConfig.ServiceBUSConenctionString = Nebulus.AppConfiguration.Settings.ServiceBUSConenctionString;
             newClientConfig.ServiceBUSQueueName = Nebulus.AppConfiguration.Settings.ServiceBUSQueueName;
+            newClientConfig.GroupTAGsEnabled = Nebulus.AppConfiguration.Settings.GroupTAGsEnabled;
+            newClientConfig.ComputerTAGsEnabled = Nebulus.AppConfiguration.Settings.ComputerTAGsEnabled;
+            newClientConfig.UserTAGsEnabled = Nebulus.AppConfiguration.Settings.UserTAGsEnabled;
+            newClientConfig.SubNetTAGsEnabled = Nebulus.AppConfiguration.Settings.SubNetTAGsEnabled;
             
             return Ok(newClientConfig);
         }

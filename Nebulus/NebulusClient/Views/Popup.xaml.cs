@@ -23,7 +23,25 @@ namespace NebulusClient
         public Popup()
         {
             InitializeComponent();
-            
+
+            this.browser.Navigated += (o,e) => {
+                HideScriptErrors(this.browser, true);
+            };
         }
+
+        public void HideScriptErrors(WebBrowser wb, bool Hide)
+        {
+            FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (fiComWebBrowser == null) return;
+
+            object objComWebBrowser = fiComWebBrowser.GetValue(wb);
+
+            if (objComWebBrowser == null) return;
+
+            objComWebBrowser.GetType().InvokeMember(
+
+            "Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { Hide });
+        }
+
     }
 }

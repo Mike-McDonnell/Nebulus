@@ -10,5 +10,13 @@ namespace NebulusClient
         public string ServiceBUSConenctionString { get; set; }
 
         public string ServiceBUSQueueName { get; set; }
+
+        public bool GroupTAGsEnabled { get; set; }
+
+        public bool UserTAGsEnabled { get; set; }
+
+        public bool ComputerTAGsEnabled { get; set; }
+
+        public bool SubNetTAGsEnabled { get; set; }
     }
 }
