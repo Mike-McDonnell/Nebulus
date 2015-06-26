@@ -51,6 +51,8 @@ namespace Nebulus
                 NSBQClient = messageFactory.CreateSubscriptionClient(NebulusClient.App.ClientConfiguration.ServiceBUSQueueName, Environment.MachineName, ReceiveMode.ReceiveAndDelete);
 
                 AddRules(NSBQClient);
+
+                
             }
             catch (Exception ex)
             {
@@ -73,14 +75,15 @@ namespace Nebulus
             }
             if (NebulusClient.App.ClientConfiguration.ComputerTAGsEnabled)
             {
-                Client.AddRule("UserName", new SqlFilter("ComputerName = '" + Environment.MachineName + "'"));
+                Client.AddRule("ComputerName", new SqlFilter("ComputerName = '" + Environment.MachineName + "'"));
+                System.Windows.MessageBox.Show(Environment.MachineName);
             }
             if (NebulusClient.App.ClientConfiguration.SubNetTAGsEnabled)
             {
                 try
                 {
                     var card = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault();
-                    card.GetIPProperties().GatewayAddresses.FirstOrDefault().Address.ToString();
+                    Client.AddRule("Subnet", new SqlFilter(card.GetIPProperties().GatewayAddresses.FirstOrDefault().Address.ToString()));
                 }
                 catch
                 { }

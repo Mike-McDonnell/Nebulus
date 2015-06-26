@@ -49,6 +49,7 @@ namespace Nebulus.Controllers
                 try
                 {
                     BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
+                    sendMessage.Properties.Add("ComputerName","AMEDWKB077938");
                     NSBQ.NSBQClient.Send(sendMessage);
                     AppLogging.Instance.Info("Message sent");
                 }
