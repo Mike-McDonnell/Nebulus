@@ -39,19 +39,16 @@ namespace Nebulus
                     catch
                     { }
                 }
-
+                
 
                 if (namespaceManager.SubscriptionExists(NebulusClient.App.ClientConfiguration.ServiceBUSQueueName, SubscriptionName))
                 {
                     namespaceManager.DeleteSubscription(NebulusClient.App.ClientConfiguration.ServiceBUSQueueName, SubscriptionName);
                 }
 
-                namespaceManager.CreateSubscription(NebulusClient.App.ClientConfiguration.ServiceBUSQueueName, SubscriptionName);
+                namespaceManager.CreateSubscription(NebulusClient.App.ClientConfiguration.ServiceBUSQueueName, SubscriptionName, new SqlFilter(BuildRules()));
 
                 NSBQClient = messageFactory.CreateSubscriptionClient(NebulusClient.App.ClientConfiguration.ServiceBUSQueueName, Environment.MachineName, ReceiveMode.ReceiveAndDelete);
-
-                AddRules(NSBQClient);
-
                 
             }
             catch (Exception ex)
@@ -60,34 +57,49 @@ namespace Nebulus
             }
         }
 
-        private static void AddRules(SubscriptionClient Client)
+        private static string BuildRules()
         {
-            if (NebulusClient.App.ClientConfiguration.GroupTAGsEnabled)
+            var SQLQuery = "Tags LIKE '%BROADCAST%' OR";
+
+            try
             {
-                foreach(var group in System.Security.Principal.WindowsIdentity.GetCurrent().Groups)
+
+                //if (NebulusClient.App.ClientConfiguration.GroupTAGsEnabled)
+                //{
+                //    foreach (var group in System.Security.Principal.WindowsIdentity.GetCurrent().Groups)
+                //    {
+                //        SQLQuery += " Like '%" + group.Translate(typeof(System.Security.Principal.NTAccount)) + "%' OR";
+                //    }
+                //}
+                if (NebulusClient.App.ClientConfiguration.UserTAGsEnabled)
                 {
-                    Client.AddRule(new RuleDescription(group.Value));
+                    SQLQuery += " Tags LIKE '%" + Environment.UserName + "%' OR";
+                }
+                if (NebulusClient.App.ClientConfiguration.ComputerTAGsEnabled)
+                {
+                    SQLQuery += " Tags LIKE '%" + Environment.MachineName.ToUpper() + "%' OR";
+                }
+                if (NebulusClient.App.ClientConfiguration.SubNetTAGsEnabled)
+                {
+                    try
+                    {
+                        var card = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().Where(nic => nic.OperationalStatus == System.Net.NetworkInformation.OperationalStatus.Up).FirstOrDefault();
+                        SQLQuery += " Tags LIKE '%" + card.GetIPProperties().GatewayAddresses.FirstOrDefault().Address.ToString() + "%'";
+                    }
+                    catch
+                    { }
+                }
+
+                if (SQLQuery.EndsWith("OR"))
+                {
+                    SQLQuery = SQLQuery.Substring(0, SQLQuery.Length - 2).Trim();
                 }
             }
-            if (NebulusClient.App.ClientConfiguration.UserTAGsEnabled)
+            catch(Exception ex)
             {
-                Client.AddRule("UserName", new SqlFilter("UserName = '" + System.Security.Principal.WindowsIdentity.GetCurrent().User + "'"));
+                AppLogging.Instance.Error("Error: Creating SQLQuery ", ex);
             }
-            if (NebulusClient.App.ClientConfiguration.ComputerTAGsEnabled)
-            {
-                Client.AddRule("ComputerName", new SqlFilter("ComputerName = '" + Environment.MachineName + "'"));
-                System.Windows.MessageBox.Show(Environment.MachineName);
-            }
-            if (NebulusClient.App.ClientConfiguration.SubNetTAGsEnabled)
-            {
-                try
-                {
-                    var card = System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces().FirstOrDefault();
-                    Client.AddRule("Subnet", new SqlFilter(card.GetIPProperties().GatewayAddresses.FirstOrDefault().Address.ToString()));
-                }
-                catch
-                { }
-            }
+            return SQLQuery;
         }
     }
 }

@@ -70,11 +70,11 @@ namespace Nebulus.Controllers
                         insPrincipal = new UserPrincipal(new PrincipalContext(ContextType.Domain, AppConfiguration.ADPrincipalContext.ConnectedServer, AppConfiguration.Settings.UserTAGsDateSource));
                     }
 
-                    insPrincipal.Name = term + "*";
+                    insPrincipal.SamAccountName = term + "*";
 
                     insPrincipalSearcher.QueryFilter = insPrincipal;
 
-                    var results = insPrincipalSearcher.FindAll().Take(10).Select(p => p.Name);
+                    var results = insPrincipalSearcher.FindAll().Take(10).Select(p => p.SamAccountName);
 
                     return Json(results, JsonRequestBehavior.AllowGet);
                 }
@@ -110,11 +110,11 @@ namespace Nebulus.Controllers
                         insPrincipal = new ComputerPrincipal(new PrincipalContext(ContextType.Domain, AppConfiguration.ADPrincipalContext.ConnectedServer, AppConfiguration.Settings.ComputerTAGsDateSource));
                     }
                     
-                    insPrincipal.SamAccountName = term + "*";
+                    insPrincipal.Name = term + "*";
 
                     insPrincipalSearcher.QueryFilter = insPrincipal;
 
-                    var results = insPrincipalSearcher.FindAll().Take(10).Select(p => p.SamAccountName);
+                    var results = insPrincipalSearcher.FindAll().Take(10).Select(p => p.Name.ToUpper());
 
                     return Json(results, JsonRequestBehavior.AllowGet);
                 }
