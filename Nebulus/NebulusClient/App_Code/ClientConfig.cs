@@ -18,5 +18,6 @@ namespace NebulusClient
         public bool ComputerTAGsEnabled { get; set; }
 
         public bool SubNetTAGsEnabled { get; set; }
+
     }
 }

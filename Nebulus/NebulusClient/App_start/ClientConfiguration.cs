@@ -18,7 +18,6 @@ namespace NebulusClient
             HttpClientHandler handler = new HttpClientHandler();
             handler.UseDefaultCredentials = true;
 
-
             using (var client = new HttpClient(handler))
             {
                 try

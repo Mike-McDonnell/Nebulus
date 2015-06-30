@@ -53,10 +53,7 @@ namespace Nebulus.Controllers
                     {
                         sendMessage.Properties.Add("Tags", messageItem.TargetGroup);
                     }
-                    else
-                    {
-                        sendMessage.Properties.Add("Tags", "BROADCAST");
-                    }
+                
                     NSBQ.NSBQClient.Send(sendMessage);
                     AppLogging.Instance.Info("Message sent");
                 }
@@ -76,7 +73,7 @@ namespace Nebulus.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Edit(MessageItem messageItem, string[] tags)
+        public ActionResult Edit(MessageItem messageItem, string[] tags, string[] tagsGroup)
         {
             if (ModelState.IsValid)
             {

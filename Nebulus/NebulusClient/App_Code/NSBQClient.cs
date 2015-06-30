@@ -2,6 +2,7 @@
 using Microsoft.ServiceBus.Messaging;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text;
 
@@ -63,14 +64,20 @@ namespace Nebulus
 
             try
             {
+                if (NebulusClient.App.ClientConfiguration.GroupTAGsEnabled)
+                {
+                    var pC = new PrincipalContext(ContextType.Domain);
 
-                //if (NebulusClient.App.ClientConfiguration.GroupTAGsEnabled)
-                //{
-                //    foreach (var group in System.Security.Principal.WindowsIdentity.GetCurrent().Groups)
-                //    {
-                //        SQLQuery += " Like '%" + group.Translate(typeof(System.Security.Principal.NTAccount)) + "%' OR";
-                //    }
-                //}
+                    UserPrincipal user = UserPrincipal.FindByIdentity(pC, IdentityType.Sid, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value);
+
+                    if (user != null)
+                    {
+                        foreach (var group in user.GetGroups().Where(p => ((GroupPrincipal)p).IsSecurityGroup == false).Select(g => g.SamAccountName).ToList<string>())
+                        {
+                            SQLQuery += " Tags LIKE '%" + group + "%' OR";
+                        }
+                    }                  
+                }
                 if (NebulusClient.App.ClientConfiguration.UserTAGsEnabled)
                 {
                     SQLQuery += " Tags LIKE '%" + Environment.UserName + "%' OR";

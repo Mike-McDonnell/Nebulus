@@ -26,4 +26,11 @@ namespace Nebulus.Models
     {
         Never, Hourly, Daily, Weekly, Monthly
     }
+
+    public enum MessageScopeType
+    {
+        Filtered,
+        Brodcast,
+        ADFiltered
+    }
 }
