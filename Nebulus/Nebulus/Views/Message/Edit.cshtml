@@ -58,7 +58,7 @@
 
                     <div class="ClearBoth">
                         <p>
-                            @Html.TextAreaFor(Model => Model.MessageBody, new { @class = "ckeditor" })
+                            @Html.TextAreaFor(model => model.MessageBody, new { @class = "ckeditor" })
                             @*@Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })*@
                         </p>
                     </div>
@@ -125,7 +125,7 @@
                             {
                                 <div class="ClearBoth FloatDivLeft">
                                     <p>
-                                        <label for="">AD	Group:</label>
+                                        <label for="">AD Distro Group:</label>
                                         <input id="ADGroupSearch" type="text" name="" />
                                     </p>
                                 </div>
@@ -167,8 +167,7 @@
             </div><!--end of AdvancedWrapper-->
             <button type="button" value="">Cancel</button>
             <button type="submit">Save</button>
-            
-            @*@Html.ActionLink("Delete", "Delete",  new { id =  }, new { @class = "btn btn-default " })*@
+            @Html.ActionLink("Delete", "Delete", new { id = Model.MessageItemId }, new { @class = "btn btn-danger" })
 
         </form>
     </div><!--end of wrapper-->

@@ -2794,6 +2794,7 @@
     <Content Include="Scripts\ckeditor\plugins\uicolor\yui\assets\picker_thumb.png" />
     <Content Include="Scripts\ckeditor\plugins\uicolor\yui\assets\yui.css" />
     <Content Include="Scripts\ckeditor\plugins\uicolor\yui\yui.js" />
+    <Content Include="Scripts\ckeditor\plugins\TextToSpeech\plugin.js" />
     <Content Include="Scripts\ckeditor\plugins\wenzgmap\dialogs\wenzgmap.js" />
     <Content Include="Scripts\ckeditor\plugins\wenzgmap\icons\wenzgmap.png" />
     <Content Include="Scripts\ckeditor\plugins\wenzgmap\plugin.js" />

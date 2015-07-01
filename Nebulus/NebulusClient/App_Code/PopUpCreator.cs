@@ -15,7 +15,8 @@ namespace NebulusClient
             try
             {
                 marquee.Show();
-                marquee.browser.NavigateToString("<marquee>" + message.MessageBody + "</marquee>");   
+                marquee.browser.NavigateToString("<!doctype html><html><head><title></title></head><body oncontextmenu='return false;'><marquee>" + message.MessageBody + "</marquee></body></html>");
+                marquee.StartSpeech(message);
             }
             catch(Exception ex)
             {
@@ -76,9 +77,11 @@ namespace NebulusClient
                 popup.Loaded += (o, evt) =>
                 {
 
-                    popup.browser.NavigateToString("<!doctype html>" + "<html><head><title></title></head><body style='transform: scale(" + WidthFactor + "," + HegihtFactor + "); -ms-transform: scale(" + WidthFactor + "," + HegihtFactor + "); -webkit-transform: scale(" + WidthFactor + "," + HegihtFactor + ");'>" + message.MessageBody + "</body></html>");
+                    popup.browser.NavigateToString("<!doctype html><html><head><title></title></head><body oncontextmenu='return false;' style='transform: scale(" + WidthFactor + "," + HegihtFactor + "); -ms-transform: scale(" + WidthFactor + "," + HegihtFactor + "); -webkit-transform: scale(" + WidthFactor + "," + HegihtFactor + ");'>" + message.MessageBody + "</body></html>");
 
                 };
+
+                popup.widthZoomFactor = WidthFactor; popup.heightZoomFactor = HegihtFactor;
 
                 popup.Show();
             }

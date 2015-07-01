@@ -53,6 +53,10 @@ namespace Nebulus.Controllers
                     {
                         sendMessage.Properties.Add("Tags", messageItem.TargetGroup);
                     }
+                    else
+                    {
+                        sendMessage.Properties.Add("Tags", "BROADCAST");
+                    }
                 
                     NSBQ.NSBQClient.Send(sendMessage);
                     AppLogging.Instance.Info("Message sent");

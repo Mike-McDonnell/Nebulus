@@ -20,10 +20,13 @@ namespace NebulusClient
     /// </summary>
     public partial class Popup : Window
     {
+        public double widthZoomFactor;
+        public double heightZoomFactor;
+
         public Popup()
         {
             InitializeComponent();
-
+            
             this.browser.Navigated += (o,e) => {
                 HideScriptErrors(this.browser, true);
             };
@@ -36,11 +39,16 @@ namespace NebulusClient
 
             object objComWebBrowser = fiComWebBrowser.GetValue(wb);
 
-            if (objComWebBrowser == null) return;
-
             objComWebBrowser.GetType().InvokeMember(
 
             "Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { Hide });
+
+            var zoolwPercent = Convert.ToInt32(100 * widthZoomFactor);
+            var zoolhPercent = Convert.ToInt32(100 * heightZoomFactor);
+
+            objComWebBrowser.GetType().InvokeMember(
+
+            "ExecWB", BindingFlags.InvokeMethod, null, objComWebBrowser, new object[] { 63, 2, zoolwPercent, zoolwPercent });
         }
 
     }
