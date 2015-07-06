@@ -2733,6 +2733,7 @@
     <Content Include="Scripts\ckeditor\plugins\templates\templates\images\template1.gif" />
     <Content Include="Scripts\ckeditor\plugins\templates\templates\images\template2.gif" />
     <Content Include="Scripts\ckeditor\plugins\templates\templates\images\template3.gif" />
+    <Content Include="Scripts\ckeditor\plugins\TextToSpeech\icons\TextToSpeech.png" />
     <Content Include="Scripts\ckeditor\plugins\uicolor\dialogs\uicolor.js" />
     <Content Include="Scripts\ckeditor\plugins\uicolor\icons\hidpi\uicolor.png" />
     <Content Include="Scripts\ckeditor\plugins\uicolor\icons\uicolor.png" />
