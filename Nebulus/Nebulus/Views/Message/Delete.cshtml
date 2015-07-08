@@ -5,7 +5,8 @@
     <hr />
     <dl class="dl-horizontal">
         <dd>
-            @Html.DisplayFor(model => model.MessageBody)
+            @Html.Raw(@Model.MessageBody)
+            @*@Html.DisplayFor(model => model.MessageBody)*@
         </dd>
     </dl>
 

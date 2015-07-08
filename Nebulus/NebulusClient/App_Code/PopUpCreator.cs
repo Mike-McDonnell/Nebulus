@@ -1,4 +1,5 @@
 ﻿using Nebulus;
+using NebulusClient.App_Code;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace NebulusClient
             {
                 marquee.Show();
                 marquee.browser.NavigateToString("<!doctype html><html><head><title></title></head><body oncontextmenu='return false;'><marquee>" + message.MessageBody + "</marquee></body></html>");
-                marquee.StartSpeech(message);
+                marquee.StartSpeech(SpeechHelper.GetSpeechString(message.MessageBody));
             }
             catch(Exception ex)
             {
@@ -56,7 +57,8 @@ namespace NebulusClient
                 }
                 else if (message.MessageLocation == Nebulus.Models.MessageLocation.FullScreen)
                 {
-                    popup.Width = System.Windows.SystemParameters.PrimaryScreenWidth; popup.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+                    popup.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen; popup.WindowState = System.Windows.WindowState.Maximized;
+                    //popup.Width = System.Windows.SystemParameters.PrimaryScreenWidth; popup.Height = System.Windows.SystemParameters.PrimaryScreenHeight;
                 }
                 else if (message.MessageLocation == Nebulus.Models.MessageLocation.Left)
                 {
@@ -84,6 +86,7 @@ namespace NebulusClient
                 popup.widthZoomFactor = WidthFactor; popup.heightZoomFactor = HegihtFactor;
 
                 popup.Show();
+                popup.StartSpeech(SpeechHelper.GetSpeechString(message.MessageBody));
             }
             catch(Exception ex)
             {

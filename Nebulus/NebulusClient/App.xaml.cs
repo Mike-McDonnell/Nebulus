@@ -26,8 +26,12 @@ namespace NebulusClient
 
             App.Current.ShutdownMode = System.Windows.ShutdownMode.OnExplicitShutdown;
 
+            AppLogging.Instance.Info("Starting Nebulus Client");
+
             ClientConfiguration = await ClientStart.GetClientConfiguration();
             Nebulus.NSBQ.ConfigureServiceHUB();
+
+            AppLogging.Instance.Info("Client Configured to connect to: " + ClientConfiguration.ServiceBUSConenctionString);
 
             OnMessageOptions options = new OnMessageOptions();
             options.AutoComplete = true;

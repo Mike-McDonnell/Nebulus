@@ -2,8 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NebulusClient.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ClientConfigConnectionString" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+    <Setting Name="ClientConfigConnectionString" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://143.83.140.141:8080</Value>
     </Setting>
     <Setting Name="SubscriptionNameLevel" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">0</Value>

@@ -143,6 +143,7 @@
     <Folder Include="fileman\tmp\" />
     <Folder Include="fileman\Uploads\Documents\" />
     <Folder Include="fileman\Uploads\FLV\" />
+    <Folder Include="Scripts\ckeditor\plugins\alarm\icons\" />
     <Folder Include="Views\Tag\" />
   </ItemGroup>
   <ItemGroup>
@@ -647,6 +648,7 @@
     <Content Include="Scripts\ckeditor\plugins\about\dialogs\logo_ckeditor.png" />
     <Content Include="Scripts\ckeditor\plugins\adobeair\plugin.js" />
     <Content Include="Scripts\ckeditor\plugins\ajax\plugin.js" />
+    <Content Include="Scripts\ckeditor\plugins\alarm\plugin.js" />
     <Content Include="Scripts\ckeditor\plugins\autogrow\plugin.js" />
     <Content Include="Scripts\ckeditor\plugins\bbcode\plugin.js" />
     <Content Include="Scripts\ckeditor\plugins\bidi\icons\bidiltr.png" />

@@ -51,5 +51,13 @@ namespace NebulusClient
             "ExecWB", BindingFlags.InvokeMethod, null, objComWebBrowser, new object[] { 63, 2, zoolwPercent, zoolwPercent });
         }
 
+
+        internal void StartSpeech(string speech)
+        {
+            if (speech != string.Empty)
+            {
+                NebulusClient.App_Code.SpeechHelper.Speak(speech);
+            }
+        }
     }
 }

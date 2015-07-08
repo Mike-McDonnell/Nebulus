@@ -19,7 +19,7 @@ namespace Nebulus.Models
 
     public enum MessagePriorityType
     {
-        Info, Warning, Severe
+        Info, Warning, Severe, Emergency
     }
 
     public enum ScheduleIntervalType

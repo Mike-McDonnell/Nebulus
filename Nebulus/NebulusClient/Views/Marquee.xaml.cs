@@ -51,9 +51,12 @@ namespace NebulusClient
             this.Top = desktopWorkingArea.Bottom - this.Height;
         }
 
-        internal void StartSpeech(Nebulus.Models.MessageItem message)
+        internal void StartSpeech(string speech)
         {
-            NebulusClient.App_Code.SpeechHelper.Speak(message.MessageBody);
+            if (speech != string.Empty)
+            {
+                NebulusClient.App_Code.SpeechHelper.Speak(speech);
+            }
         }
     }
 }

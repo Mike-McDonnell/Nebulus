@@ -13,6 +13,7 @@ namespace Nebulus.Models
         [Required(ErrorMessage = "A message title is required")]
         public string MessageTitle { get; set; }
         [Required(ErrorMessage = "A message is required")]
+        [StringLength(2304, ErrorMessage="Message body must be under 2048 characters")]
         [AllowHtml]
         public string MessageBody { get; set; }
         public MessageType MessageType { get; set; }

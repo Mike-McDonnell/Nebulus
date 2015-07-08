@@ -49,5 +49,23 @@ namespace NebulusClient.App_Code
             await Task.Delay(1000);
             System.Console.Beep(320, 1000);
         }
+
+        internal static string GetSpeechString(string p)
+        {
+            string speech = string.Empty;
+            HtmlAgilityPack.HtmlDocument docmuent = new HtmlAgilityPack.HtmlDocument();
+            docmuent.LoadHtml(p);
+
+            var speechSpan = docmuent.DocumentNode.DescendantsAndSelf("span").Where(span => span.Attributes.Contains("class") && span.Attributes["class"].Value.Contains("Speech"));
+            if(speechSpan.Count() > 0)
+            {
+                foreach(var item in speechSpan)
+                {
+                    speech += item.InnerText + ", ";
+                }
+            }
+
+            return speech;
+        }
     }
 }

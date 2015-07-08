@@ -66,17 +66,24 @@ namespace Nebulus
             {
                 if (NebulusClient.App.ClientConfiguration.GroupTAGsEnabled)
                 {
-                    var pC = new PrincipalContext(ContextType.Domain);
-
-                    UserPrincipal user = UserPrincipal.FindByIdentity(pC, IdentityType.Sid, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value);
-
-                    if (user != null)
+                    try
                     {
-                        foreach (var group in user.GetGroups().Where(p => ((GroupPrincipal)p).IsSecurityGroup == false).Select(g => g.SamAccountName).ToList<string>())
+                        var pC = new PrincipalContext(ContextType.Domain);
+
+                        UserPrincipal user = UserPrincipal.FindByIdentity(pC, IdentityType.Sid, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value);
+
+                        if (user != null)
                         {
-                            SQLQuery += " Tags LIKE '%" + group + "%' OR";
+                            foreach (var group in user.GetGroups().Where(p => ((GroupPrincipal)p).IsSecurityGroup == false).Select(g => g.SamAccountName).ToList<string>())
+                            {
+                                SQLQuery += " Tags LIKE '%" + group + "%' OR";
+                            }
                         }
-                    }                  
+                    }
+                    catch(Exception ex)
+                    {
+                        AppLogging.Instance.Error("Error: Accessing ActiveDirectory ", ex);
+                    }
                 }
                 if (NebulusClient.App.ClientConfiguration.UserTAGsEnabled)
                 {
@@ -96,15 +103,14 @@ namespace Nebulus
                     catch
                     { }
                 }
-
-                if (SQLQuery.EndsWith("OR"))
-                {
-                    SQLQuery = SQLQuery.Substring(0, SQLQuery.Length - 2).Trim();
-                }
             }
             catch(Exception ex)
             {
                 AppLogging.Instance.Error("Error: Creating SQLQuery ", ex);
+            }
+            if (SQLQuery.EndsWith("OR"))
+            {
+                SQLQuery = SQLQuery.Substring(0, SQLQuery.Length - 2).Trim();
             }
             return SQLQuery;
         }

@@ -5,12 +5,14 @@
             if (!selectedRanges.collapsed) {
                 var style = new CKEDITOR.style({ element: 'span', attributes: { 'class': 'Speech' } });
 
-                if (style.checkActive(p.elementPath(), p))
-                {
+                var e = p.getData();
+                if (e.indexOf('class=\"Speech\"') != -1) {
                     p.removeStyle(style);
                 }
                 else
+                {
                     p.applyStyle(style);
+                }                    
             }
     }};
     CKEDITOR.plugins.add('TextToSpeech', {
@@ -18,6 +20,7 @@
         init: function (editor) {
             editor.addCommand('TextToSpeech', o);
             editor.ui.addButton('TextToSpeech', {
+                toolbar : 'audio',
                 label: 'TextToSpeech',
                 command: 'TextToSpeech'
             });

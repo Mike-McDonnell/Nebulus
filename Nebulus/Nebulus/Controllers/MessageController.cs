@@ -40,7 +40,10 @@ namespace Nebulus.Controllers
         {
             if (ModelState.IsValid)
             {
-
+                if (messageItem.MessageBody.Contains("&shy;"))
+                {
+                    messageItem.MessageBody = messageItem.MessageBody.Replace("&shy;", string.Empty);
+                }
                 messageItem.MessageItemId = Guid.NewGuid().ToString();
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
                 Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
@@ -58,6 +61,8 @@ namespace Nebulus.Controllers
                         sendMessage.Properties.Add("Tags", "BROADCAST");
                     }
                 
+
+
                     NSBQ.NSBQClient.Send(sendMessage);
                     AppLogging.Instance.Info("Message sent");
                 }

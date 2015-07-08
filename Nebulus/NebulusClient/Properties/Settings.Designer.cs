@@ -23,15 +23,12 @@ namespace NebulusClient.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://143.83.140.141:8080")]
         public string ClientConfigConnectionString {
             get {
                 return ((string)(this["ClientConfigConnectionString"]));
-            }
-            set {
-                this["ClientConfigConnectionString"] = value;
             }
         }
         
