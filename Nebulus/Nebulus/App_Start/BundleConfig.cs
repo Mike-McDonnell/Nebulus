@@ -27,7 +27,8 @@ namespace Nebulus
 
             bundles.Add(new ScriptBundle("~/bundles/AppScripts").Include(
                       "~/Scripts/gridmvc.js",
-                      "~/Scripts/DayPilot/daypilot-all.min.js",
+                      "~/Scripts/moment.min.js",
+                      "~/Scripts/fullcalendar.min.js",
                       "~/Scripts/jquery.datetimepicker.js",
                       "~/Scripts/jquery-ui.min.js"
                       ));
@@ -35,6 +36,7 @@ namespace Nebulus
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/bootstrap-tagsinput.css",
+                      "~/Content/fullcalendar.min.css",
                       "~/Content/site.css",
                       "~/Content/Gridmvc.css",
                       "~/Content/jquery.datetimepicker.css",

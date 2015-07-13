@@ -11,11 +11,11 @@ namespace Nebulus.Controllers
 {
     public class MessageController : Controller
     {
-        private Dpm dpm;
+        //private Dpm dpm;
 
         public MessageController()
         {
-            dpm = new Dpm() { MModel = Nebulus.AppConfiguration.NebulusDBContext };
+            //dpm = new Dpm() { MModel = Nebulus.AppConfiguration.NebulusDBContext };
         }
 
         public ActionResult Index()
@@ -111,9 +111,27 @@ namespace Nebulus.Controllers
 
             return RedirectToAction("Index");
         }
-        public ActionResult Backend()
+
+        [HttpGet]
+        public JsonResult CalandarEventsData()
         {
-            return dpm.CallBack(this);
+            DateTimeOffset ExpireDate = DateTimeOffset.Now.AddDays(45);
+            DateTimeOffset StartDate = DateTimeOffset.Now.Subtract(new TimeSpan(31, 0, 0, 0));
+            var basicEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where ev.Expiration <= ExpireDate && ev.ScheduleStart > StartDate && ev.ScheduleInterval == ScheduleIntervalType.Never select ev;
+
+            var eventList = from e in basicEvents
+                            select new
+                            {
+                                id = e.MessageItemId,
+                                title = e.MessageTitle,
+                                start = e.ScheduleStart,
+                                end = e.Expiration,
+                                //color = e.StatusColor,
+                                //someKey = e.SomeImportantKeyID,
+                                allDay = false
+                            };
+            var rows = eventList.ToArray();
+            return Json(rows, JsonRequestBehavior.AllowGet); 
         }
     }
 }
