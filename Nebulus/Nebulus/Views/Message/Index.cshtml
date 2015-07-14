@@ -49,16 +49,18 @@
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
-            events: '/Message/CalandarEventsData',
+            eventSources: [{
+                url: '/Message/CalandarEventsData/', data: {
+                    startDate: function () {
+                        return $('#calendar').fullCalendar('getDate').format("MM-DD-YYYY");
+                    }
+                }
+            }
+            ],
             eventClick: function (calEvent, jsEvent, view) {
                 window.location.href = "Edit/" + calEvent.id;
             },
         })
-        });
-    
-    $("#dropdown").change(function () {
-        var selected = $(this).val();
-        
     });
 </script>
 

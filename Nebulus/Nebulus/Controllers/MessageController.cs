@@ -113,25 +113,108 @@ namespace Nebulus.Controllers
         }
 
         [HttpGet]
-        public JsonResult CalandarEventsData()
+        public JsonResult CalandarEventsData(string startDate)
         {
-            DateTimeOffset ExpireDate = DateTimeOffset.Now.AddDays(45);
-            DateTimeOffset StartDate = DateTimeOffset.Now.Subtract(new TimeSpan(31, 0, 0, 0));
-            var basicEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where ev.Expiration <= ExpireDate && ev.ScheduleStart > StartDate && ev.ScheduleInterval == ScheduleIntervalType.Never select ev;
+            DateTimeOffset StartDate = DateTimeOffset.Parse(startDate).Subtract(new TimeSpan(7,0,0,0));
+            DateTimeOffset EndDate = StartDate.AddMonths(1).AddDays(7);
+            //DateTimeOffset ExpireDate = StartDate.AddDays(45);
+            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where ev.ScheduleStart > StartDate && ev.ScheduleStart < EndDate select ev;
 
-            var eventList = from e in basicEvents
-                            select new
-                            {
-                                id = e.MessageItemId,
-                                title = e.MessageTitle,
-                                start = e.ScheduleStart,
-                                end = e.Expiration,
-                                //color = e.StatusColor,
-                                //someKey = e.SomeImportantKeyID,
-                                allDay = false
-                            };
-            var rows = eventList.ToArray();
-            return Json(rows, JsonRequestBehavior.AllowGet); 
+            var fmEvents = FormatRecurringEvents(mEvents);
+
+            var rows = fmEvents; 
+            return Json(rows, JsonRequestBehavior.AllowGet);
+        }
+
+        private List<Object> FormatRecurringEvents(IQueryable<MessageItem> mEvents)
+        {
+
+            List<object> fmEvents = new List<object>();
+
+            foreach (var eitem in mEvents)
+            {
+                var backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.CornflowerBlue);
+
+                if (eitem.ScheduleInterval == ScheduleIntervalType.Daily)
+                {
+                    if (DateTimeOffset.Now.Month > eitem.ScheduleStart.Month)
+                    {
+                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                    }
+                    if (DateTimeOffset.Now.Month == eitem.ScheduleStart.Month && DateTimeOffset.Now.Day > eitem.ScheduleStart.Day)
+                    {
+                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, eitem.ScheduleStart.Month, DateTimeOffset.Now.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                    }
+                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Purple);
+                }
+
+                if (eitem.ScheduleInterval == ScheduleIntervalType.Weekly)
+                {
+                    if (DateTimeOffset.Now.DayOfYear >= (eitem.ScheduleStart.DayOfYear + 7))
+                    {
+                        eitem.ScheduleStart = DateTimeOffset.Now.StartOfWeek(eitem.ScheduleStart.DayOfWeek);
+                    }
+                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Orange);
+
+                    for(var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month); day += 7)
+                    {
+                        fmEvents.Add(new
+                        {
+                            id = eitem.MessageItemId,
+                            title = eitem.MessageTitle,
+                            start = new DateTimeOffset(eitem.ScheduleStart.Year, eitem.ScheduleStart.Month, day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset),
+                            end = eitem.duration,
+                            color = backgroundColor,
+                            allDay = false
+                        });
+                    }
+
+                }
+
+                if (eitem.ScheduleInterval == ScheduleIntervalType.Monthly)
+                {
+                    if (DateTimeOffset.Now.Month > eitem.ScheduleStart.Month)
+                    {
+                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, DateTimeOffset.Now.Month, eitem.ScheduleStart.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                    }
+                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Maroon);
+                }
+
+                if (eitem.ScheduleInterval == ScheduleIntervalType.Hourly)
+                {
+                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Lime);
+                }
+                if (eitem.ScheduleInterval == ScheduleIntervalType.Never)
+                {
+
+                }
+
+                fmEvents.Add(new
+                {
+                    id = eitem.MessageItemId,
+                    title = eitem.MessageTitle,
+                    start = eitem.ScheduleStart,
+                    end = eitem.duration,
+                    color = backgroundColor,
+                    allDay = false
+                });
+            }
+
+            return fmEvents;
+        }
+    }
+
+    public static class DateTimeOffsetExtensions
+    {
+        public static DateTimeOffset StartOfWeek(this DateTimeOffset dt, DayOfWeek startOfWeek)
+        {
+            int diff = dt.DayOfWeek - startOfWeek;
+            if (diff < 0)
+            {
+                diff += 7;
+            }
+
+            return dt.AddDays(-1 * diff).Date;
         }
     }
 }

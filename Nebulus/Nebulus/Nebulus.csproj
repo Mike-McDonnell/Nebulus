@@ -185,7 +185,6 @@
     <Compile Include="App_Data\NebulusContext.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
-    <Compile Include="Dpm.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
