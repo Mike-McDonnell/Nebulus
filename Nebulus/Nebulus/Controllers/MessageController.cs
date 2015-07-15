@@ -59,8 +59,6 @@ namespace Nebulus.Controllers
                         sendMessage.Properties.Add("Tags", "BROADCAST");
                     }
                 
-
-
                     NSBQ.NSBQClient.Send(sendMessage);
                     AppLogging.Instance.Info("Message sent");
                 }
@@ -180,15 +178,30 @@ namespace Nebulus.Controllers
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Monthly)
                 {
-                    if (DateTimeOffset.Now.Month > eitem.ScheduleStart.Month)
+                    if (startDate.Month > eitem.ScheduleStart.Month)
                     {
-                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, DateTimeOffset.Now.Month, eitem.ScheduleStart.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                        eitem.ScheduleStart = new DateTimeOffset(startDate.Year, startDate.Month, eitem.ScheduleStart.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
                     }
+
                     backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Maroon);
                 }
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Hourly)
                 {
+                    for (var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month); day++)
+                    {
+                        fmEvents.Add(new
+                        {
+                            id = eitem.MessageItemId,
+                            title = eitem.MessageTitle,
+                            start = new DateTimeOffset(eitem.ScheduleStart.Year, eitem.ScheduleStart.Month, day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset),
+                            end = eitem.duration,
+                            color = backgroundColor,
+                            allDay = false
+                        });
+                    }
+
+
                     backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Lime);
                 }
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Never)
