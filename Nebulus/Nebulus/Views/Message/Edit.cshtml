@@ -91,7 +91,7 @@
                             <div class="FloatDivLeft">
                                 <p>
                                     <label for="ScheduleStart">Schedule:</label><br>
-                                    @Html.EditorFor(model => model.ScheduleStart)
+                                    @Html.TextBoxFor(model => model.ScheduleStart, new { @Value = Model.ScheduleStart.ToString("yyyy/MM/dd HH:mm") })
                                     @Html.ValidationMessageFor(model => model.ScheduleStart, "", new { @class = "text-danger" })
                                 </p>
                             </div>
@@ -108,7 +108,7 @@
                         <div class="ClearBoth">
                             <div class="FloatDivLeft">
                                 <p>Expiration:</p>
-                                @Html.EditorFor(model => model.Expiration)
+                                @Html.TextBoxFor(model => model.Expiration, new { @Value = Model.Expiration.ToString("yyyy/MM/dd HH:mm") })
                                 @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
                             </div>
 
@@ -165,9 +165,9 @@
                     </fieldset>
                 </fieldset>
             </div><!--end of AdvancedWrapper-->
-            <button type="button" value="">Cancel</button>
-            <button type="submit">Save</button>
-            @Html.ActionLink("Delete", "Delete", new { id = Model.MessageItemId }, new { @class = "btn btn-danger" })
+            <a href="~/Message/Index" class="btn btn-warning btn-lg btn-block">Cancel</a>
+            <button type="submit" value="Create" class="btn btn-success btn-lg btn-block">Save</button>
+            @Html.ActionLink("Delete", "Delete", new { id = Model.MessageItemId }, new { @class = "btn btn-danger btn-lg btn-block" })
 
         </form>
     </div><!--end of wrapper-->
@@ -376,6 +376,7 @@
 
         <script type="text/javascript">
             $("#ScheduleStart").datetimepicker({ inline: true, minDate: 'yesterday' });
+            //$("#Expiration").datetimepicker();
             $("#Expiration").datetimepicker({ inline: true, minDate: 'tommorow' });
         </script>
 

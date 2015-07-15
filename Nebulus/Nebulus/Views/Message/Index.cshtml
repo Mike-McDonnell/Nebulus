@@ -12,19 +12,8 @@
 
 <br />
 
-<div class="tip">
-<select id="dropdown">
-    @{ for (var d = DateTime.Today; d < DateTime.Today.AddMonths(15); d = d.AddMonths(1))
-     {
-        <option value="@d.ToString("s")">@d.ToString("MMMM yyyy")</option>
-     }}
-</select>
-</div>
-
-<br />
-
 <div class="row">
-    <p><a href="~/Message/Create" class="btn btn-default">Create Message &raquo;</a></p>
+    <p><a href="~/Message/Create" class="btn btn-primary">Create Message &raquo;</a></p>
 </div>
 
 <br />
@@ -52,13 +41,13 @@
             eventSources: [{
                 url: '/Message/CalandarEventsData/', data: {
                     startDate: function () {
-                        return $('#calendar').fullCalendar('getDate').format("MM-DD-YYYY");
+                        return $('#calendar').fullCalendar('getDate').format("MM-01-YYYY");
                     }
                 }
             }
             ],
             eventClick: function (calEvent, jsEvent, view) {
-                window.location.href = "Edit/" + calEvent.id;
+                window.location.href = '@Url.Content("~/Message/Edit/")' + calEvent.id;
             },
         })
     });

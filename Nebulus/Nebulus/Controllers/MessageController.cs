@@ -114,9 +114,9 @@ namespace Nebulus.Controllers
             DateTimeOffset StartDate = DateTimeOffset.Parse(startDate).Subtract(new TimeSpan(7,0,0,0));
             DateTimeOffset EndDate = StartDate.AddMonths(1).AddDays(7);
 
-            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where ev.Expiration > DateTimeOffset.Now && ev.ScheduleStart > StartDate && ev.ScheduleStart < EndDate || ev.ScheduleInterval != ScheduleIntervalType.Never && ev.Expiration > DateTimeOffset.Now select ev;
+            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where (ev.ScheduleInterval != ScheduleIntervalType.Never && ev.Expiration > DateTimeOffset.Now) || ev.Expiration > DateTimeOffset.Now && ev.ScheduleStart > StartDate && ev.ScheduleStart < EndDate select ev;
 
-            var fmEvents = FormatRecurringEvents(mEvents, StartDate);
+            var fmEvents = FormatRecurringEvents(mEvents, DateTimeOffset.Parse(startDate));
 
             var rows = fmEvents; 
             return Json(rows, JsonRequestBehavior.AllowGet);
@@ -129,45 +129,59 @@ namespace Nebulus.Controllers
             foreach (var eitem in mEvents)
             {
                 var backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.CornflowerBlue);
+                var StartTime = eitem.ScheduleStart;
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Daily)
                 {
+
                     if (startDate.Month > eitem.ScheduleStart.Month)
                     {
-                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, startDate.Month, startDate.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                        StartTime = new DateTimeOffset(eitem.ScheduleStart.Year, startDate.Month, startDate.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
                     }
 
-                    for (var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month); day ++)
+                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Purple);
+
+                    for (var day = StartTime.DayOfYear; day <= new DateTime(startDate.Year, startDate.Month, DateTime.DaysInMonth(startDate.Year, startDate.Month)).DayOfYear; day++)
                     {
+                        if (eitem.Expiration.DayOfYear < day)
+                        {
+                            break;
+                        }
+
                         fmEvents.Add(new
                         {
                             id = eitem.MessageItemId,
                             title = eitem.MessageTitle,
-                            start = new DateTimeOffset(eitem.ScheduleStart.Year, eitem.ScheduleStart.Month, day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset),
+                            start = StartTime.AddDays(day - StartTime.DayOfYear),
+                            //start = new DateTimeOffset(StartTime.Year, StartTime.Month, day, StartTime.Hour, StartTime.Minute, StartTime.Second, StartTime.Offset),
                             end = eitem.duration,
                             color = backgroundColor,
                             allDay = false
                         });
                     }
-
-                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Purple);
                 }
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Weekly)
                 {
                     if (startDate.DayOfYear >= (eitem.ScheduleStart.DayOfYear + 7))
                     {
-                        eitem.ScheduleStart = startDate.StartOfWeek(eitem.ScheduleStart.DayOfWeek);
+                        StartTime = startDate.StartOfWeek(eitem.ScheduleStart.DayOfWeek);
                     }
                     backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Orange);
 
-                    for (var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(startDate.Year, startDate.Month); day += 7)
+                    for (var day = StartTime.DayOfYear; day <= new DateTime(startDate.Year, startDate.Month, DateTime.DaysInMonth(startDate.Year, startDate.Month)).DayOfYear; day += 7)
                     {
+                        if(eitem.Expiration.DayOfYear < day)
+                        {
+                            break;
+                        }
+
                         fmEvents.Add(new
                         {
                             id = eitem.MessageItemId,
                             title = eitem.MessageTitle,
-                            start = new DateTimeOffset(eitem.ScheduleStart.Year, eitem.ScheduleStart.Month, day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset),
+                            start = StartTime.AddDays(day - StartTime.DayOfYear),
+                            //start = new DateTimeOffset(StartTime.Year, StartTime.Month, new DateTime().AddDays(day - 1).Day, StartTime.Hour, StartTime.Minute, StartTime.Second, StartTime.Offset),
                             end = eitem.duration,
                             color = backgroundColor,
                             allDay = false
@@ -178,17 +192,34 @@ namespace Nebulus.Controllers
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Monthly)
                 {
+                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Maroon);
+
                     if (startDate.Month > eitem.ScheduleStart.Month)
                     {
-                        eitem.ScheduleStart = new DateTimeOffset(startDate.Year, startDate.Month, eitem.ScheduleStart.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                        StartTime = new DateTimeOffset(startDate.Year, startDate.Month, eitem.ScheduleStart.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
                     }
 
-                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Maroon);
+                    if (eitem.Expiration < StartTime)
+                    {
+                        continue;
+                    }
+
+                    fmEvents.Add(new
+                    {
+                        id = eitem.MessageItemId,
+                        title = eitem.MessageTitle,
+                        start = StartTime,
+                        end = eitem.duration,
+                        color = backgroundColor,
+                        allDay = false
+                    });
                 }
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Hourly)
                 {
-                    for (var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month); day++)
+                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Lime);
+
+                    for (var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(startDate.Year, startDate.Month); day++)
                     {
                         fmEvents.Add(new
                         {
@@ -200,24 +231,21 @@ namespace Nebulus.Controllers
                             allDay = false
                         });
                     }
-
-
-                    backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Lime);
                 }
-                if (eitem.ScheduleInterval == ScheduleIntervalType.Never)
+                
+                if(eitem.ScheduleInterval == ScheduleIntervalType.Never)
                 {
-
+                    fmEvents.Add(new
+                    {
+                        id = eitem.MessageItemId,
+                        title = eitem.MessageTitle,
+                        start = eitem.ScheduleStart,
+                        end = eitem.duration,
+                        color = backgroundColor,
+                        allDay = false
+                    });
                 }
-
-                fmEvents.Add(new
-                {
-                    id = eitem.MessageItemId,
-                    title = eitem.MessageTitle,
-                    start = eitem.ScheduleStart,
-                    end = eitem.duration,
-                    color = backgroundColor,
-                    allDay = false
-                });
+             
             }
 
             return fmEvents;

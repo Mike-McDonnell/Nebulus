@@ -58,7 +58,7 @@
 
                         <div class="ClearBoth">
                             <p>
-                                @Html.TextAreaFor(Model => Model.MessageBody, new { @class = "ckeditor" })
+                                @Html.TextAreaFor(model => model.MessageBody, new { @class = "ckeditor" })
                                 @Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })
                             </p>
                         </div>
@@ -91,7 +91,7 @@
                                 <div class="FloatDivLeft">
                                     <p>
                                         <label for="ScheduleStart">Schedule:</label><br>
-                                        @Html.EditorFor(model => model.ScheduleStart)
+                                        @Html.EditorFor(model => model.ScheduleStart, new { @Value = Model.ScheduleStart.ToString("yyyy/MM/dd HH:mm") })
                                         @Html.ValidationMessageFor(model => model.ScheduleStart, "", new { @class = "text-danger" })
                                     </p>
                                 </div>
@@ -108,7 +108,7 @@
                             <div class="ClearBoth">
                                 <div class="FloatDivLeft">
                                     <p>Expiration:</p>
-                                    @Html.EditorFor(model => model.Expiration)
+                                    @Html.EditorFor(model => model.Expiration, new { @Value = Model.Expiration.ToString("yyyy/MM/dd HH:mm") })
                                     @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
                                 </div>
 
@@ -164,8 +164,8 @@
                         </fieldset>
                     </fieldset>
                 </div><!--end of AdvancedWrapper-->
-                <button type="button" value="">Cancel</button>
-                <button type="submit" >Transmit</button>
+                <a href="~/Message/Index" class="btn btn-warning btn-lg btn-block">Cancel</a>
+                <button type="submit" value="Create" class="btn btn-success btn-lg btn-block">Create</button>
 
             </form>
         </div><!--end of wrapper-->
