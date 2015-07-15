@@ -157,13 +157,13 @@ namespace Nebulus.Controllers
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Weekly)
                 {
-                    if (DateTimeOffset.Now.DayOfYear >= (eitem.ScheduleStart.DayOfYear + 7))
+                    if (startDate.DayOfYear >= (eitem.ScheduleStart.DayOfYear + 7))
                     {
-                        eitem.ScheduleStart = DateTimeOffset.Now.StartOfWeek(eitem.ScheduleStart.DayOfWeek);
+                        eitem.ScheduleStart = startDate.StartOfWeek(eitem.ScheduleStart.DayOfWeek);
                     }
                     backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Orange);
 
-                    for(var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month); day += 7)
+                    for (var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(startDate.Year, startDate.Month); day += 7)
                     {
                         fmEvents.Add(new
                         {
