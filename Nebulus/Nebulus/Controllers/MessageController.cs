@@ -11,11 +11,9 @@ namespace Nebulus.Controllers
 {
     public class MessageController : Controller
     {
-        //private Dpm dpm;
-
         public MessageController()
         {
-            //dpm = new Dpm() { MModel = Nebulus.AppConfiguration.NebulusDBContext };
+  
         }
 
         public ActionResult Index()
@@ -117,18 +115,17 @@ namespace Nebulus.Controllers
         {
             DateTimeOffset StartDate = DateTimeOffset.Parse(startDate).Subtract(new TimeSpan(7,0,0,0));
             DateTimeOffset EndDate = StartDate.AddMonths(1).AddDays(7);
-            //DateTimeOffset ExpireDate = StartDate.AddDays(45);
-            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where ev.ScheduleStart > StartDate && ev.ScheduleStart < EndDate select ev;
 
-            var fmEvents = FormatRecurringEvents(mEvents);
+            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where ev.Expiration > DateTimeOffset.Now && ev.ScheduleStart > StartDate && ev.ScheduleStart < EndDate || ev.ScheduleInterval != ScheduleIntervalType.Never && ev.Expiration > DateTimeOffset.Now select ev;
+
+            var fmEvents = FormatRecurringEvents(mEvents, StartDate);
 
             var rows = fmEvents; 
             return Json(rows, JsonRequestBehavior.AllowGet);
         }
 
-        private List<Object> FormatRecurringEvents(IQueryable<MessageItem> mEvents)
+        private List<Object> FormatRecurringEvents(IQueryable<MessageItem> mEvents, DateTimeOffset startDate)
         {
-
             List<object> fmEvents = new List<object>();
 
             foreach (var eitem in mEvents)
@@ -137,14 +134,24 @@ namespace Nebulus.Controllers
 
                 if (eitem.ScheduleInterval == ScheduleIntervalType.Daily)
                 {
-                    if (DateTimeOffset.Now.Month > eitem.ScheduleStart.Month)
+                    if (startDate.Month > eitem.ScheduleStart.Month)
                     {
-                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, DateTimeOffset.Now.Month, DateTimeOffset.Now.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, startDate.Month, startDate.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
                     }
-                    if (DateTimeOffset.Now.Month == eitem.ScheduleStart.Month && DateTimeOffset.Now.Day > eitem.ScheduleStart.Day)
+
+                    for (var day = eitem.ScheduleStart.Day; day <= DateTime.DaysInMonth(DateTimeOffset.Now.Year, DateTimeOffset.Now.Month); day ++)
                     {
-                        eitem.ScheduleStart = new DateTimeOffset(eitem.ScheduleStart.Year, eitem.ScheduleStart.Month, DateTimeOffset.Now.Day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset);
+                        fmEvents.Add(new
+                        {
+                            id = eitem.MessageItemId,
+                            title = eitem.MessageTitle,
+                            start = new DateTimeOffset(eitem.ScheduleStart.Year, eitem.ScheduleStart.Month, day, eitem.ScheduleStart.Hour, eitem.ScheduleStart.Minute, eitem.ScheduleStart.Second, eitem.ScheduleStart.Offset),
+                            end = eitem.duration,
+                            color = backgroundColor,
+                            allDay = false
+                        });
                     }
+
                     backgroundColor = System.Drawing.ColorTranslator.ToHtml(System.Drawing.Color.Purple);
                 }
 
