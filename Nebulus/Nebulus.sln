@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nebulus", "Nebulus\Nebulus.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulusClient", "NebulusClient\NebulusClient.csproj", "{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NebulusMessageBroker", "NebulusMessageBroker\NebulusMessageBroker.csproj", "{7215F8F0-080E-4DFD-AB5E-44DE603523D6}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 3
+		SccNumberOfProjects = 4
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://mikem1983.visualstudio.com/defaultcollection
 		SccLocalPath0 = .
@@ -19,6 +21,9 @@ Global
 		SccProjectUniqueName2 = NebulusClient\\NebulusClient.csproj
 		SccProjectName2 = NebulusClient
 		SccLocalPath2 = NebulusClient
+		SccProjectUniqueName3 = NebulusMessageBroker\\NebulusMessageBroker.csproj
+		SccProjectName3 = NebulusMessageBroker
+		SccLocalPath3 = NebulusMessageBroker
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +38,10 @@ Global
 		{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC495C98-C0B5-48B5-8A39-D7BF32CF62D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7215F8F0-080E-4DFD-AB5E-44DE603523D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7215F8F0-080E-4DFD-AB5E-44DE603523D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7215F8F0-080E-4DFD-AB5E-44DE603523D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7215F8F0-080E-4DFD-AB5E-44DE603523D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

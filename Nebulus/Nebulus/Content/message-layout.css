@@ -23,6 +23,7 @@
         border-radius: 8px;
         padding: 1em;
         margin-top: 1em;
+        margin-bottom: .5em;
     }
 
     legend {
@@ -84,6 +85,7 @@
 
     #AdvancedWrapper {
         margin-top: 1.5em;
+        margin-bottom: 1.5em;
     }
 
     #Calendar {
@@ -142,40 +144,35 @@
     }
 
     #AdvancedArrow {
-        margin-top: -10px
+        margin-top: -1px;
+        position: relative;
     }
-
-    #AdvancedArrow:first-child:after {
-        border-top-color: #333;
-        border: 30px solid transparent;
-        
-        content: '';
-	    height: 0;
-	    position: absolute;
-	    width: 0;
+    #AdvancedArrow h4{
+        position: absolute;
+        margin-left: 82.5%;
+        margin-top: -.75em;
+        z-index:5000;
+        font-size: 400%;
     }
 
     #AdvancedArrow:after {
-        content: '';
-	    height: 0;
+        content: "";
 	    position: absolute;
 	    width: 0;
-
 	    border: 50px solid transparent;
 	    border-top-color: #fff;
-        margin-left: 50.25%;
-        
+        margin-left: 80%;
+        margin-top: -.5%
     }
-
     #AdvancedArrow:before {
         content: '';
 	    height: 0;
 	    position: absolute;
 	    width: 0;
 
-	    border: 54px solid transparent;
+	    border: 50px solid transparent;
 	    border-top-color: #333;
-        margin-left: 50%;
-        
+        margin-left: 80%;
+        margin-top: 0%
     }
 

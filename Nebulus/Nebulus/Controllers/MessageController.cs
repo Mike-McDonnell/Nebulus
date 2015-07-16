@@ -18,9 +18,8 @@ namespace Nebulus.Controllers
 
         public ActionResult Index()
         {
-            DateTimeOffset ExpireDate = DateTimeOffset.Now.AddDays(45);
-            var messageItems = Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Where(item => item.Expiration <= ExpireDate).ToList();
-            return View(messageItems);
+            var messageItems = Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Where(item => item.Expiration > DateTimeOffset.Now).ToList();
+            return View(messageItems.OrderBy(item => item.ScheduleStart));
         }
         [HttpGet]
         public ActionResult Create()
