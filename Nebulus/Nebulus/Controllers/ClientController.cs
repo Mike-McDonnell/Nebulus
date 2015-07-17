@@ -11,6 +11,7 @@ namespace Nebulus.Controllers
     public class ClientController : ApiController
     {
         [AllowAnonymous]
+        [ActionName("config")]
         public IHttpActionResult GetConfig()
         {
             //Generatre Client Config

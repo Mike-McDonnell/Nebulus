@@ -183,6 +183,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="App_Data\NebulusContext.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
