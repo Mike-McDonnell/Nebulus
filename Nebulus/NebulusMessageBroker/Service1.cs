@@ -75,25 +75,37 @@ namespace NebulusMessageBroker
             {
                 if(this.DataBaseContext != null)
                 {
-                    int windowOffSet = 5;
-                    var timeWindowEnd = DateTimeOffset.Now.AddMinutes(windowOffSet);
-
-                    var messages = this.DataBaseContext.MessageItems.Where(message => message.ScheduleStart >= DateTimeOffset.Now && message.ScheduleStart <= timeWindowEnd && message.Expiration >= timeWindowEnd || ((message.ScheduleInterval != ScheduleIntervalType.Never && message.ScheduleStart.Hour == DateTimeOffset.Now.Hour && message.Expiration >= timeWindowEnd)));
-                    
-                    foreach(var mItem in messages)
+                    try
                     {
-                        if (!messageList.Any(message => message.MessageItemId == mItem.MessageItemId))
-                        {
-                            messageList.Add(mItem);
-                            var mTask = Task.Run(async () => {
-                                await Task.Delay(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, mItem.ScheduleStart.Hour, mItem.ScheduleStart.Minute, 0) - DateTimeOffset.Now);
-                                MessageWebServiceClient.SendMessage(mItem);
-                            });
-                            
-                        }
-                    }
+                        AppLogging.Instance.Debug("Reconnecting to Database");
+                        this.DataBaseContext = new NebulusContext(ServiceConfiguration.DatabaseConnectionString);
 
-                    messageList.RemoveAll(message => message.ScheduleStart < DateTimeOffset.Now.Subtract(TimeSpan.FromMinutes(windowOffSet)));
+                        int windowOffSet = 5;
+                        var timeWindowEnd = DateTimeOffset.Now.AddMinutes(windowOffSet);
+
+                        var messages = this.DataBaseContext.MessageItems.Where(message => message.ScheduleStart >= DateTimeOffset.Now && message.ScheduleStart <= timeWindowEnd && message.Expiration >= timeWindowEnd || ((message.ScheduleInterval != ScheduleIntervalType.Never && message.ScheduleStart.Hour == DateTimeOffset.Now.Hour && message.Expiration >= timeWindowEnd)));
+
+                        foreach (var mItem in messages)
+                        {
+                            if (!messageList.Any(message => message.MessageItemId == mItem.MessageItemId))
+                            {
+                                messageList.Add(mItem);
+                                var mTask = Task.Run(async () =>
+                                {
+                                    AppLogging.Instance.Debug("Queueing Message, " + mItem.MessageItemId);
+                                    await Task.Delay(new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, mItem.ScheduleStart.Hour, mItem.ScheduleStart.Minute, 0) - DateTimeOffset.Now);
+                                    MessageWebServiceClient.SendMessage(mItem);
+                                });
+
+                            }
+                        }
+
+                        messageList.RemoveAll(message => message.ScheduleStart < DateTimeOffset.Now.Subtract(TimeSpan.FromMinutes(windowOffSet)));
+                    }
+                    catch(Exception ex)
+                    {
+                        AppLogging.Instance.Error("Service Error: ", ex);
+                    }
                 }
                 else
                 {
