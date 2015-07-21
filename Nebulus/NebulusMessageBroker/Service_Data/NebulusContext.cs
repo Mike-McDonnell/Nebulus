@@ -12,6 +12,11 @@ namespace NebulusMessageBroker
         {
         }
 
+        public NebulusContext(string ConnectionString)
+            : base(ConnectionString)
+        {
+        }
+
         public virtual DbSet<MessageItem> MessageItems { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

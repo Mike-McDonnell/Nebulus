@@ -7,8 +7,7 @@ namespace NebulusMessageBroker.Service_Start
 {
     public class ServiceConfig
     {
-        public string ServiceBUSConenctionString { get; set; }
-        public string ServiceBUSQueueName { get; set; }
+        public string NebulusMessageWebServiceUri { get; set; }
         public string DatabaseConnectionString { get; set; }
     }
 }

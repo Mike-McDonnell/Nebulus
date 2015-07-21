@@ -15,10 +15,16 @@ namespace Nebulus
             config.MapHttpAttributeRoutes();
 
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
+                name: "ConfigApi",
+                routeTemplate: "api/{controller}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            config.Routes.MapHttpRoute(
+               name: "ServiceMessagePostApi",
+               routeTemplate: "api/{controller}/{messageItem}",
+               defaults: new { id = RouteParameter.Optional }
+           );
         }
     }
 }

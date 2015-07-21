@@ -25,7 +25,7 @@ namespace NebulusMessageBroker
 
         public DateTimeOffset ScheduleStart { get; set; }
 
-        public int ScheduleInterval { get; set; }
+        public Nebulus.Models.ScheduleIntervalType ScheduleInterval { get; set; }
 
         public double duration { get; set; }
 
