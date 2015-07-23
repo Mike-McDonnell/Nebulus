@@ -31,7 +31,7 @@ namespace NebulusMessageBroker
             {
                 this.ServiceConfiguration = await Service_Start.ServiceConfiguration.GetServiceConfiguration();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 AppLogging.Instance.Error(ex);
             }
@@ -58,7 +58,7 @@ namespace NebulusMessageBroker
             }
 
             System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 30000; 
+            timer.Interval = 30000;
             timer.Elapsed += new System.Timers.ElapsedEventHandler(this.OnTimer);
             timer.Start();
 
@@ -71,9 +71,9 @@ namespace NebulusMessageBroker
 
         private async void OnTimer(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if(ServiceConfiguration != null)
+            if (ServiceConfiguration != null)
             {
-                if(this.DataBaseContext != null)
+                if (this.DataBaseContext != null)
                 {
                     try
                     {
@@ -102,7 +102,7 @@ namespace NebulusMessageBroker
 
                         messageList.RemoveAll(message => message.ScheduleStart < DateTimeOffset.Now.Subtract(TimeSpan.FromMinutes(windowOffSet)));
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         AppLogging.Instance.Error("Service Error: ", ex);
                     }
@@ -113,7 +113,7 @@ namespace NebulusMessageBroker
 
                     try
                     {
-                        this.DataBaseContext = new NebulusContext();
+                        this.DataBaseContext = new NebulusContext(ServiceConfiguration.DatabaseConnectionString);
                     }
                     catch (Exception ex)
                     {
@@ -136,3 +136,4 @@ namespace NebulusMessageBroker
         }
     }
 }
+    

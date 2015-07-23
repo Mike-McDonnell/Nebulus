@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nebulus;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -46,7 +47,15 @@ namespace NebulusMessageBroker.Service_Code
 
         internal void SendMessage(MessageItem mItem)
         {
-            WebServiceCleint.PostAsJsonAsync(this.ServiceConnectionUri, mItem);
+            try
+            {
+                WebServiceCleint.PostAsJsonAsync(this.ServiceConnectionUri + "/api/service/PostMessage", mItem);
+                AppLogging.Instance.Debug("Sent Message Id:" + mItem.MessageItemId + " Title:" + mItem.MessageTitle);
+            }
+            catch (Exception ex)
+            {
+                AppLogging.Instance.Error("Error sending Message to web service, " + mItem.MessageItemId, ex);
+            }
         }
     }
 }

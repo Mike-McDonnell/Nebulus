@@ -7,11 +7,6 @@ namespace NebulusMessageBroker
 
     public partial class NebulusContext : DbContext
     {
-        public NebulusContext()
-            : base("name=NebulusContext")
-        {
-        }
-
         public NebulusContext(string ConnectionString)
             : base(ConnectionString)
         {
