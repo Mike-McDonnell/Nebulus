@@ -7,10 +7,16 @@
     <div class="col-md-4">
         <p><a href="~/Message/Index" class="btn btn-primary btn-lg btn-block">Broadcast Messaging &raquo;</a></p>
     </div>
+@if (AppConfiguration.Settings.FeatureSet > 2)
+        {
     <div class="col-md-4">
         <p><a href="" class="btn btn-primary btn-lg btn-block">Splash Screen &raquo;</a></p>
     </div>
+}
+@if (AppConfiguration.Settings.FeatureSet > 2)
+        {
     <div class="col-md-4">
         <p><a href="" class="btn btn-primary btn-lg btn-block">Print Managment &raquo;</a></p>
     </div>
+}
 </div>

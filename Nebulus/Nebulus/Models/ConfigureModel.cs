@@ -52,5 +52,7 @@ namespace Nebulus.Models
        
         public PrintServiceSettingsModel PrintServiceSettings {get; set;}
 
+        public int FeatureSet { get; set; }
+
     }
 }

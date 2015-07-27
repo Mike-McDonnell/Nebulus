@@ -32,6 +32,13 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Broadcast", "Index", "Message", new { area = "" }, null)</li>
+
+                    @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Configure", "Configure", "Home", new { area = "" }, new { @class = "glyphicon glyphicon-cog" })</li>
+                    accepted
+
                     @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
                 </ul>
             </div>
