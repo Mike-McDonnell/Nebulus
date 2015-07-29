@@ -193,6 +193,7 @@
     <Compile Include="Models\ConfigureModel.cs" />
     <Compile Include="Models\MessageItem.cs" />
     <Compile Include="Models\PrintServiceSettingsModel.cs" />
+    <Compile Include="Models\SecurityRoleEntity.cs" />
     <Compile Include="Models\TAGsDateSourceType.cs" />
     <Compile Include="App_Start\NSBQClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -206,6 +207,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Security\SecurityAttributes.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

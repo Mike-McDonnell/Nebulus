@@ -10,6 +10,8 @@ namespace Nebulus
     {
         public DbSet<MessageItem> MessageItems { get; set; }
 
+        public DbSet<SecurityRoleEntity> SecurityRoles { get; set; }
+
         public DbSet<PrintServiceSettingsModel> PrintServiceConfiguration { get; set; }
 
         public NebulusContext()
@@ -20,6 +22,26 @@ namespace Nebulus
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+            System.Data.Entity.Database.SetInitializer(new NebulusContextInitializer());
+        }
+    }
+
+    public partial class NebulusContextInitializer : CreateDatabaseIfNotExists<NebulusContext>
+    {
+        protected override void Seed(NebulusContext context)
+        {
+            base.Seed(context);
+
+            var initialRoleAdmin = new SecurityRoleEntity();
+            initialRoleAdmin.Access = 0; initialRoleAdmin.Name = "User";
+
+            var initialRoleMessage = new SecurityRoleEntity();
+            initialRoleMessage.Access = 0; initialRoleMessage.Name = "User";
+
+            context.SecurityRoles.Add(initialRoleAdmin);
+            context.SecurityRoles.Add(initialRoleMessage);
+            context.SaveChanges();
         }
     }
 }

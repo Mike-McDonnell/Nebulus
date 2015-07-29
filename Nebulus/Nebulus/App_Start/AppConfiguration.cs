@@ -21,6 +21,7 @@ namespace Nebulus
             try
             {
                 NebulusDBContext = new NebulusContext();
+                
             }
             catch(Exception ex)
             {
@@ -41,6 +42,15 @@ namespace Nebulus
             catch(Exception ex)
             {
                 AppLogging.Instance.Error("Error: Loading Pricipal Context", ex);
+            }
+
+            try
+            {
+                Settings.SecurityRoles = NebulusDBContext.SecurityRoles.ToList();
+            }
+            catch(Exception ex)
+            {
+                AppLogging.Instance.Error("Error: Loading user groups from database", ex);
             }
 
             try
@@ -88,7 +98,6 @@ namespace Nebulus
 
                 Settings.ServiceBUSConenctionString = ConfigurationManager.ConnectionStrings["NebulusHUBConnectionString"] != null ? ConfigurationManager.ConnectionStrings["NebulusHUBConnectionString"].ConnectionString : String.Empty;
                 Settings.DatabaseConnectionString = ConfigurationManager.ConnectionStrings["NebulusContext"] != null ? ConfigurationManager.ConnectionStrings["NebulusContext"].ConnectionString : string.Empty;
-                
             }
             catch (Exception ex)
             {

@@ -54,5 +54,7 @@ namespace Nebulus.Models
 
         public int FeatureSet { get; set; }
 
+
+        public List<SecurityRoleEntity> SecurityRoles { get; set; }
     }
 }
