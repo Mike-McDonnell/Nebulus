@@ -26,6 +26,14 @@ namespace Nebulus.Models
 
         public string ServiceBUSConenctionString { get; set; }
 
+        public string NotificationHubName { get; set; }
+
+        public string NotificationHubServerConenctionString { get; set; }
+
+        public string NotificationHubClientConenctionString { get; set; }
+
+        public bool WindowsClientsUseNotificationHub { get; set; }
+
         //Message
         public bool GroupTAGsEnabled { get; set; }
         public TAGsDateSourceType GroupTAGsDateSourceType { get; set; }

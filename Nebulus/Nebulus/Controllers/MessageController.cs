@@ -6,9 +6,11 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Nebulus.Security;
 
 namespace Nebulus.Controllers
 {
+    [BroadCastAuthorizationAttribute]
     public class MessageController : Controller
     {
         public MessageController()
@@ -33,7 +35,7 @@ namespace Nebulus.Controllers
         }
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Create(MessageItem messageItem, string[] tags)
+        public async System.Threading.Tasks.Task<ActionResult> Create(MessageItem messageItem, string[] tags)
         {
             if (ModelState.IsValid)
             {
@@ -45,6 +47,27 @@ namespace Nebulus.Controllers
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
                 Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
                 Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
+
+                try
+                {
+                    Microsoft.ServiceBus.Notifications.Notification notification = new Microsoft.ServiceBus.Notifications.w (Newtonsoft.Json.Linq.JObject.FromObject(messageItem).ToString());
+                    notification.ContentType = "application/octet-stream";
+                    notification.Headers.Add("X-WNS-Type", "wns/raw");
+
+                    if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
+                    {
+                        messageItem.TargetGroup.Replace(",", " || ");
+                    }
+
+                    await NSBQ.NNHClient.SendNotificationAsync(notification);
+
+                    AppLogging.Instance.Info("Message sent to NotificationHub, " + messageItem.MessageItemId);
+                }
+                catch (Exception ex)
+                {
+                    AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
+                }
+            
 
                 try
                 {

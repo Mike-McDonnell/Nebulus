@@ -37,7 +37,7 @@ namespace Nebulus
             initialRoleAdmin.Access = 0; initialRoleAdmin.Name = "User";
 
             var initialRoleMessage = new SecurityRoleEntity();
-            initialRoleMessage.Access = 0; initialRoleMessage.Name = "User";
+            initialRoleMessage.Access = 1; initialRoleMessage.Name = "User";
 
             context.SecurityRoles.Add(initialRoleAdmin);
             context.SecurityRoles.Add(initialRoleMessage);

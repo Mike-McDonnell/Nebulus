@@ -17,6 +17,9 @@ namespace Nebulus.Controllers
             //Generatre Client Config
 
             var newClientConfig = new ClientConfig();
+            newClientConfig.NotificationHubName = Nebulus.AppConfiguration.Settings.NotificationHubName;
+            newClientConfig.NotificationHubConenctionString = Nebulus.AppConfiguration.Settings.NotificationHubClientConenctionString;
+            newClientConfig.UseNotificationHub = Nebulus.AppConfiguration.Settings.WindowsClientsUseNotificationHub;
             newClientConfig.ServiceBUSConenctionString = Nebulus.AppConfiguration.Settings.ServiceBUSConenctionString;
             newClientConfig.ServiceBUSQueueName = Nebulus.AppConfiguration.Settings.ServiceBUSQueueName;
             newClientConfig.GroupTAGsEnabled = Nebulus.AppConfiguration.Settings.GroupTAGsEnabled;

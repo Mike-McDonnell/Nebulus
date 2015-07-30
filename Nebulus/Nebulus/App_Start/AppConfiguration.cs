@@ -94,10 +94,16 @@ namespace Nebulus
                 Settings.SubNetTAGsDateSourceType = ConfigurationManager.AppSettings["SubNetTAGsDateSourceType "] != null ? (TAGsDateSourceType)Enum.Parse(typeof(TAGsDateSourceType), ConfigurationManager.AppSettings["SubNetTAGsDateSourceType "]) : TAGsDateSourceType.DataBase;
                 Settings.SubNetTAGsDateSource = ConfigurationManager.AppSettings["SubNetTAGsDateSource"] != null ? ConfigurationManager.AppSettings["SubNetTAGsDateSource"] : string.Empty;
 
-                Settings.ServiceBUSQueueName = ConfigurationManager.AppSettings["ServiceBUSQueueName"] != null ? ConfigurationManager.AppSettings["ServiceBUSQueueName"] : string.Empty;
+                Settings.WindowsClientsUseNotificationHub = ConfigurationManager.AppSettings["WindowsClientsUseNotificationHub"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["WindowsClientsUseNotificationHub"]) : false;
 
-                Settings.ServiceBUSConenctionString = ConfigurationManager.ConnectionStrings["NebulusHUBConnectionString"] != null ? ConfigurationManager.ConnectionStrings["NebulusHUBConnectionString"].ConnectionString : String.Empty;
+                Settings.ServiceBUSQueueName = ConfigurationManager.AppSettings["ServiceBUSQueueName"] != null ? ConfigurationManager.AppSettings["ServiceBUSQueueName"] : string.Empty;
+                Settings.ServiceBUSConenctionString = ConfigurationManager.ConnectionStrings["ServiceBUSConenctionString"] != null ? ConfigurationManager.ConnectionStrings["ServiceBUSConenctionString"].ConnectionString : String.Empty;
+                
                 Settings.DatabaseConnectionString = ConfigurationManager.ConnectionStrings["NebulusContext"] != null ? ConfigurationManager.ConnectionStrings["NebulusContext"].ConnectionString : string.Empty;
+
+                Settings.NotificationHubName = ConfigurationManager.AppSettings["NotificationHubName"] != null ? ConfigurationManager.AppSettings["NotificationHubName"] : string.Empty;
+                Settings.NotificationHubServerConenctionString = ConfigurationManager.ConnectionStrings["NotificationHubServerConenctionString"] != null ? ConfigurationManager.ConnectionStrings["NotificationHubServerConenctionString"].ConnectionString : string.Empty;
+                Settings.NotificationHubClientConenctionString = ConfigurationManager.ConnectionStrings["NotificationHubClientConenctionString"] != null ? ConfigurationManager.ConnectionStrings["NotificationHubClientConenctionString"].ConnectionString : string.Empty;
             }
             catch (Exception ex)
             {
@@ -180,13 +186,27 @@ namespace Nebulus
                     cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ServiceBUSQueueName", ""));
                 cfg.AppSettings.Settings["ServiceBUSQueueName"].Value = Settings.ServiceBUSQueueName;
 
-                if (cfg.ConnectionStrings.ConnectionStrings["NebulusHUBConnectionString"] == null)
-                    cfg.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("NebulusHUBConnectionString", ""));
-                cfg.ConnectionStrings.ConnectionStrings["NebulusHUBConnectionString"].ConnectionString = Settings.ServiceBUSConenctionString;
+                if (cfg.AppSettings.Settings["NotificationHubName"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("NotificationHubName", ""));
+                cfg.AppSettings.Settings["NotificationHubName"].Value = Settings.NotificationHubName;
+
+                if (cfg.AppSettings.Settings["WindowsClientsUseNotificationHub"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("WindowsClientsUseNotificationHub", ""));
+                cfg.AppSettings.Settings["WindowsClientsUseNotificationHub"].Value = Settings.WindowsClientsUseNotificationHub.ToString();
+
+                if (cfg.ConnectionStrings.ConnectionStrings["ServiceBUSConenctionString"] == null)
+                    cfg.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("ServiceBUSConenctionString", ""));
+                cfg.ConnectionStrings.ConnectionStrings["ServiceBUSConenctionString"].ConnectionString = Settings.ServiceBUSConenctionString;
                 if (cfg.ConnectionStrings.ConnectionStrings["NebulusContext"] == null)
                     cfg.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("NebulusContext", ""));
                 cfg.ConnectionStrings.ConnectionStrings["NebulusContext"].ConnectionString = Settings.DatabaseConnectionString;
 
+                if (cfg.ConnectionStrings.ConnectionStrings["NotificationHubServerConenctionString"] == null)
+                    cfg.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("NotificationHubServerConenctionString", ""));
+                cfg.ConnectionStrings.ConnectionStrings["NotificationHubServerConenctionString"].ConnectionString = Settings.NotificationHubServerConenctionString;
+                if (cfg.ConnectionStrings.ConnectionStrings["NotificationHubClientConenctionString"] == null)
+                    cfg.ConnectionStrings.ConnectionStrings.Add(new ConnectionStringSettings("NotificationHubClientConenctionString", ""));
+                cfg.ConnectionStrings.ConnectionStrings["NotificationHubClientConenctionString"].ConnectionString = Settings.NotificationHubClientConenctionString;
 
                 cfg.Save();
             }

@@ -76,12 +76,18 @@ namespace Nebulus
     {
         public static bool IsInAnyRole(this System.Security.Principal.IPrincipal user, IEnumerable<SecurityRoleEntity> roles, int Mode)
         {
-            
-            var userRoles = System.Web.Security.Roles.GetRolesForUser(user.Identity.Name);
-
-            foreach (var role in userRoles)
+            try
             {
-                return roles.Any(sRole => sRole.Name.Contains(role) || sRole.Access == Mode);
+                var userRoles = System.Web.Security.Roles.GetRolesForUser(user.Identity.Name);
+
+                foreach (var role in userRoles)
+                {
+                    return roles.Any(sRole => sRole.Name.Contains(role) || sRole.Access == Mode);
+                }
+            }
+            catch(Exception ex)
+            {
+                AppLogging.Instance.Error("Error Cehcking Users Role: " + Mode, ex);
             }
 
             return false;

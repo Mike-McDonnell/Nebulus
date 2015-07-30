@@ -18,5 +18,11 @@ namespace NebulusClient
         public bool ComputerTAGsEnabled { get; set; }
 
         public bool SubNetTAGsEnabled { get; set; }
+
+        public string NotificationHubName { get; set; }
+
+        public string NotificationHubConenctionString { get; set; }
+
+        public bool UseNotificationHub { get; set; }
     }
 }

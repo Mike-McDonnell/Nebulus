@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Microsoft.ServiceBus.Notifications;
 
 namespace Nebulus.Controllers
 {
@@ -27,25 +28,50 @@ namespace Nebulus.Controllers
         [HttpPost]
         public IHttpActionResult PostMessage(MessageItem messageItem)
         {
-            try
+            if (NSBQ.NSBQClient != null)
             {
-                BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
-                if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
+                try
                 {
-                    sendMessage.Properties.Add("Tags", messageItem.TargetGroup);
-                }
-                else
-                {
-                    sendMessage.Properties.Add("Tags", "BROADCAST");
-                }
+                    BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
+                    if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
+                    {
+                        sendMessage.Properties.Add("Tags", messageItem.TargetGroup);
+                    }
+                    else
+                    {
+                        sendMessage.Properties.Add("Tags", "BROADCAST");
+                    }
 
-                NSBQ.NSBQClient.Send(sendMessage);
-                AppLogging.Instance.Info("Message sent");
+                    NSBQ.NSBQClient.Send(sendMessage);
+                    AppLogging.Instance.Info("Message sent to Service Bus, " + messageItem.MessageItemId);
+                }
+                catch (Exception ex)
+                {
+                    AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
+                    return InternalServerError(ex);
+                }
             }
-            catch (Exception ex)
+            if (NSBQ.NNHClient != null)
             {
-                AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
-                return InternalServerError(ex);
+                try
+                {
+                    Notification notification = new WindowsNotification(messageItem.ToString());
+                    notification.Headers.Add("X-WNS-Type", "wns/raw");
+
+                    if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
+                    {
+                        messageItem.TargetGroup.Replace(",", " || ");
+                    }
+
+                    NSBQ.NNHClient.SendNotificationAsync(notification);
+
+                    AppLogging.Instance.Info("Message sent to NotificationHub, " + messageItem.MessageItemId);
+                }
+                catch (Exception ex)
+                {
+                    AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
+                    return InternalServerError(ex);
+                }
             }
             return Ok();
         }
