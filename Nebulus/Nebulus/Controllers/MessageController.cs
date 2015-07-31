@@ -50,7 +50,7 @@ namespace Nebulus.Controllers
 
                 try
                 {
-                    Microsoft.ServiceBus.Notifications.Notification notification = new Microsoft.ServiceBus.Notifications.w (Newtonsoft.Json.Linq.JObject.FromObject(messageItem).ToString());
+                    Microsoft.ServiceBus.Notifications.Notification notification = new Microsoft.ServiceBus.Notifications.WindowsNotification(Newtonsoft.Json.Linq.JObject.FromObject(messageItem).ToString());
                     notification.ContentType = "application/octet-stream";
                     notification.Headers.Add("X-WNS-Type", "wns/raw");
 
@@ -134,9 +134,9 @@ namespace Nebulus.Controllers
         public JsonResult CalandarEventsData(string startDate)
         {
             DateTimeOffset StartDate = DateTimeOffset.Parse(startDate).Subtract(new TimeSpan(7,0,0,0));
-            DateTimeOffset EndDate = StartDate.AddMonths(1).AddDays(7);
+            DateTimeOffset EndDate = DateTimeOffset.Parse(startDate).AddMonths(1).AddDays(7);
 
-            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where (ev.ScheduleInterval != ScheduleIntervalType.Never && ev.Expiration > DateTimeOffset.Now) || ev.Expiration > DateTimeOffset.Now && ev.ScheduleStart > StartDate && ev.ScheduleStart < EndDate select ev;
+            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where (ev.ScheduleInterval != ScheduleIntervalType.Never && ev.Expiration > DateTimeOffset.Now) || ev.Expiration > DateTimeOffset.Now && ev.ScheduleStart >= StartDate && ev.ScheduleStart <= EndDate select ev;
 
             var fmEvents = FormatRecurringEvents(mEvents, DateTimeOffset.Parse(startDate));
 

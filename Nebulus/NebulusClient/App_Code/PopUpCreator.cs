@@ -17,6 +17,7 @@ namespace NebulusClient
             {
                 marquee.Show();
                 marquee.browser.NavigateToString("<!doctype html><html><head><title></title></head><body oncontextmenu='return false;'><marquee>" + message.MessageBody + "</marquee></body></html>");
+                marquee.StartCloseOptionTimer(CalculateTimeOutTextLength(message.MessageBody));
                 marquee.StartSpeech(SpeechHelper.GetSpeechString(message.MessageBody));
             }
             catch(Exception ex)
@@ -94,6 +95,24 @@ namespace NebulusClient
             }
             return new MessageBopUp() { PopUpWindows = popup, MessageItem = message, StartedTime = DateTime.Now };
 
+        }
+
+        private static int CalculateTimeOutTextLength(string messageBody)
+        {
+            int runTime = 0;
+            try
+            {
+                HtmlAgilityPack.HtmlDocument bodyDocument = new HtmlAgilityPack.HtmlDocument();
+                bodyDocument.LoadHtml(messageBody);
+
+                runTime = bodyDocument.DocumentNode.InnerText.Length / 5;
+            }
+            catch(Exception ex)
+            {
+                AppLogging.Instance.Error("Error Calculating message text lenght option timeout: " + ex);
+            }
+
+            return runTime > 30 ? runTime : 30;
         }
     }
 }

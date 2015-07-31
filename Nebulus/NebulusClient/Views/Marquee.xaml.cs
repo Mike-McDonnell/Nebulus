@@ -20,6 +20,7 @@ namespace NebulusClient
     public partial class Marquee : Window
     {
         private System.Windows.Threading.DispatcherTimer CloseOptionTimer = new System.Windows.Threading.DispatcherTimer();
+        private int TextLengthTimeOut;
         public Marquee()
         {
             InitializeComponent();
@@ -31,15 +32,6 @@ namespace NebulusClient
             this.Width = desktopWorkingArea.Width;
             this.Left = desktopWorkingArea.Right - this.Width;
             this.Top = desktopWorkingArea.Bottom - this.Height;
-
-            CloseOptionTimer.Tick += (o, e) =>
-            {
-                this.WindowStyle = System.Windows.WindowStyle.ToolWindow;
-                this.CloseOptionTimer.Stop();
-            };
-
-            CloseOptionTimer.Interval = new TimeSpan(0, 0, 30);
-            CloseOptionTimer.Start();
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
@@ -51,11 +43,30 @@ namespace NebulusClient
             this.Top = desktopWorkingArea.Bottom - this.Height;
         }
 
-        internal void StartSpeech(string speech)
+        public void StartCloseOptionTimer(int TimeOutSeconds)
         {
-            if (speech != string.Empty)
+            this.TextLengthTimeOut = TimeOutSeconds;
+
+            CloseOptionTimer.Tick += (o, e) =>
             {
-                NebulusClient.App_Code.SpeechHelper.Speak(speech);
+                this.WindowStyle = System.Windows.WindowStyle.ToolWindow;
+                this.CloseOptionTimer.Stop();
+            };
+
+            CloseOptionTimer.Interval = new TimeSpan(0, 0, TextLengthTimeOut);
+            CloseOptionTimer.Start();
+        }
+
+        internal async void StartSpeech(string speech)
+        {
+            while (this.IsLoaded)
+            {
+                if (speech != string.Empty)
+                {
+                    NebulusClient.App_Code.SpeechHelper.Speak(speech);
+                }
+
+                await Task.Delay(TextLengthTimeOut * 1000);
             }
         }
     }

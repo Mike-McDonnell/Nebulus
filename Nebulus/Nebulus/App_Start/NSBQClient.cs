@@ -49,6 +49,7 @@ namespace Nebulus
 
                     if (namespaceManager.NotificationHubExists(NotificationHubName))
                     {
+                        
                         NNHClient = NotificationHubClient.CreateClientFromConnectionString(connBuilder.ToString(), AppConfiguration.Settings.NotificationHubName);
                     }
                 }
