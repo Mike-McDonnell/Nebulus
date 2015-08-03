@@ -66,7 +66,7 @@ namespace Nebulus.Controllers
                 }
                 catch (Exception ex)
                 {
-                    AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
+                    AppLogging.Instance.Error("Error: Connecting to NotificationHub ", ex);
                 }
             
 
