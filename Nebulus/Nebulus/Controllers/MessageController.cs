@@ -11,6 +11,7 @@ using Nebulus.Security;
 namespace Nebulus.Controllers
 {
     [BroadCastAuthorizationAttribute]
+    [Authorize]
     public class MessageController : Controller
     {
         public MessageController()

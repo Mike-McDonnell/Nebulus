@@ -4022,7 +4022,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{56EDAFB4-7C26-4F3B-9F77-F0B6543545F1}</td></row>
 		<row><td>ISUSSignature</td><td>{06BEC7CD-9355-4B86-BAAF-6E14DB9A3436}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewVRoots,viewISToday,viewServices,viewProject,viewSystemSearch,viewInstallScriptStd,viewCustomActions</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewVRoots,viewISToday,viewServices,viewProject,viewSystemSearch,viewInstallScriptStd,viewCustomActions,viewUpdateService,viewSetupTypes,viewSQLServer</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
