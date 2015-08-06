@@ -48,6 +48,8 @@ namespace Nebulus.Security
             }
 
             System.Security.Principal.IPrincipal user = httpContext.User;
+
+            
             if (!user.Identity.IsAuthenticated)
             {
                 return false;

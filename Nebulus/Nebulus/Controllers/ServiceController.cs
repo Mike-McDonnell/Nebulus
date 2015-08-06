@@ -10,6 +10,7 @@ using Microsoft.ServiceBus.Notifications;
 
 namespace Nebulus.Controllers
 {
+    [Authorize]
     public class ServiceController : ApiController
     {
         [ActionName("ServiceConfig")]

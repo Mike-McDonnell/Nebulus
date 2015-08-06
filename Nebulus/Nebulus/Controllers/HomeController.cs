@@ -12,12 +12,13 @@ namespace Nebulus.Controllers
     {
         public ActionResult Index()
         {
+            var test = Request.LogonUserIdentity;
+
             ViewBag.Title = "Home Page";
 
             return View();
         }
         [ADAdminAuthorization]
-        [Authorize]
         [HttpGet]
         public ActionResult Configure()
         {
@@ -35,7 +36,6 @@ namespace Nebulus.Controllers
             return View(AppConfiguration.Settings);
         }
         [ADAdminAuthorization]
-        [Authorize]
         [HttpPost]
         public ActionResult Configure(Nebulus.Models.ConfigureModel NewConfig)
         {
