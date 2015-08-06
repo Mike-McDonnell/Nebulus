@@ -10,6 +10,7 @@ namespace Nebulus.Controllers
 {
     public class HomeController : Controller
     {
+        [Authorize]
         public ActionResult Index()
         {
             var test = Request.LogonUserIdentity;
