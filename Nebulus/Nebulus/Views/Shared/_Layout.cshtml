@@ -30,7 +30,7 @@
                 @Html.ActionLink("Nebulus", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                @if(User.IsInAnyRole(Nebulus.AppConfiguration.Settings.SecurityRoles, 1))
+                @if(User.IsInAnyRole(Nebulus.AppConfiguration.Settings.SecurityRoles))
                 {
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Broadcast", "Index", "Message", new { area = "" }, null)</li>
@@ -38,7 +38,7 @@
                     @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
                 </ul>
                 }
-                @if(User.IsInAnyRole(Nebulus.AppConfiguration.Settings.SecurityRoles, 0))
+                @if(User.IsInAnyRole(Nebulus.AppConfiguration.Settings.SecurityRoles))
                 {
                 <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink("Configure", "Configure", "Home", new { area = "" }, new { @class = "glyphicon glyphicon-cog" })</li>

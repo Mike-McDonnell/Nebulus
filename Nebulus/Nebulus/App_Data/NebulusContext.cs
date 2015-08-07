@@ -25,6 +25,10 @@ namespace Nebulus
             base.OnModelCreating(modelBuilder);
             System.Data.Entity.Database.SetInitializer(new NebulusContextInitializer());
         }
+        public static NebulusContext Create()
+        {
+            return new NebulusContext();
+        }
     }
 
     public partial class NebulusContextInitializer : CreateDatabaseIfNotExists<NebulusContext>

@@ -209,6 +209,8 @@ namespace Nebulus
                 cfg.ConnectionStrings.ConnectionStrings["NotificationHubClientConenctionString"].ConnectionString = Settings.NotificationHubClientConenctionString;
 
                 cfg.Save();
+
+                Security.Roles.UpdateSaveRoles();
             }
             catch(Exception ex)
             {

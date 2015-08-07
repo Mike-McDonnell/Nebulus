@@ -19,7 +19,7 @@ namespace Nebulus
         public Task SendAsync(IdentityMessage message)
         {
             // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            return Task.FromResult(0); 
         }
     }
 
@@ -40,7 +40,7 @@ namespace Nebulus
         {
         }
 
-        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context) 
+        public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
             var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
             // Configure validation logic for usernames
@@ -81,10 +81,62 @@ namespace Nebulus
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = 
+                manager.UserTokenProvider =
                     new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
+        }
+
+        public virtual async Task<IdentityResult> AddUserToRolesAsync(string userId, IList<string> roles)
+        {
+
+            var userRoleStore = (IUserRoleStore<ApplicationUser, string>)Store;
+            var user = await FindByIdAsync(userId).ConfigureAwait(false);
+
+            if (user == null)
+            {
+                throw new InvalidOperationException("Invalid user Id");
+            }
+
+            var userRoles = await userRoleStore
+                .GetRolesAsync(user)
+                .ConfigureAwait(false);
+
+            // Add user to each role using UserRoleStore
+
+            foreach (var role in roles.Where(role => !userRoles.Contains(role)))
+            {
+                await userRoleStore.AddToRoleAsync(user, role).ConfigureAwait(false);
+            }
+            // Call update once when all roles are added
+
+            return await UpdateAsync(user).ConfigureAwait(false);
+        }
+
+        public virtual async Task<IdentityResult> RemoveUserFromRolesAsync(string userId, IList<string> roles)
+        {
+            var userRoleStore = (IUserRoleStore<ApplicationUser, string>)Store;
+
+            var user = await FindByIdAsync(userId).ConfigureAwait(false);
+            if (user == null)
+            {
+                throw new InvalidOperationException("Invalid user Id");
+            }
+
+            var userRoles = await userRoleStore
+                .GetRolesAsync(user)
+                .ConfigureAwait(false);
+
+            // Remove user to each role using UserRoleStore
+            foreach (var role in roles.Where(userRoles.Contains))
+            {
+                await userRoleStore
+                    .RemoveFromRoleAsync(user, role)
+                    .ConfigureAwait(false);
+            }
+
+            // Call update once when all roles are removed
+            return await UpdateAsync(user).ConfigureAwait(false);
         }
     }
 
@@ -104,6 +156,24 @@ namespace Nebulus
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
+        }
+    }
+
+    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    {
+        public ApplicationRoleManager(IRoleStore<IdentityRole, string> roleStore)
+            : base(roleStore)
+        {
+
+        }
+
+        public static ApplicationRoleManager Create(IdentityFactoryOptions<ApplicationRoleManager> options,IOwinContext context)
+        {
+            var manager = new ApplicationRoleManager(
+                new RoleStore<IdentityRole>(
+                    context.Get<ApplicationDbContext>()));
+
+            return manager;
         }
     }
 }

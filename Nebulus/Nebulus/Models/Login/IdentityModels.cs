@@ -3,6 +3,10 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using System.Web;
+
+
 
 namespace Nebulus.Models
 {
@@ -25,9 +29,33 @@ namespace Nebulus.Models
         {
         }
 
+        static ApplicationDbContext()
+        {
+            Database.SetInitializer(new ApplicationDbInitializer());
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+
         public static ApplicationDbContext Create()
         {
-            return new ApplicationDbContext();
+            return new ApplicationDbContext(); 
+        }
+    }
+
+    public class ApplicationDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
+    {
+        protected override void Seed(ApplicationDbContext context)
+        {
+            InitializeIdentityForEF(context);
+            base.Seed(context);
+        }
+
+        public static void InitializeIdentityForEF(ApplicationDbContext db)
+        {
+            Security.Roles.Initilize();
         }
     }
 }

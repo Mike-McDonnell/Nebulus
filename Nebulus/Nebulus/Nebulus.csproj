@@ -241,6 +241,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Security\Roles.cs" />
     <Compile Include="Security\SecurityAttributes.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
