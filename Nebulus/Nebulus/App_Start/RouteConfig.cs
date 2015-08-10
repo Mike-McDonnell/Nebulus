@@ -11,6 +11,8 @@ namespace Nebulus
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            routes.IgnoreWindowsLoginRoute();
+
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(

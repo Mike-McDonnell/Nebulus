@@ -11,6 +11,11 @@ namespace Nebulus
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        public WebApiApplication()
+        {
+            this.RegisterWindowsAuthentication();
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

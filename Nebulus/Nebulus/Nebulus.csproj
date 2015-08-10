@@ -213,6 +213,7 @@
     <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Login\AccountController.cs" />
+    <Compile Include="Controllers\Login\AccountController.Windows.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="App_Data\NebulusContext.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Models\App_Enums.cs" />
     <Compile Include="Models\ConfigureModel.cs" />
     <Compile Include="Models\Login\AccountViewModels.cs" />
+    <Compile Include="Models\Login\AccountViewModels.Windows.cs" />
     <Compile Include="Models\Login\IdentityModels.cs" />
     <Compile Include="Models\Login\ManageViewModels.cs" />
     <Compile Include="Models\MessageItem.cs" />
@@ -244,6 +246,8 @@
     <Compile Include="Security\Roles.cs" />
     <Compile Include="Security\SecurityAttributes.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Windows\MixedAuthExtensions.cs" />
+    <Compile Include="Windows\WindowsLoginHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -3047,6 +3051,7 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
+    <Content Include="Views\Account\WindowsLoginConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

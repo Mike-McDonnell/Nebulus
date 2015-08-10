@@ -25,7 +25,7 @@ namespace Nebulus.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool usingWindowsAuthentication {
             get {
                 return ((bool)(this["usingWindowsAuthentication"]));
