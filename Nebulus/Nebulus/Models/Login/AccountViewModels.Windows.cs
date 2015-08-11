@@ -19,6 +19,12 @@ namespace Nebulus.Models
     [Required]
     [Display(Name = "User name")]
     public string UserName { get; set; }
+
+    [Required]
+    [Display(Name = "Email")]
+    [EmailAddress]
+    public string Email { get; set; }
+
   }
 
 }

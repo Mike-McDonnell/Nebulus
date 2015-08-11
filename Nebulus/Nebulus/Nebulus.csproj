@@ -3052,6 +3052,7 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Account\WindowsLoginConfirmation.cshtml" />
+    <Content Include="Views\Account\_WindowsLoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

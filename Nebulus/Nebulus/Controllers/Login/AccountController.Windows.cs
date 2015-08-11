@@ -26,14 +26,13 @@ namespace Nebulus.Controllers
     //
     // POST: /Account/WindowsLogin
     [AllowAnonymous]
-    [ValidateAntiForgeryToken]
-    [HttpPost]
-    public async Task<ActionResult> WindowsLogin(string userName, string returnUrl)
+    [AcceptVerbs(HttpVerbs.Get | HttpVerbs.Post)]
+    public async Task<ActionResult> WindowsLogin(string userName, string email, string returnUrl)
     {
-      if (!Request.LogonUserIdentity.IsAuthenticated)
-      {
-        return RedirectToAction("Login");
-      }
+        if (!Request.LogonUserIdentity.IsAuthenticated)
+        {
+            return RedirectToAction("Login");
+        }
 
       var loginInfo = GetWindowsLoginInfo();
 
@@ -46,11 +45,11 @@ namespace Nebulus.Controllers
       }
       else
       {
-        // If the user does not have an account, then prompt the user to create an account
+         //If the user does not have an account, then prompt the user to create an account
         var name = userName;
         if (string.IsNullOrEmpty(name))
           name = Request.LogonUserIdentity.Name.Split('\\')[1];
-        var appUser = new ApplicationUser() { UserName = name };
+        var appUser = new ApplicationUser() { UserName = name, Email = email};
         var result = await UserManager.CreateAsync(appUser);
         if (result.Succeeded)
         {
@@ -64,7 +63,9 @@ namespace Nebulus.Controllers
         AddErrors(result);
         ViewBag.ReturnUrl = returnUrl;
         ViewBag.LoginProvider = "Windows";
-        return View("WindowsLoginConfirmation", new WindowsLoginConfirmationViewModel { UserName = name });
+        return View("WindowsLoginConfirmation", new WindowsLoginConfirmationViewModel { UserName = name, Email = email });
+
+          //return RedirectToAction("Login", new System.Web.Routing.RouteValueDictionary(new { controller = "Account", action = "Login", returnUrl = returnUrl }));
       }
     }
 

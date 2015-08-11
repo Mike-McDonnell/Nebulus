@@ -33,4 +33,11 @@ namespace Nebulus.Models
         Brodcast,
         ADFiltered
     }
+
+    public enum AuthenticationType
+    {
+        WindowsOnly,
+        OwinOnly,
+        WindowsAndOwin
+    }
 }

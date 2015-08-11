@@ -16,6 +16,8 @@ namespace Nebulus
         public static PrincipalContext ADPrincipalContext;
 
         public static ConfigureModel Settings = new Models.ConfigureModel();
+        public static AuthenticationType AuthMethod = AuthenticationType.WindowsOnly;  
+
         internal static void ConfigureAppSettings()
         {
             try
@@ -68,6 +70,16 @@ namespace Nebulus
             {
                 AppLogging.Instance.Error("Error: Configuring PrintService Settings", ex);
             }
+
+            try
+            {
+                AuthMethod = (AuthenticationType)Nebulus.Properties.Settings.Default.AuthenticationType;
+            }
+            catch(Exception ex)
+            {
+                AppLogging.Instance.Error("Error: Paresing Authentication Type propertiy");
+            }
+
         }
 
         internal static void LoadSettings()
