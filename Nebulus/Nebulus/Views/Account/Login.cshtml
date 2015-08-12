@@ -1,17 +1,17 @@
 ﻿@using Nebulus.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Welcome";
 }
 
 <h2>@ViewBag.Title.</h2>
 <div class="row">
-
-    @if (Nebulus.AppConfiguration.AuthMethod == AuthenticationType.OwinOnly || Nebulus.AppConfiguration.AuthMethod ==  AuthenticationType.WindowsAndOwin)
-    {
         <div class="col-md-8">
             <section id="loginForm">
-                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+
+@if (Nebulus.AppConfiguration.AuthMethod == AuthenticationType.OwinOnly || Nebulus.AppConfiguration.AuthMethod == AuthenticationType.WindowsAndOwin)
+{
+            using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
                     @Html.AntiForgeryToken()
                     <h4>Use a local account to log in.</h4>
@@ -51,23 +51,14 @@
                         <p>
                             @Html.ActionLink("Forgot your password?", "ForgotPassword")
                         </p>*@
+            }
+}
+                @if (Nebulus.AppConfiguration.AuthMethod == AuthenticationType.WindowsOnly || Nebulus.AppConfiguration.AuthMethod == AuthenticationType.WindowsAndOwin)
+                {
+                    @Html.Partial("_WindowsLoginPartial", new { ReturnUrl = ViewBag.ReturnUrl })
                 }
                 </section>
             </div>
-                
-    }
-
-                @if (Nebulus.AppConfiguration.AuthMethod == AuthenticationType.WindowsOnly || Nebulus.AppConfiguration.AuthMethod ==  AuthenticationType.WindowsAndOwin)
-                {
-                    <div>
-                        @using (Html.BeginWindowsAuthForm(new { @class = "form-horizontal", role = "form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
-                            <input type="submit" value="Windows" class="btn btn-default" />
-                        }
-                    </div>
-                }
 </div>
 
 @section Scripts {

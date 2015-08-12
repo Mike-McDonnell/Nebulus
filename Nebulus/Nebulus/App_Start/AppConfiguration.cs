@@ -45,16 +45,15 @@ namespace Nebulus
             {
                 AppLogging.Instance.Error("Error: Loading Pricipal Context", ex);
             }
-
             try
             {
-                Settings.SecurityRoles = NebulusDBContext.SecurityRoles.ToList();
+                var AppUserDb = ApplicationDbContext.Create();
+                Nebulus.AppConfiguration.Settings.SecurityRoles = AppUserDb.SecurityRoles.ToList();
             }
-            catch(Exception ex)
+            catch (System.Exception ex)
             {
                 AppLogging.Instance.Error("Error: Loading user groups from database", ex);
             }
-
             try
             {
                 AppConfiguration.Settings.PrintServiceSettings = NebulusDBContext.PrintServiceConfiguration.FirstOrDefault();

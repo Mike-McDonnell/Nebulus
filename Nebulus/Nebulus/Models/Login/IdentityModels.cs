@@ -29,6 +29,8 @@ namespace Nebulus.Models
         {
         }
 
+        public DbSet<SecurityRoleEntity> SecurityRoles { get; set; }
+
         static ApplicationDbContext()
         {
             Database.SetInitializer(new ApplicationDbInitializer());
@@ -45,7 +47,7 @@ namespace Nebulus.Models
         }
     }
 
-    public class ApplicationDbInitializer : CreateDatabaseIfNotExists<ApplicationDbContext>
+    public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext> //CreateDatabaseIfNotExists<ApplicationDbContext>
     {
         protected override void Seed(ApplicationDbContext context)
         {
@@ -55,7 +57,8 @@ namespace Nebulus.Models
 
         public static void InitializeIdentityForEF(ApplicationDbContext db)
         {
-            Security.Roles.Initilize();
+            Security.Roles.Initilize(db);
+            
         }
     }
 }

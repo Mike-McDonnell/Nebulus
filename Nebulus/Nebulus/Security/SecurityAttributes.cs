@@ -16,18 +16,19 @@ namespace Nebulus.Security
                 throw new ArgumentNullException("httpContext");
             }
 
-            System.Security.Principal.IPrincipal user = httpContext.User;
+            System.Security.Claims.ClaimsPrincipal user = (System.Security.Claims.ClaimsPrincipal)httpContext.User;
+            
             if (!user.Identity.IsAuthenticated)
             {
                 return false;
             }
 
-            if (!user.IsInAnyRole(Nebulus.AppConfiguration.Settings.SecurityRoles))
+            if(user.IsInAnyRole("Admin"))
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
 
         }
 
@@ -47,7 +48,7 @@ namespace Nebulus.Security
                 throw new ArgumentNullException("httpContext");
             }
 
-            System.Security.Principal.IPrincipal user = httpContext.User;
+            System.Security.Claims.ClaimsPrincipal user = (System.Security.Claims.ClaimsPrincipal)httpContext.User;
 
             
             if (!user.Identity.IsAuthenticated)
@@ -55,12 +56,12 @@ namespace Nebulus.Security
                 return false;
             }
 
-            if (!user.IsInAnyRole(Nebulus.AppConfiguration.Settings.SecurityRoles))
+            if (user.IsInRole("BroadCastMessage"))
             {
-                return false;
+                return true;
             }
 
-            return true;
+            return false;
 
         }
 
@@ -76,31 +77,29 @@ namespace Nebulus
 {
     public static class UserRoleHelper
     {
-        public static bool IsInAnyRole(this System.Security.Principal.IPrincipal user, IEnumerable<SecurityRoleEntity> roles)
+        public static bool IsInAnyRole(this System.Security.Principal.IPrincipal user, string Role)
         {
             try
             {
-                var userRoles = new string[0];
-                if (user.Identity.GetType() == typeof(System.Security.Principal.WindowsIdentity))
+                if (user.IsInRole(Role))
                 {
-                    userRoles = System.Web.Security.Roles.GetRolesForUser(user.Identity.Name);
+                    return true;
+                }
+                if (Nebulus.AppConfiguration.Settings.SecurityRoles != null)
+                {
+                    foreach(var role in Nebulus.AppConfiguration.Settings.SecurityRoles.Where(role => role.IdentityRole == Role))
+                    {
+                        if(user.IsInRole(role.Name))
+                        {
+                            return true;
+                        }
+                    }
+                }
 
-                    foreach (var role in userRoles)
-                    {
-                        return roles.Any(sRole => sRole.Name.Contains(role));
-                    }
-                }
-                else if (user.Identity.GetType() == typeof(System.Security.Claims.ClaimsIdentity))
-                {
-                    foreach(var claim in (user.Identity as System.Security.Claims.ClaimsIdentity).Claims)
-                    {
-                        roles.Any(sRole => sRole.Name.Contains(claim.Value));
-                    }
-                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                AppLogging.Instance.Error("Error Cehcking Users Role: ", ex);
+                AppLogging.Instance.Error("Error Checking Users Role: ", ex);
             }
 
             return false;

@@ -17,6 +17,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Nebulus.Models;
+using System.Security.Principal;
 
 namespace Nebulus.Controllers
 {
@@ -40,32 +41,31 @@ namespace Nebulus.Controllers
       var user = await UserManager.FindAsync(loginInfo);
       if (user != null)
       {
-        await SignInAsync(user, isPersistent: false);
-        return RedirectToLocal(returnUrl);
+          MapGroupsToRoleClaims(user);
+          await SignInAsync(user, isPersistent: false);
+          return RedirectToLocal(returnUrl);
       }
       else
       {
-         //If the user does not have an account, then prompt the user to create an account
-        var name = userName;
-        if (string.IsNullOrEmpty(name))
-          name = Request.LogonUserIdentity.Name.Split('\\')[1];
-        var appUser = new ApplicationUser() { UserName = name, Email = email};
-        var result = await UserManager.CreateAsync(appUser);
-        if (result.Succeeded)
-        {
-          result = await UserManager.AddLoginAsync(appUser.Id, loginInfo);
+          //If the user does not have an account, then prompt the user to create an account
+          var name = userName;
+          if (string.IsNullOrEmpty(name))
+              name = Request.LogonUserIdentity.Name.Split('\\')[1];
+          var appUser = new ApplicationUser() { UserName = name, Email = email };
+          var result = await UserManager.CreateAsync(appUser);
           if (result.Succeeded)
           {
-            await SignInAsync(appUser, isPersistent: false);
-            return RedirectToLocal(returnUrl);
+              result = await UserManager.AddLoginAsync(appUser.Id, loginInfo);
+              if (result.Succeeded)
+              {
+                  await SignInAsync(appUser, isPersistent: false);
+                  return RedirectToLocal(returnUrl);
+              }
           }
-        }
-        AddErrors(result);
-        ViewBag.ReturnUrl = returnUrl;
-        ViewBag.LoginProvider = "Windows";
-        return View("WindowsLoginConfirmation", new WindowsLoginConfirmationViewModel { UserName = name, Email = email });
-
-          //return RedirectToAction("Login", new System.Web.Routing.RouteValueDictionary(new { controller = "Account", action = "Login", returnUrl = returnUrl }));
+          AddErrors(result);
+          ViewBag.ReturnUrl = returnUrl;
+          ViewBag.LoginProvider = "Windows";
+          return View("WindowsLoginConfirmation", new WindowsLoginConfirmationViewModel { UserName = name, Email = email });
       }
     }
 
@@ -84,31 +84,31 @@ namespace Nebulus.Controllers
     [HttpPost]
     public async Task<ActionResult> LinkWindowsLogin()
     {
-      string userId = HttpContext.ReadUserId();
+        string userId = HttpContext.ReadUserId();
 
-      //didn't get here through handler
-      if (string.IsNullOrEmpty(userId))
-        return RedirectToAction("Login");
+        //didn't get here through handler
+        if (string.IsNullOrEmpty(userId))
+            return RedirectToAction("Login");
 
-      HttpContext.Items.Remove("windows.userId");
+        HttpContext.Items.Remove("windows.userId");
 
-      //not authenticated.
-      var loginInfo = GetWindowsLoginInfo();
-      if (loginInfo == null)
-        return RedirectToAction("Manage");
+        //not authenticated.
+        var loginInfo = GetWindowsLoginInfo();
+        if (loginInfo == null)
+            return RedirectToAction("Manage");
 
-      //add linked login
-      var result = await UserManager.AddLoginAsync(userId, loginInfo);
+        //add linked login
+        var result = await UserManager.AddLoginAsync(userId, loginInfo);
 
-      //sign the user back in.
-      var user = await UserManager.FindByIdAsync(userId);
-      if (user != null)
-        await SignInAsync(user, false);
+        //sign the user back in.
+        var user = await UserManager.FindByIdAsync(userId);
+        if (user != null)
+            await SignInAsync(user, false);
 
-      if (result.Succeeded)
-        return RedirectToAction("Manage");
+        if (result.Succeeded)
+            return RedirectToAction("Manage");
 
-      return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
+        return RedirectToAction("Manage", new { Message = ManageMessageId.Error });
     }
 
     #region helpers
@@ -118,6 +118,17 @@ namespace Nebulus.Controllers
         return null;
 
       return new UserLoginInfo("Windows", Request.LogonUserIdentity.User.ToString());
+    }
+
+    private void MapGroupsToRoleClaims(ApplicationUser user)
+    {
+        foreach (var group in Request.LogonUserIdentity.Groups)
+            user.Claims.Add(new IdentityUserClaim()
+            {
+                ClaimType = ClaimTypes.Role,
+                ClaimValue = new SecurityIdentifier(group.Value)
+                                   .Translate(typeof(NTAccount)).Value
+            });
     }
     #endregion
   }

@@ -11,7 +11,7 @@ namespace Nebulus.Security
 {
     public class Roles
     {
-        internal static void Initilize()
+        internal static void Initilize(ApplicationDbContext db)
         {
             var roleManager = HttpContext.Current
                .GetOwinContext()
@@ -41,15 +41,18 @@ namespace Nebulus.Security
               .GetUserManager<ApplicationUserManager>();
 
           
-            const string name = "admin@admin.com";
-            const string password = "ABcd1234%^&*()";
+            const string AdminName = "admin@admin.com";
+            const string AdminPassword = "ABcd1234%^&*()";
 
-            var user = userManager.FindByName(name);
+            const string BroadCastMessageName = "user@user.com";
+            const string BroadCastMessagePassword = "ABcd1234%^&*()";
+
+            var user = userManager.FindByName(AdminName);
 
             if (user == null)
             {
-                user = new ApplicationUser { UserName = name, Email = name };
-                var result = userManager.Create(user, password);
+                user = new ApplicationUser { UserName = AdminName, Email = AdminName };
+                var result = userManager.Create(user, AdminPassword);
                 result = userManager.SetLockoutEnabled(user.Id, false);
             }
 
@@ -59,6 +62,29 @@ namespace Nebulus.Security
             {
                 var result = userManager.AddToRole(user.Id, roleAdmin);
             }
+
+            user = userManager.FindByName(BroadCastMessageName);
+
+            if (user == null)
+            {
+                user = new ApplicationUser { UserName = BroadCastMessageName, Email = BroadCastMessageName };
+                var result = userManager.Create(user, BroadCastMessagePassword);
+                result = userManager.SetLockoutEnabled(user.Id, false);
+            }
+
+            // Add user BroadCastMessage to Role BroadCastMessage if not already added
+            rolesForUser = userManager.GetRoles(user.Id);
+            if (!rolesForUser.Contains(roleBroadcast))
+            {
+                var result = userManager.AddToRole(user.Id, roleBroadcast);
+            }
+
+            SecurityRoleEntity sRole = new SecurityRoleEntity();
+            sRole.Name = "BUILTIN\\Administrators";
+            sRole.IdentityRole = roleAdmin;
+
+            db.SecurityRoles.Add(sRole);
+            
         }
 
         internal static void UpdateSaveRoles()
