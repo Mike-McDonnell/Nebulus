@@ -429,7 +429,7 @@ namespace Nebulus.Controllers
         [HttpGet]
         public ActionResult ManageUsers()
         {
-            return View();
+            return View(UserManager.Users);
         }
 
         
