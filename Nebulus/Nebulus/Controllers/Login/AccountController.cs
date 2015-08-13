@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Nebulus.Models;
+using Nebulus.Security;
 
 namespace Nebulus.Controllers
 {
@@ -422,6 +423,23 @@ namespace Nebulus.Controllers
 
             base.Dispose(disposing);
         }
+
+        
+        [ADAdminAuthorizationAttribute]
+        [HttpGet]
+        public ActionResult ManageUsers()
+        {
+            return View();
+        }
+
+        
+        //[ADAdminAuthorizationAttribute]
+        //[ValidateAntiForgeryToken]
+        //[HttpPost]
+        //public ActionResult ManageUsers()
+        //{
+        //    return View();
+        //}
 
         #region Helpers
         // Used for XSRF protection when adding external logins
