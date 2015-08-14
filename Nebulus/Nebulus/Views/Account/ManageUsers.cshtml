@@ -13,29 +13,41 @@
 <div class="row">
     <div class="col-md-8">
         <span>User Accounts</span>
-        <section id="usersGrid">
-        @Html.Grid(Model).Columns(columns =>
-        {
-            columns.Add(item => item.UserName).Titled("Name").Filterable(true);
-            columns.Add(item => item.Email).Titled("E-mail").Filterable(true);
-            columns.Add(item => item.Roles).Titled("Roles");
+        <div class="row">
+            <section id="usersGrid">
+                @Html.Grid(Model).Columns(columns =>
+                {
+                    columns.Add(item => item.UserName).Titled("Name").Filterable(true);
+                    columns.Add(item => item.Email).Titled("E-mail").Filterable(true);
+                    columns.Add(item => item.RolesString).Titled("Roles");
+                    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Edit", "Edit", new { id = o.Id }, new { @class = "btn btn-default  btn-xs" }));
+                    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Delete", "Delete", new { id = o.Id }, new { @class = "btn btn-danger btn-xs" }));
+                })
 
-        })
-
-        <br>
-
-        @Html.ActionLink("Add User", "Register", new { @class = "btn btn-default" })
-        </section>
-    </div>
+                <br>
+            </section>
+        </div>
+            <div class="row">
+                @Html.ActionLink("Add User", "Register", "", new { @class = "btn btn-primary" })
+            </div>
+     </div>
     <div class="col-md-4">
         <span>Active Directory Roles</span>
-        <section id="adGroups">
-        @Html.Grid(Nebulus.AppConfiguration.Settings.SecurityRoles).Columns(columns =>
-        {
-            columns.Add(item => item.Name).Titled("Name").Filterable(true);
-            columns.Add(item => item.IdentityRole).Titled("Role").Filterable(true);
-        })
-        </section>
+        <div class="row">
+            <section id="adGroups">
+                @Html.Grid(Nebulus.AppConfiguration.Settings.SecurityRoles).Columns(columns =>
+                {
+                    columns.Add(item => item.Name).Titled("Name").Filterable(true);
+                    columns.Add(item => item.IdentityRole).Titled("Role").Filterable(true);
+                    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Delete", "Delete", new { id = o.SecurityRoleEntityID }, new { @class = "btn btn-danger btn-xs" }));
+                })
+
+                <br>
+            </section>
+        </div>
+        <div class="row">
+            @Html.ActionLink("Add Group", "Register", "", new { @class = "btn btn-primary" })
+        </div>
     </div>
 </div>
 

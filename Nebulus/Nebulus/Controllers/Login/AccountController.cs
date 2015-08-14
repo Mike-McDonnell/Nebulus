@@ -137,7 +137,7 @@ namespace Nebulus.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [ADAdminAuthorizationAttribute]
         public ActionResult Register()
         {
             return View();
@@ -146,7 +146,7 @@ namespace Nebulus.Controllers
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [ADAdminAuthorizationAttribute]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
@@ -172,6 +172,20 @@ namespace Nebulus.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        [HttpGet]
+        [ADAdminAuthorizationAttribute]
+        public ActionResult Edit(string userId)
+        {
+            return View(UserManager.FindById(userId));
+        }
+
+        [ADAdminAuthorizationAttribute]
+        public ActionResult Delete(string userId)
+        {
+            return View(UserManager.FindById(userId));
+        }
+
 
         //
         // GET: /Account/ConfirmEmail

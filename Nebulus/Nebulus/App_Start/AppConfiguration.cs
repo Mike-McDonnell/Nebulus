@@ -47,8 +47,8 @@ namespace Nebulus
             }
             try
             {
-                var AppUserDb = ApplicationDbContext.Create();
-                Nebulus.AppConfiguration.Settings.SecurityRoles = AppUserDb.SecurityRoles.ToList();
+          
+               
             }
             catch (System.Exception ex)
             {

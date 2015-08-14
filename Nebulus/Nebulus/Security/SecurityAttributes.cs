@@ -85,16 +85,20 @@ namespace Nebulus
                 {
                     return true;
                 }
-                if (Nebulus.AppConfiguration.Settings.SecurityRoles != null)
+
+                if (Nebulus.AppConfiguration.Settings.SecurityRoles == null)
                 {
-                    foreach(var role in Nebulus.AppConfiguration.Settings.SecurityRoles.Where(role => role.IdentityRole == Role))
+                    var AppUserDb = new ApplicationDbContext();
+                    Nebulus.AppConfiguration.Settings.SecurityRoles = AppUserDb.SecurityRoles.ToList();
+                }
+                foreach (var role in Nebulus.AppConfiguration.Settings.SecurityRoles.Where(role => role.IdentityRole == Role))
+                {
+                    if (user.IsInRole(role.Name))
                     {
-                        if(user.IsInRole(role.Name))
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
+
 
             }
             catch (Exception ex)

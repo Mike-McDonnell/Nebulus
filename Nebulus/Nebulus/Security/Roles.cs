@@ -80,7 +80,7 @@ namespace Nebulus.Security
             }
 
             SecurityRoleEntity sRole = new SecurityRoleEntity();
-            sRole.Name = "BUILTIN\\Administrators";
+            sRole.Name = "BUILTIN\\Users";
             sRole.IdentityRole = roleAdmin;
 
             db.SecurityRoles.Add(sRole);
