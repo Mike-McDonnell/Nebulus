@@ -175,15 +175,16 @@ namespace Nebulus.Controllers
 
         [HttpGet]
         [ADAdminAuthorizationAttribute]
-        public ActionResult Edit(string userId)
+        public ActionResult Edit(string id)
         {
-            return View(UserManager.FindById(userId));
+            return View(UserManager.FindById(id));
         }
 
+        [HttpGet]
         [ADAdminAuthorizationAttribute]
-        public ActionResult Delete(string userId)
+        public ActionResult Delete(string id)
         {
-            return View(UserManager.FindById(userId));
+            return View(UserManager.FindById(id));
         }
 
 

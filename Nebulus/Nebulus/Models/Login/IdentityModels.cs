@@ -20,6 +20,15 @@ namespace Nebulus.Models
         
         } }
 
+        public virtual System.Collections.Generic.IEnumerable<IdentityRole> RolesNames
+        {
+            get
+            {
+                var AppUserDb = new ApplicationDbContext();
+                return this.Roles != null ? this.Roles.Select(role => AppUserDb.Roles.Find(role.RoleId)) : null;
+            }
+        }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
