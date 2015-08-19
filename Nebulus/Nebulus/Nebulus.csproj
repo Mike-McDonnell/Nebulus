@@ -3055,6 +3055,9 @@
     <Content Include="Views\Account\_WindowsLoginPartial.cshtml" />
     <Content Include="Views\Account\ManageUsers.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Account\AddGroup.cshtml" />
+    <Content Include="Views\Account\DeleteGroup.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

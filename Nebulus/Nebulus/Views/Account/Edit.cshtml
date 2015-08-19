@@ -1,4 +1,5 @@
-﻿@model Nebulus.Models.ApplicationUser
+﻿@using Nebulus.Models
+@model Nebulus.Models.ApplicationUser
 
 @{
     ViewBag.Title = "Edit";
@@ -49,20 +50,30 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("User Roles", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.ListBoxFor(model => model.Roles, new MultiSelectList(Model.RolesNames) ,new { htmlAttributes = new { @class = "form-control" } })
+            <div class="row">
+                @Html.Label("User Roles", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-2">
+                    <div class="col-md-10">
+                        @Html.ListBox("sRoles", new MultiSelectList(Model.RolesNames, "Name", "Name"), new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <input name="submit" id="Add" type="submit" value="Add" class="btn btn-default" />
+                    <input name="submit" id="Remove" type="submit" value="Remove" class="btn btn-default" />
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-10">
+                            @Html.ListBox("SecurityRoles", new SelectList((new ApplicationDbContext()).Roles, "Name", "Name"), new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
+                @Html.ActionLink("Cancel", "ManageUsers", "", new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>

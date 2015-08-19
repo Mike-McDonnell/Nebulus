@@ -18,6 +18,7 @@ namespace Nebulus.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _rollManager;
 
         public AccountController()
         {
@@ -50,6 +51,18 @@ namespace Nebulus.Controllers
             private set
             {
                 _userManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RollManager
+        {
+            get
+            {
+                return _rollManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _rollManager = value;
             }
         }
 
@@ -156,7 +169,7 @@ namespace Nebulus.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -164,7 +177,7 @@ namespace Nebulus.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("ManageUsers");
                 }
                 AddErrors(result);
             }
@@ -173,20 +186,155 @@ namespace Nebulus.Controllers
             return View(model);
         }
 
+
         [HttpGet]
         [ADAdminAuthorizationAttribute]
         public ActionResult Edit(string id)
         {
+            if (id == null)
+            {
+                return View("Error");
+            }
             return View(UserManager.FindById(id));
+        }
+
+        [HttpPost]
+        [ADAdminAuthorizationAttribute]
+        public ActionResult Edit(ApplicationUser userData, string[] SecurityRoles, string[] sRoles, string submit)
+        {
+            if(userData == null)
+            {
+                return View("Error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (submit != null)
+                {
+                    if (submit == "Add")
+                    {
+                        if (SecurityRoles != null)
+                        {
+                            var rolesForUser = UserManager.GetRoles(userData.Id);
+                            if (!rolesForUser.Contains(SecurityRoles.First()))
+                            {
+                                var result = UserManager.AddToRole(userData.Id, SecurityRoles.First());
+                            }
+                        }
+                    }
+                    else if (submit == "Remove")
+                    {
+                        if (sRoles != null)
+                        {
+                            foreach (var role in sRoles)
+                            {
+                                var rolesForUser = UserManager.GetRoles(userData.Id);
+                                if (rolesForUser.Contains(role))
+                                {
+                                    var result = UserManager.RemoveFromRole(userData.Id, role);
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    var user = UserManager.FindById(userData.Id);
+                    user.PhoneNumber = userData.PhoneNumber;
+                    user.UserName = userData.UserName;
+                    user.Email = userData.Email;
+
+                    if (UserManager.Update(user).Succeeded)
+                    {
+                        return RedirectToAction("ManageUsers");
+                    }
+                    else
+                    { return View("Error"); }
+                }
+
+            }
+
+            return View(UserManager.FindById(userData.Id));
         }
 
         [HttpGet]
         [ADAdminAuthorizationAttribute]
         public ActionResult Delete(string id)
         {
+            if (id == null)
+            {
+                return View("Error");
+            }
             return View(UserManager.FindById(id));
         }
 
+        [HttpPost]
+        [ADAdminAuthorizationAttribute]
+        public ActionResult Delete(ApplicationUser userData)
+        {
+            var user = UserManager.FindById(userData.Id);
+
+            var  result = UserManager.Delete(user);
+
+            return RedirectToAction("ManageUsers");
+        }
+
+        [HttpGet]
+        [ADAdminAuthorizationAttribute]
+        public ActionResult AddGroup()
+        {
+                return View();
+        }
+
+        [HttpPost]
+        [ADAdminAuthorizationAttribute]
+        public ActionResult AddGroup(SecurityRoleEntity AdRole)
+        {
+            if (AdRole == null)
+            {
+                return View("Error");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var ApplicationUserDb = ApplicationDbContext.Create();
+                ApplicationUserDb.SecurityRoles.Add(AdRole);
+
+                return RedirectToAction("ManageUsers");
+            }
+
+            return View();
+        }
+
+        [HttpGet]
+        [ADAdminAuthorizationAttribute]
+        public ActionResult DeleteGroup(int id)
+        {
+            if (id == null)
+            {
+                return View("Error");
+            }
+            var ApplicationUserDb = ApplicationDbContext.Create();
+
+            return View(ApplicationUserDb.SecurityRoles.Find(id));
+        }
+
+        [HttpPost]
+        [ADAdminAuthorizationAttribute]
+        public ActionResult DeleteGroup(SecurityRoleEntity AdRole)
+        {
+            if (AdRole == null)
+            {
+                return View("Error");
+            }
+            if (ModelState.IsValid)
+            {
+                var ApplicationUserDb = ApplicationDbContext.Create();
+                ApplicationUserDb.SecurityRoles.Remove(AdRole);
+            }
+
+            return View(AdRole);
+        }
 
         //
         // GET: /Account/ConfirmEmail
