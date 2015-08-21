@@ -41,9 +41,8 @@
                 @if(User.IsInAnyRole("Admin"))
                 {
                 <ul class="nav navbar-nav navbar-right">
+                    <li>@Html.ActionLink("Users", "ManageUsers", "Account", new { area = "" }, new { @class = "glyphicon glyphicon-user" })</li>
                     <li>@Html.ActionLink("Configure", "Configure", "Home", new { area = "" }, new { @class = "glyphicon glyphicon-cog" })</li>
-                    accepted
-
                     @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
                 </ul>
                 }

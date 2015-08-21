@@ -56,7 +56,7 @@ namespace Nebulus.Security
                 return false;
             }
 
-            if (user.IsInRole("BroadCastMessage"))
+            if (user.IsInAnyRole("BroadCastMessage"))
             {
                 return true;
             }

@@ -29,7 +29,7 @@ namespace Nebulus
         }
     }
 
-    public partial class NebulusContextInitializer :  DropCreateDatabaseIfModelChanges<NebulusContext> //CreateDatabaseIfNotExists<NebulusContext>
+    public partial class NebulusContextInitializer : CreateDatabaseIfNotExists<NebulusContext> //DropCreateDatabaseIfModelChanges<NebulusContext>
     {
         protected override void Seed(NebulusContext context)
         {

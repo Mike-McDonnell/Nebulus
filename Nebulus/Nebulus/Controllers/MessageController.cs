@@ -43,55 +43,53 @@ namespace Nebulus.Controllers
                 {
                     messageItem.MessageBody = messageItem.MessageBody.Replace("&shy;", string.Empty);
                 }
+
+                messageItem.Creator = User.Identity.Name;
                 messageItem.MessageItemId = Guid.NewGuid().ToString();
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
+
+                if (messageItem.ScheduleStart < DateTimeOffset.Now.AddMinutes(1))
+                {
+                    if(await SendMessage(messageItem))
+                    {
+                        messageItem.SentTime = DateTimeOffset.Now;
+                    }
+                }
+
                 Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
                 Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
 
-                try
-                {
-                    Microsoft.ServiceBus.Notifications.Notification notification = new Microsoft.ServiceBus.Notifications.WindowsNotification(Newtonsoft.Json.Linq.JObject.FromObject(messageItem).ToString());
-                    notification.ContentType = "application/octet-stream";
-                    notification.Headers.Add("X-WNS-Type", "wns/raw");
-
-                    if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
-                    {
-                        messageItem.TargetGroup.Replace(",", " || ");
-                    }
-
-                    await NSBQ.NNHClient.SendNotificationAsync(notification);
-
-                    AppLogging.Instance.Info("Message sent to NotificationHub, " + messageItem.MessageItemId);
-                }
-                catch (Exception ex)
-                {
-                    AppLogging.Instance.Error("Error: Connecting to NotificationHub ", ex);
-                }
-            
-
-                try
-                {
-                    BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
-                    if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
-                    {
-                        sendMessage.Properties.Add("Tags", messageItem.TargetGroup);
-                    }
-                    else
-                    {
-                        sendMessage.Properties.Add("Tags", "BROADCAST");
-                    }
-                
-                    NSBQ.NSBQClient.Send(sendMessage);
-                    AppLogging.Instance.Info("Message sent");
-                }
-                catch(Exception ex) {
-                    AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
-                }
                 return RedirectToAction("Index");
             }
             return View(messageItem);
         }
 
+        [HttpGet]
+        [ValidateInput(false)]
+        public async System.Threading.Tasks.Task<ActionResult> Send(string id)
+        {
+            if(id == null)
+            {
+                return View("Error");
+            }
+
+            var messageItem = Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Find(id);
+
+            if(messageItem == null)
+            {
+                return View("Error");
+            }
+
+            if(await SendMessage(messageItem))
+            {
+                messageItem.SentTime = DateTimeOffset.Now;
+                Nebulus.AppConfiguration.NebulusDBContext.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
+                Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
+            }
+
+            return RedirectToAction("Index");
+        }
+        
         [HttpGet]
         public ActionResult Edit(string id)
         {
@@ -272,7 +270,57 @@ namespace Nebulus.Controllers
 
             return fmEvents;
         }
+
+        private static async System.Threading.Tasks.Task<bool> SendMessage(MessageItem messageItem)
+        {
+            bool sent = false;
+            try
+            {
+                Microsoft.ServiceBus.Notifications.Notification notification = new Microsoft.ServiceBus.Notifications.WindowsNotification(Newtonsoft.Json.Linq.JObject.FromObject(messageItem).ToString());
+                notification.ContentType = "application/octet-stream";
+                notification.Headers.Add("X-WNS-Type", "wns/raw");
+
+                if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
+                {
+                    messageItem.TargetGroup.Replace(",", " || ");
+                }
+
+                await NSBQ.NNHClient.SendNotificationAsync(notification);
+
+                AppLogging.Instance.Info("Message sent to NotificationHub, " + messageItem.MessageItemId);
+                sent = true;
+            }
+            catch (Exception ex)
+            {
+                AppLogging.Instance.Error("Error: Connecting to NotificationHub ", ex);
+            }
+
+
+            try
+            {
+                BrokeredMessage sendMessage = new BrokeredMessage(messageItem);
+                if (messageItem.TargetGroup != null && messageItem.TargetGroup != string.Empty)
+                {
+                    sendMessage.Properties.Add("Tags", messageItem.TargetGroup);
+                }
+                else
+                {
+                    sendMessage.Properties.Add("Tags", "BROADCAST");
+                }
+
+                NSBQ.NSBQClient.Send(sendMessage);
+                AppLogging.Instance.Info("Message sent");
+                sent = true;
+            }
+            catch (Exception ex)
+            {
+                AppLogging.Instance.Error("Error: Connecting to ServiceBus ", ex);
+            }
+
+            return sent;
+        }
     }
+
 
     public static class DateTimeOffsetExtensions
     {

@@ -12,241 +12,248 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
 
-        <div class="">
+        <div class="row">
+            <div class="">
+                <span>Active Directory Configuration</span>
+                <div class="form-group">
+                    @Html.Label("Query Active Directory", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.ActiveDirectoryQueryEnabled)
+                            @Html.ValidationMessageFor(model => model.ActiveDirectoryQueryEnabled, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
 
+                <div class="form-group">
+                    @Html.Label("Domain Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ADSsytemName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ADSsytemName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("AD Connection String", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ADConnectionString, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ADConnectionString, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <span>Tags Configuration</span>
             <div class="form-group">
-                @Html.Label("Query Active Directory", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Query Group TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <div class="checkbox">
-                        @Html.EditorFor(model => model.ActiveDirectoryQueryEnabled)
-                        @Html.ValidationMessageFor(model => model.ActiveDirectoryQueryEnabled, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.GroupTAGsEnabled)
+                        @Html.ValidationMessageFor(model => model.GroupTAGsEnabled, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.Label("Domain Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.ADSsytemName, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ADSsytemName, "", new { @class = "text-danger" })
+                    @Html.EnumDropDownListFor(model => model.GroupTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.GroupTAGsDateSourceType, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="form-group">
-                @Html.Label("AD Connection String", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.ADConnectionString, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.ADConnectionString, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.GroupTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.GroupTAGsDateSource, "", new { @class = "text-danger" })
                 </div>
             </div>
 
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Query Group TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.GroupTAGsEnabled)
-                    @Html.ValidationMessageFor(model => model.GroupTAGsEnabled, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Query Users TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.UserTAGsEnabled)
+                        @Html.ValidationMessageFor(model => model.UserTAGsEnabled, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.GroupTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.GroupTAGsDateSourceType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GroupTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GroupTAGsDateSource, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Query Users TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.UserTAGsEnabled)
-                    @Html.ValidationMessageFor(model => model.UserTAGsEnabled, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.UserTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.UserTAGsDateSourceType, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.UserTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UserTAGsDateSourceType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserTAGsDateSource, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Query Computer TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.ComputerTAGsEnabled)
-                    @Html.ValidationMessageFor(model => model.ComputerTAGsEnabled, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.UserTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.UserTAGsDateSource, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.ComputerTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ComputerTAGsDateSourceType, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ComputerTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ComputerTAGsDateSource, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Query SubNet TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.SubNetTAGsEnabled)
-                    @Html.ValidationMessageFor(model => model.SubNetTAGsEnabled, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Query Computer TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.ComputerTAGsEnabled)
+                        @Html.ValidationMessageFor(model => model.ComputerTAGsEnabled, "", new { @class = "text-danger" })
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.SubNetTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SubNetTAGsDateSource, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.ComputerTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ComputerTAGsDateSourceType, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.SubNetTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SubNetTAGsDateSourceType, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ComputerTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ComputerTAGsDateSource, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        @if (AppConfiguration.Settings.FeatureSet > 2)
+            <div class="form-group">
+                @Html.Label("Query SubNet TAGs", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.SubNetTAGsEnabled)
+                        @Html.ValidationMessageFor(model => model.SubNetTAGsEnabled, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Data Source", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.SubNetTAGsDateSource, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.SubNetTAGsDateSource, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Data Source Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.SubNetTAGsDateSourceType, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.SubNetTAGsDateSourceType, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            </div>
+
+
+                @if (AppConfiguration.Settings.FeatureSet > 2)
         {
+                    <div class="row">
+                        <span>Print Server Configuration</span>
+                        <div class="form-group">
+                            @Html.Label("Printer Service Account", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PrintServiceSettings.printServerServiceAccount, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PrintServiceSettings.printServerServiceAccount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
 
-        <div class="form-group">
-            @Html.Label("Printer Service Account", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PrintServiceSettings.printServerServiceAccount, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PrintServiceSettings.printServerServiceAccount, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.Label("Service Account Password", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.PrintServiceSettings.printServerServiceAccountPassword, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.PrintServiceSettings.printServerServiceAccountPassword, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("printer Servers", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.ListBoxFor(model => model.PrintServiceSettings.PrintServerNamesList, new MultiSelectList(@Model.PrintServiceSettings.PrintServerNamesList))
+                                @Html.ValidationMessageFor(model => model.PrintServiceSettings.PrintServerNamesList, "", new { @class = "text-danger" })
+
+                                <input id="newPrinterServerItem" type="text" />
+                                <input type="button" id="addPrinterServerName" value="add">
+                                <input type="button" id="removePrinterServerName" value="remove">
+                            </div>
+                        </div>
+                   </div>
+                        }
+        <div class="row">
+            <span>Message Queue Configuration</span>
+            <div class="form-group">
+                @Html.Label("NotificationHub Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NotificationHubName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ServiceBUSQueueName, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Service Account Password", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PrintServiceSettings.printServerServiceAccountPassword, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PrintServiceSettings.printServerServiceAccountPassword, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("NotificationHub Server ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NotificationHubServerConenctionString, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ServiceBUSConenctionString, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("printer Servers", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.ListBoxFor(model => model.PrintServiceSettings.PrintServerNamesList, new MultiSelectList(@Model.PrintServiceSettings.PrintServerNamesList))
-                @Html.ValidationMessageFor(model => model.PrintServiceSettings.PrintServerNamesList, "", new { @class = "text-danger" })
-
-                <input id="newPrinterServerItem" type="text" />
-                <input type="button" id="addPrinterServerName" value="add">
-                <input type="button" id="removePrinterServerName" value="remove">
+            <div class="form-group">
+                @Html.Label("NotificationHub Client ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NotificationHubClientConenctionString, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DatabaseConnectionString, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-        }
 
-        <div class="form-group">
-            @Html.Label("NotificationHub Name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NotificationHubName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ServiceBUSQueueName, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Use NotificationHub for Windows Clients", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.WindowsClientsUseNotificationHub)
+                        @Html.ValidationMessageFor(model => model.ComputerTAGsEnabled, "", new { @class = "text-danger" })
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("NotificationHub Server ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NotificationHubServerConenctionString, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ServiceBUSConenctionString, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("ServiceBus Queue", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ServiceBUSQueueName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ServiceBUSQueueName, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("NotificationHub Client ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NotificationHubClientConenctionString, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DatabaseConnectionString, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("ServiceBus ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ServiceBUSConenctionString, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ServiceBUSConenctionString, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Use NotificationHub for Windows Clients", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.WindowsClientsUseNotificationHub)
-                    @Html.ValidationMessageFor(model => model.ComputerTAGsEnabled, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("DataBase ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.DatabaseConnectionString, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DatabaseConnectionString, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    @Html.ActionLink("Cancel", "Index", "", new { @class = "btn btn-default" })
                 </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.Label("ServiceBus Queue", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ServiceBUSQueueName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ServiceBUSQueueName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("ServiceBus ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ServiceBUSConenctionString, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ServiceBUSConenctionString, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("DataBase ConnectionString", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DatabaseConnectionString, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DatabaseConnectionString, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 <script type="text/javascript">
     $("#addPrinterServerName").click(function () {

@@ -13,12 +13,25 @@ namespace Nebulus.Security
     {
         internal static void Initilize(ApplicationDbContext db)
         {
-            var roleManager = HttpContext.Current
-               .GetOwinContext()
-               .Get<ApplicationRoleManager>();
+            //var userManager = HttpContext
+            // .Current.GetOwinContext()
+            // .GetUserManager<ApplicationUserManager>();
+
+            //var roleManager = HttpContext.Current
+            //  .GetOwinContext()
+            //  .Get<ApplicationRoleManager>();
+
+            var userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+            var roleManager = new ApplicationRoleManager(new RoleStore<IdentityRole>(db));
 
             const string roleAdmin = "Admin";
             const string roleBroadcast = "BroadCastMessage";
+
+            const string AdminName = "admin@admin.com";
+            const string AdminPassword = "ABcd1234%^&*()";
+
+            const string BroadCastMessageName = "user@user.com";
+            const string BroadCastMessagePassword = "ABcd1234%^&*()";
 
             //Create Role Admin if it does not exist
             var role = roleManager.FindByName(roleAdmin);
@@ -36,17 +49,7 @@ namespace Nebulus.Security
                 var roleresult = roleManager.Create(role);
             }
 
-            var userManager = HttpContext
-              .Current.GetOwinContext()
-              .GetUserManager<ApplicationUserManager>();
-
-          
-            const string AdminName = "admin@admin.com";
-            const string AdminPassword = "ABcd1234%^&*()";
-
-            const string BroadCastMessageName = "user@user.com";
-            const string BroadCastMessagePassword = "ABcd1234%^&*()";
-
+            //Create Default Users
             var user = userManager.FindByName(AdminName);
 
             if (user == null)
@@ -84,7 +87,7 @@ namespace Nebulus.Security
             sRole.IdentityRole = roleAdmin;
 
             db.SecurityRoles.Add(sRole);
-            
+                        
         }
 
 

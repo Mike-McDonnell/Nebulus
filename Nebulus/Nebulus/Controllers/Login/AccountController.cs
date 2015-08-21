@@ -46,6 +46,11 @@ namespace Nebulus.Controllers
         {
             get
             {
+                //var rollManager = _rollManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+                //if (rollManager.Roles.Count() == 0)
+                //{
+                //    Security.Roles.Initilize(ApplicationDbContext.Create());
+                //}
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
@@ -299,6 +304,7 @@ namespace Nebulus.Controllers
             {
                 var ApplicationUserDb = ApplicationDbContext.Create();
                 ApplicationUserDb.SecurityRoles.Add(AdRole);
+                ApplicationUserDb.SaveChanges();
 
                 return RedirectToAction("ManageUsers");
             }
@@ -310,10 +316,6 @@ namespace Nebulus.Controllers
         [ADAdminAuthorizationAttribute]
         public ActionResult DeleteGroup(int id)
         {
-            if (id == null)
-            {
-                return View("Error");
-            }
             var ApplicationUserDb = ApplicationDbContext.Create();
 
             return View(ApplicationUserDb.SecurityRoles.Find(id));
@@ -321,19 +323,18 @@ namespace Nebulus.Controllers
 
         [HttpPost]
         [ADAdminAuthorizationAttribute]
-        public ActionResult DeleteGroup(SecurityRoleEntity AdRole)
+        public ActionResult DeleteGroup(string id)
         {
-            if (AdRole == null)
+            if (id == null)
             {
                 return View("Error");
             }
-            if (ModelState.IsValid)
-            {
-                var ApplicationUserDb = ApplicationDbContext.Create();
-                ApplicationUserDb.SecurityRoles.Remove(AdRole);
-            }
 
-            return View(AdRole);
+            var ApplicationUserDb = ApplicationDbContext.Create();
+            ApplicationUserDb.SecurityRoles.Remove(ApplicationUserDb.SecurityRoles.Find(int.Parse(id)));
+            ApplicationUserDb.SaveChanges();
+
+            return RedirectToAction("ManageUsers");
         }
 
         //

@@ -21,6 +21,8 @@ namespace Nebulus.Models
         public MessagePriorityType MessagePriority { get; set; }
         public DateTimeOffset ScheduleStart { get; set; }
         public ScheduleIntervalType ScheduleInterval { get; set; }
+        public DateTimeOffset SentTime { get; set; }
+        public string Creator { get; set; }
         public double duration { get; set; }
         public DateTimeOffset Expiration { get; set; }
         public string TargetGroup { get; set; }
