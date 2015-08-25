@@ -40,4 +40,13 @@ namespace Nebulus.Models
         OwinOnly,
         WindowsAndOwin
     }
+
+    public enum MessageStatus
+    {
+        New,
+        Sent,
+        Expired,
+        Template,
+        Clone
+    }
 }

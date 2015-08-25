@@ -40,5 +40,7 @@ namespace NebulusMessageBroker
         public string MessageTop { get; set; }
 
         public string MessageLeft { get; set; }
+
+        public int Status { get; set; }
     }
 }

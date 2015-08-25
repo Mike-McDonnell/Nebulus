@@ -12,7 +12,8 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.MessageItemId, null)
-    
+    @Html.HiddenFor(model => model.Status, null)
+
     @*<div class="form-horizontal">*@
         <div id="Wrapper">
             <form action="">
@@ -168,7 +169,8 @@
                 </div>
                 <!--end of AdvancedWrapper-->
                 <a href="~/Message/Index" class="btn btn-warning btn-lg btn-block">Cancel</a>
-                <button type="submit" value="Create" class="btn btn-success btn-lg btn-block">Create</button>
+                <button type="submit" name="submit" value="Template" class="btn btn-info btn-lg btn-block">Save As Template</button>
+                <button type="submit" name="submit" value="Create" class="btn btn-success btn-lg btn-block">Create</button>
 
             </form>
         </div><!--end of wrapper-->
@@ -176,84 +178,92 @@
      @*</div>*@
 }
 
+@if(Model.Status != Nebulus.Models.MessageStatus.Clone)
+{
+    <script type="text/javascript">
+        CKEDITOR.on('instanceReady', function (ev) { ev.editor.setData('<span style="font-size:72px;">&shy;</span>') })
+    </script>
+}
+
+
 <script type="text/javascript">
-    
+
     CKEDITOR.config.height = 100;
-    CKEDITOR.config.extraPlugins = 'flash,font,iframe,forms,justify,colordialog,bidi,colorbutton,lineutils,youtube,wenzgmap,TextToSpeech';
+        CKEDITOR.config.extraPlugins = 'flash,font,iframe,forms,justify,colordialog,bidi,colorbutton,lineutils,youtube,wenzgmap,TextToSpeech';
 
-    $("#MessageLocation").attr('disabled', true);
-    CKEDITOR.on('instanceReady', function (ev) { ev.editor.setData('<span style="font-size:72px;">&shy;</span>') })
-    CKEDITOR.on('instanceReady', function (ev) {
-        ev.editor.on('change', function () {
-            if ($("#MessageType").val() == 0) {
-                $("#display-monitor-content li").replaceWith('<li><marquee class="marquee-inner" direction="left" scrollamount="10" behavior="scroll">' + ev.editor.getData() + '</marquee></li>');
-            }
-            else
-            {
-                $("#display-monitor-content li").replaceWith('<li>' + ev.editor.getData() + '</li>');
-            }
-        })
-    });
-    $("#MessageType").change(
-        function()
-        {
-            if (CKEDITOR.instances.MessageBody) { CKEDITOR.instances.MessageBody.destroy(true); }
-            if($(this).val() == 0)
-            {
-                $("#display-monitor").removeClass().removeAttr('style').addClass('pg-marquee');
-                $("#MessageLocation").attr('disabled', true);
-                CKEDITOR.config.height = 100;
-            }
-            if($(this).val() == 1)
-            {
-                $("#MessageLocation").trigger("change");
-                CKEDITOR.config.height = 300;
-                $("#MessageLocation").removeAttr('disabled');
-            }
+        $("#MessageLocation").attr('disabled', true);
 
-            CKEDITOR.replace('MessageBody', CKEDITOR.config);
+        CKEDITOR.on('instanceReady', function (ev) {
+            ev.editor.on('change', function () {
+                if ($("#MessageType").val() == 0) {
+                    $("#display-monitor-content li").replaceWith('<li><marquee class="marquee-inner" direction="left" scrollamount="10" behavior="scroll">' + ev.editor.getData() + '</marquee></li>');
+                }
+                else
+                {
+                    $("#display-monitor-content li").replaceWith('<li>' + ev.editor.getData() + '</li>');
+                }
+            })
         });
+        $("#MessageType").change(
+            function()
+            {
+                if (CKEDITOR.instances.MessageBody) { CKEDITOR.instances.MessageBody.destroy(true); }
+                if($(this).val() == 0)
+                {
+                    $("#display-monitor").removeClass().removeAttr('style').addClass('pg-marquee');
+                    $("#MessageLocation").attr('disabled', true);
+                    CKEDITOR.config.height = 100;
+                }
+                if($(this).val() == 1)
+                {
+                    $("#MessageLocation").trigger("change");
+                    CKEDITOR.config.height = 300;
+                    $("#MessageLocation").removeAttr('disabled');
+                }
 
-    $("#MessageLocation").change(
-       function () {
-           $("#display-monitor").draggable({ disabled: true, drag: function (event, ui) { setPostionValue(ui); } }).resizable({ disabled: true, resize: function (event, ui) { setSizeValue(ui); } });
+                CKEDITOR.replace('MessageBody', CKEDITOR.config);
+            });
 
-           if ($(this).val() == 0) {
-               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-center');
-           }
-           if ($(this).val() == 1) {
-               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-bottom');
-           }
-           if ($(this).val() == 2) {
-               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-top');
-           }
-           if ($(this).val() == 3) {
-               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-right');
-           }
-           if ($(this).val() == 4) {
-               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-left');
-           }
-           if ($(this).val() == 5) {
-               $("#display-monitor").removeClass().removeAttr('style').addClass('pg-fullscreen');
-           }
-           if ($(this).val() == 6) {
-               $("#display-monitor").draggable("enable").resizable("enable");
-               $("#MessageTop").val(parseInt($("#display-monitor").css('top'))); $("#MessageLeft").val(parseInt($("#display-monitor").css('left')));
-               $("#MessageHeight").val(parseInt($("#display-monitor").css('height'))); $("#MessageWidth").val(parseInt($("#display-monitor").css('width')));
-           }
-       });
-    function setPostionValue(ui)
-    {
-        $("#MessageTop").val(parseInt(ui.position.top)); $("#MessageLeft").val(parseInt(ui.position.left));
-    }
-    function setSizeValue(ui)
-    {
-        $("#MessageHeight").val(parseInt(ui.size.height)); $("#MessageWidth").val(parseInt(ui.size.width));
-    }
+        $("#MessageLocation").change(
+           function () {
+               $("#display-monitor").draggable({ disabled: true, drag: function (event, ui) { setPostionValue(ui); } }).resizable({ disabled: true, resize: function (event, ui) { setSizeValue(ui); } });
 
-    $("#AdvancedWrapper").hide();
-    $("#AdvancedArrow").click(function () { $("#AdvancedArrow").hide(); $("#AdvancedWrapper").slideDown(); })
-</script>
+               if ($(this).val() == 0) {
+                   $("#display-monitor").removeClass().removeAttr('style').addClass('pg-center');
+               }
+               if ($(this).val() == 1) {
+                   $("#display-monitor").removeClass().removeAttr('style').addClass('pg-bottom');
+               }
+               if ($(this).val() == 2) {
+                   $("#display-monitor").removeClass().removeAttr('style').addClass('pg-top');
+               }
+               if ($(this).val() == 3) {
+                   $("#display-monitor").removeClass().removeAttr('style').addClass('pg-right');
+               }
+               if ($(this).val() == 4) {
+                   $("#display-monitor").removeClass().removeAttr('style').addClass('pg-left');
+               }
+               if ($(this).val() == 5) {
+                   $("#display-monitor").removeClass().removeAttr('style').addClass('pg-fullscreen');
+               }
+               if ($(this).val() == 6) {
+                   $("#display-monitor").draggable("enable").resizable("enable");
+                   $("#MessageTop").val(parseInt($("#display-monitor").css('top'))); $("#MessageLeft").val(parseInt($("#display-monitor").css('left')));
+                   $("#MessageHeight").val(parseInt($("#display-monitor").css('height'))); $("#MessageWidth").val(parseInt($("#display-monitor").css('width')));
+               }
+           });
+        function setPostionValue(ui)
+        {
+            $("#MessageTop").val(parseInt(ui.position.top)); $("#MessageLeft").val(parseInt(ui.position.left));
+        }
+        function setSizeValue(ui)
+        {
+            $("#MessageHeight").val(parseInt(ui.size.height)); $("#MessageWidth").val(parseInt(ui.size.width));
+        }
+
+        $("#AdvancedWrapper").hide();
+        $("#AdvancedArrow").click(function () { $("#AdvancedArrow").hide(); $("#AdvancedWrapper").slideDown(); })
+    </script>
 
 @if (AppConfiguration.Settings.GroupTAGsEnabled)
 {

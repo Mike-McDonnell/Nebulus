@@ -83,7 +83,7 @@ namespace NebulusMessageBroker
                         int windowOffSet = 5;
                         var timeWindowEnd = DateTimeOffset.Now.AddMinutes(windowOffSet);
 
-                        var messages = this.DataBaseContext.MessageItems.Where(message => message.ScheduleStart >= DateTimeOffset.Now && message.ScheduleStart <= timeWindowEnd && message.Expiration >= timeWindowEnd || ((message.ScheduleInterval != ScheduleIntervalType.Never && message.ScheduleStart.Hour == DateTimeOffset.Now.Hour && message.Expiration >= timeWindowEnd)));
+                        var messages = this.DataBaseContext.MessageItems.Where(message => message.Status != 3 && (message.ScheduleStart >= DateTimeOffset.Now && message.ScheduleStart <= timeWindowEnd && message.Expiration >= timeWindowEnd || ((message.ScheduleInterval != ScheduleIntervalType.Never && message.ScheduleStart.Hour == DateTimeOffset.Now.Hour && message.Expiration >= timeWindowEnd))));
 
                         foreach (var mItem in messages)
                         {

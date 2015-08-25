@@ -20,22 +20,48 @@ namespace Nebulus.Controllers
 
         public ActionResult Index()
         {
-            var messageItems = Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Where(item => item.Expiration > DateTimeOffset.Now).ToList();
+            var messageItems = Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Where(item => item.Expiration > DateTimeOffset.Now && item.Status != MessageStatus.Template).ToList();
             return View(messageItems.OrderBy(item => item.ScheduleStart));
         }
         [HttpGet]
-        public ActionResult Create()
+        public ActionResult Create(string id)
         {
             var messageItem = new MessageItem();
+
+            messageItem.Status = MessageStatus.New;
+            if(id != null)
+            {
+                CloneFromTemplate(id, messageItem);
+            }
+
             messageItem.ScheduleStart = DateTimeOffset.Now;
             messageItem.Expiration = DateTimeOffset.Now.AddHours(2);
             messageItem.duration = 2;
 
             return View(messageItem);
         }
+
+        private static void CloneFromTemplate(string id, MessageItem messageItem)
+        {
+            var templateMessage = Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Find(id);
+            messageItem.MessageBody = templateMessage.MessageBody;
+            messageItem.MessageHeight = templateMessage.MessageHeight;
+            messageItem.MessageLeft = templateMessage.MessageLeft;
+            messageItem.MessageLocation = templateMessage.MessageLocation;
+            messageItem.MessagePriority = templateMessage.MessagePriority;
+            messageItem.MessageTop = templateMessage.MessageTop;
+            messageItem.MessageType = templateMessage.MessageType;
+            messageItem.MessageWidth = templateMessage.MessageWidth;
+            messageItem.ScheduleInterval = templateMessage.ScheduleInterval;
+            messageItem.TargetGroup = templateMessage.TargetGroup;
+            messageItem.duration = templateMessage.duration;
+
+            messageItem.Status = MessageStatus.Clone;
+        }
+       
         [HttpPost]
         [ValidateInput(false)]
-        public async System.Threading.Tasks.Task<ActionResult> Create(MessageItem messageItem, string[] tags)
+        public async System.Threading.Tasks.Task<ActionResult> Create(MessageItem messageItem, string submit, string[] tags)
         {
             if (ModelState.IsValid)
             {
@@ -48,16 +74,42 @@ namespace Nebulus.Controllers
                 messageItem.MessageItemId = Guid.NewGuid().ToString();
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
 
-                if (messageItem.ScheduleStart < DateTimeOffset.Now.AddMinutes(1))
+                if (submit == "Template")
                 {
-                    if(await SendMessage(messageItem))
+                    messageItem.Status = MessageStatus.Template;
+                }
+                else if (submit == "Create")
+                {
+                    if (messageItem.ScheduleStart < DateTimeOffset.Now.AddMinutes(1))
                     {
-                        messageItem.SentTime = DateTimeOffset.Now;
+                        if (await SendMessage(messageItem))
+                        {
+                            messageItem.SentTime = DateTimeOffset.Now;
+                            messageItem.Status = MessageStatus.Sent;
+                        }
                     }
                 }
 
                 Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Add(messageItem);
-                Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
+
+                try
+                {
+                    Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
+                }
+                catch (System.Data.Entity.Validation.DbEntityValidationException e)
+                {
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
+
+                }
 
                 return RedirectToAction("Index");
             }
@@ -83,6 +135,7 @@ namespace Nebulus.Controllers
             if(await SendMessage(messageItem))
             {
                 messageItem.SentTime = DateTimeOffset.Now;
+                messageItem.Status = MessageStatus.Sent;
                 Nebulus.AppConfiguration.NebulusDBContext.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
                 Nebulus.AppConfiguration.NebulusDBContext.SaveChanges();
             }
@@ -134,7 +187,7 @@ namespace Nebulus.Controllers
             DateTimeOffset StartDate = DateTimeOffset.Parse(startDate).Subtract(new TimeSpan(7,0,0,0));
             DateTimeOffset EndDate = DateTimeOffset.Parse(startDate).AddMonths(1).AddDays(7);
 
-            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where (ev.ScheduleInterval != ScheduleIntervalType.Never && ev.Expiration > DateTimeOffset.Now) || ev.Expiration > DateTimeOffset.Now && ev.ScheduleStart >= StartDate && ev.ScheduleStart <= EndDate select ev;
+            var mEvents = from ev in Nebulus.AppConfiguration.NebulusDBContext.MessageItems where ((ev.ScheduleInterval != ScheduleIntervalType.Never && ev.Expiration > DateTimeOffset.Now) || ev.Expiration > DateTimeOffset.Now && ev.ScheduleStart >= StartDate && ev.ScheduleStart <= EndDate) && ev.Status != MessageStatus.Template select ev;
 
             var fmEvents = FormatRecurringEvents(mEvents, DateTimeOffset.Parse(startDate));
 

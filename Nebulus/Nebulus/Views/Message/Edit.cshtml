@@ -13,13 +13,15 @@
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.MessageItemId, null)
-    
+    @Html.HiddenFor(model => model.Status, null)
+    @Html.HiddenFor(model => model.Creator, null)
+
     <div id="Wrapper">
         <form action="">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div id="MessageWrapper">
                 <fieldset>
-                    <legend>Edit MESSAGE</legend>
+                    <legend>Edit MESSAGE </legend>
                     <div class="FloatDivLeft">
                         <p>
                             <label for="MessageTitle">Message Title:</label>
@@ -78,7 +80,7 @@
                             </div>
                         </p>
                     </div>
-                    <div id="AdvancedArrow"></div>
+                    <div id="AdvancedArrow"><h4>...</h4></div>
                 </fieldset>
                 
             </div><!--end of MessageWrapper-->
@@ -166,7 +168,7 @@
                 </fieldset>
             </div><!--end of AdvancedWrapper-->
             <a href="~/Message/Index" class="btn btn-warning btn-lg btn-block">Cancel</a>
-            <button type="submit" value="Create" class="btn btn-success btn-lg btn-block">Save</button>
+            <button type="submit" value="Save" class="btn btn-success btn-lg btn-block">Save</button>
             @Html.ActionLink("Delete", "Delete", new { id = Model.MessageItemId }, new { @class = "btn btn-danger btn-lg btn-block" })
 
         </form>

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Nebulus.Models.MessageItem>
+@using GridMvc.Html
+@using Nebulus.Models
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Templates</h2>
+
+@Html.Grid(Model).Columns(columns =>
+{
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Select", "Create", "Message", new { id = o.MessageItemId}, new { @class = "btn btn btn-success" }));
+    columns.Add(item => item.MessageTitle).Titled("Title").Filterable(true);
+    columns.Add().RenderValueAs(o => Enum.Parse(typeof(MessagePriorityType), o.MessagePriority.ToString()).ToString()).Titled("Priority").Filterable(true);
+    columns.Add(item => item.Creator).Titled("Creator").Filterable(true);
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Edit", "Edit", "Message", new { id = o.MessageItemId }, new { @class = "btn btn-default  btn-xs" }));
+    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Delete", "Delete", new { id = o.MessageItemId }, new { @class = "btn btn-danger  btn-xs" }));
+}).WithPaging(20)
+     
