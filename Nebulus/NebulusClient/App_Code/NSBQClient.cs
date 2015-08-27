@@ -31,7 +31,7 @@ namespace Nebulus
                     SubscriptionName = Environment.MachineName + "\\" + Environment.UserName;
                 }
 
-                if(NebulusClient.Properties.Settings.Default.SubscriptionNameLevel == 3)
+                if (NebulusClient.Properties.Settings.Default.SubscriptionNameLevel == 3)
                 {
                     try
                     {

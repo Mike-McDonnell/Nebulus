@@ -76,7 +76,7 @@ namespace Nebulus
             }
             catch(Exception ex)
             {
-                AppLogging.Instance.Error("Error: Paresing Authentication Type propertiy");
+                AppLogging.Instance.Error("Error: Paresing Authentication Type propertiy", ex);
             }
 
         }

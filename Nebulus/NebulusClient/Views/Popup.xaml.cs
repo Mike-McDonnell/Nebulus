@@ -49,6 +49,8 @@ namespace NebulusClient
             objComWebBrowser.GetType().InvokeMember(
 
             "ExecWB", BindingFlags.InvokeMethod, null, objComWebBrowser, new object[] { 63, 2, zoolwPercent, zoolwPercent });
+
+            
         }
 
 
@@ -58,6 +60,14 @@ namespace NebulusClient
             {
                 NebulusClient.App_Code.SpeechHelper.Speak(speech);
             }
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            this.browser.Source = null;
+            this.browser.Dispose();
         }
     }
 }

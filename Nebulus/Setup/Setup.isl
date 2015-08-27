@@ -343,6 +343,8 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>ISO19770_LocalTag</td><td>{EED55B20-06EB-4917-9E67-F60036E18837}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISO19770_SystemTag</td><td>{0EB0AFB7-64C8-419B-B477-5FFC21DA439C}</td><td>CommonAppDataFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Nebulus.Content_Files</td><td>{83229CC9-80A7-4C54-80B1-071EE488F217}</td><td>IISROOTFOLDER</td><td>2</td><td/><td>nebulus.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Nebulus.Primary_output</td><td>{01876D28-8B66-4BA3-B0B6-CBBC956DD5E1}</td><td>IISROOTFOLDER</td><td>2</td><td/><td>nebulus.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NebulusMessageBroker.Primary_output</td><td>{756786CA-BEB8-49EA-AC7A-8481C8555487}</td><td>INSTALLDIR</td><td>2</td><td/><td>nebulusmessagebroker.primary</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1055,6 +1057,8 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>CommonAppDataFolder</td><td>ISO19770_SystemTag</td></row>
+		<row><td>INSTALLDIR</td><td>ISO19770_LocalTag</td></row>
 		<row><td>INSTALLDIR</td><td>WebsiteComponent</td></row>
 	</table>
 
@@ -1153,13 +1157,9 @@
 		<row><td>IISROOTFOLDER</td><td>TARGETDIR</td><td>.:IISRoo~1|IISRootFolder</td><td/><td>0</td><td/></row>
 		<row><td>INSTALLDIR</td><td>NEBULUS1</td><td>.</td><td/><td>0</td><td/></row>
 		<row><td>ISCommonFilesFolder</td><td>CommonFilesFolder</td><td>Instal~1|InstallShield</td><td/><td>0</td><td/></row>
-		<row><td>ISMyCompanyDir</td><td>ProgramFilesFolder</td><td>MYCOMP~1|My Company Name</td><td/><td>0</td><td/></row>
-		<row><td>ISMyProductDir</td><td>ISMyCompanyDir</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>ISYourDataBaseDir</td><td>INSTALLDIR</td><td>Database</td><td/><td>0</td><td/></row>
 		<row><td>LocalAppDataFolder</td><td>TARGETDIR</td><td>.:LocalA~1|LocalAppData</td><td/><td>0</td><td/></row>
-		<row><td>MY_PRODUCT_NAME</td><td>U.S._ARMY</td><td>MYPROD~1|My Product Name</td><td/><td>0</td><td/></row>
 		<row><td>MyPicturesFolder</td><td>TARGETDIR</td><td>.:MyPict~1|MyPictures</td><td/><td>0</td><td/></row>
-		<row><td>NEBULUS</td><td>U.S._ARMY</td><td>Nebulus</td><td/><td>0</td><td/></row>
 		<row><td>NEBULUS1</td><td>NUPHASE_LOGIC_LLC</td><td>Nebulus</td><td/><td>0</td><td/></row>
 		<row><td>NUPHASE_LOGIC_LLC</td><td>ProgramFilesFolder</td><td>NUPHAS~1|NUPHASE LOGIC LLC</td><td/><td>0</td><td/></row>
 		<row><td>NetHoodFolder</td><td>TARGETDIR</td><td>.:NetHood</td><td/><td>0</td><td/></row>
@@ -1179,7 +1179,6 @@
 		<row><td>TARGETDIR</td><td/><td>SourceDir</td><td/><td>0</td><td/></row>
 		<row><td>TempFolder</td><td>TARGETDIR</td><td>.:Temp</td><td/><td>0</td><td/></row>
 		<row><td>TemplateFolder</td><td>TARGETDIR</td><td>.:ShellNew</td><td/><td>0</td><td/></row>
-		<row><td>U.S._ARMY</td><td>ProgramFilesFolder</td><td>U_S_AR~1|U.S. ARMY</td><td/><td>0</td><td/></row>
 		<row><td>USERPROFILE</td><td>TARGETDIR</td><td>.:USERPR~1|UserProfile</td><td/><td>0</td><td/></row>
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
@@ -2038,6 +2037,8 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>ISO19770_LocalTag</td><td/><td/><td>_EC562143_1637_4FD9_80ED_73E92F684C13_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISO19770_SystemTag</td><td/><td/><td>_FF225DA7_4724_460E_A010_B4BC442A2AAB_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Nebulus.Content_Files</td><td/><td/><td>_C61F87DB_36B8_4289_AD58_F283944E6CCE_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Nebulus.Primary_output</td><td/><td/><td>_28A6F6AD_5DB0_47E6_861C_C0A70DAEF95F_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NebulusMessageBroker.Primary_output</td><td/><td/><td>_C4CEE0E6_B31E_464C_B8F5_46E08175B533_FILTER</td><td/><td/><td/><td/></row>
@@ -3783,6 +3784,7 @@
 	<table name="ISSwidtagProperty">
 		<col key="yes" def="s72">Name</col>
 		<col def="s0">Value</col>
+		<row><td>TagCreatorRegid</td><td>regid.2014-09.com.nplogic</td></row>
 		<row><td>UniqueId</td><td>B8A70B31-FE16-4450-A9AE-0C3E7BD9E584</td></row>
 	</table>
 
@@ -4022,7 +4024,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{56EDAFB4-7C26-4F3B-9F77-F0B6543545F1}</td></row>
 		<row><td>ISUSSignature</td><td>{06BEC7CD-9355-4B86-BAAF-6E14DB9A3436}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewVRoots,viewISToday,viewServices,viewProject,viewSystemSearch,viewInstallScriptStd,viewCustomActions,viewUpdateService,viewSetupTypes,viewSQLServer</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewVRoots,viewISToday,viewServices,viewProject,viewSystemSearch,viewInstallScriptStd,viewCustomActions,viewUpdateService,viewSetupTypes,viewSQLServer,viewAppFiles,viewRealSetupDesign,viewSupportFiles</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
@@ -4035,6 +4037,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SccEnabled</td><td>0</td></row>
 		<row><td>SccPath</td><td>SAK</td></row>
 		<row><td>SchemaVersion</td><td>774</td></row>
+		<row><td>SwidtagLocalComponent</td><td>ISO19770_LocalTag</td></row>
+		<row><td>SwidtagSystemComponent</td><td>ISO19770_SystemTag</td></row>
 		<row><td>Type</td><td>MSIE</td></row>
 		<row><td>VSSccAuxPath</td><td>SAK</td></row>
 		<row><td>VSSccLocalPath</td><td>SAK</td></row>

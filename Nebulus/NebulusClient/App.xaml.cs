@@ -76,7 +76,7 @@ namespace NebulusClient
             }
             catch(Exception ex)
             {
-                AppLogging.Instance.Error("Error: Reciving Message popup  ", ex);
+                AppLogging.Instance.Error("Error: Receving Message popup  ", ex);
             }
 
             ListTimer.Tick += CheckPopUpExperation;
@@ -124,12 +124,19 @@ namespace NebulusClient
                               try
                               {
                                   popup.PopUpWindows.Close();
+                                  
                               }
                               catch { }
                           }));
                 }
 
-                MessageList.RemoveAll(popup => !popup.PopUpWindows.IsLoaded);
+                foreach (var popup in MessageList.Where(p => !p.PopUpWindows.IsLoaded))
+                {
+                    popup.MessageItem = null;
+                    popup.PopUpWindows = null;
+                    
+                    MessageList.Remove(popup);
+                }
             }
             catch (Exception ex)
             {

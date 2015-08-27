@@ -69,5 +69,13 @@ namespace NebulusClient
                 await Task.Delay(TextLengthTimeOut * 1000);
             }
         }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            this.browser.Source = null;
+            this.browser.Dispose();
+        }
     }
 }
