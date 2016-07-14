@@ -22,5 +22,60 @@ namespace Nebulus.Models
         public string MessageWidth { get; set; }
         public string MessageTop { get; set; }
         public string MessageLeft { get; set; }
+        public string ADGroupTags { get; set; }
+
+        public virtual bool PassesSecurityFilter
+        {
+            get
+            {
+                if (this.ADGroupTags != string.Empty)
+                {
+                    using (var pC = new System.DirectoryServices.AccountManagement.PrincipalContext(System.DirectoryServices.AccountManagement.ContextType.Domain))
+                    {
+                        using (var user = System.DirectoryServices.AccountManagement.UserPrincipal.FindByIdentity(pC, System.DirectoryServices.AccountManagement.IdentityType.Sid, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value))
+                        {
+                            foreach (var group in user.GetGroups())
+                            {
+                                if (this.ADGroupTags.Contains(group.SamAccountName))
+                                {
+                                    return true;
+                                }
+
+                            }
+                        }
+
+                        using (var user = System.DirectoryServices.AccountManagement.UserPrincipal.FindByIdentity(pC, System.DirectoryServices.AccountManagement.IdentityType.Sid, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value))
+                        {
+                            foreach (var group in user.GetGroups())
+                            {
+                                if (this.ADGroupTags.Contains(group.SamAccountName))
+                                {
+                                    return true;
+                                }
+
+                            }
+                        }
+
+                        //using (var computer = System.DirectoryServices.AccountManagement.ComputerPrincipal.FindByIdentity(pC, System.DirectoryServices.AccountManagement.IdentityType.SamAccountName, Environment.MachineName))
+                        //{
+                        //    foreach (var group in computer.GetGroups())
+                        //    {
+                        //        if (this.ADGroupTags.Contains(group.SamAccountName))
+                        //        {
+                        //            return true;
+                        //        }
+
+                        //    }
+                        //}
+
+                        return false;
+                    }
+                }
+                else
+                {
+                    return true;
+                }
+            }
+        }
     }
 }

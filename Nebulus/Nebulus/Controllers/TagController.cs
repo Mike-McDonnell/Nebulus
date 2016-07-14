@@ -24,7 +24,7 @@ namespace Nebulus.Controllers
                     PrincipalSearcher insPrincipalSearcher = new PrincipalSearcher();
 
                     GroupPrincipal insPrincipal = new GroupPrincipal(AppConfiguration.ADPrincipalContext);
-                    insPrincipal.IsSecurityGroup = false;
+                    //insPrincipal.IsSecurityGroup = false;
 
                     if(AppConfiguration.Settings.GroupTAGsDateSource != string.Empty)
                     {

@@ -88,6 +88,7 @@ namespace NebulusClient
 
                 popup.Show();
                 popup.StartSpeech(SpeechHelper.GetSpeechString(message.MessageBody));
+                popup.StartCloseOptionTimer(30);
             }
             catch(Exception ex)
             {

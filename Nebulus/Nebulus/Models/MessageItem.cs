@@ -30,7 +30,7 @@ namespace Nebulus.Models
         public string MessageWidth { get; set; }
         public string MessageTop { get; set; }
         public string MessageLeft { get; set; }
-
+        public string ADGroupTags { get; set; }
         public MessageStatus Status { get; set; }
     }
 }

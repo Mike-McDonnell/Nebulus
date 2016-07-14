@@ -17,72 +17,65 @@
     @Html.HiddenFor(model => model.Creator, null)
 
     <div id="Wrapper">
-        <form action="">
+        @*<form action="">*@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div id="MessageWrapper">
                 <fieldset>
                     <legend>Edit MESSAGE </legend>
-                    <div class="FloatDivLeft">
-                        <p>
+
+                    <fieldset>
+                        <div class="form-group">
                             <label for="MessageTitle">Message Title:</label>
-                            @Html.EditorFor(model => model.MessageTitle, null)
+                            @Html.EditorFor(model => model.MessageTitle, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.MessageTitle)
-                        </p>
-                    </div>
+                        </div>
 
-                    <div class="FloatDivRight">
-                        <p>
+                        <div class="form-group">
                             <label for="MessageType">Message Type:</label>
-                            @Html.EnumDropDownListFor(model => model.MessageType)
+                            @Html.EnumDropDownListFor(model => model.MessageType, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MessageType, "", new { @class = "text-danger" })
-                        </p>
-                    </div>
+                        </div>
 
-                    <div class="ClearBoth FloatDivRight">
-                        <p>
+                        <div class="form-group">
+
                             <label for="MessageLocation">Message Location:</label>
-                            @Html.EnumDropDownListFor(model => model.MessageLocation)
+                            @Html.EnumDropDownListFor(model => model.MessageLocation, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MessageLocation, "", new { @class = "text-danger" })
-                        </p>
-                        @Html.HiddenFor(model => model.MessageHeight)
-                        @Html.HiddenFor(model => model.MessageWidth)
-                        @Html.HiddenFor(model => model.MessageTop)
-                        @Html.HiddenFor(model => model.MessageLeft)
-                    </div>
 
-                    <div class="FloatDivLeft">
-                        <p>
+                            @Html.HiddenFor(model => model.MessageHeight)
+                            @Html.HiddenFor(model => model.MessageWidth)
+                            @Html.HiddenFor(model => model.MessageTop)
+                            @Html.HiddenFor(model => model.MessageLeft)
+                        </div>
+
+                        <div class="form-group">
                             <label for="MessagePriority">Message Priority:</label>
-                            @Html.EnumDropDownListFor(model => model.MessagePriority)
+                            @Html.EnumDropDownListFor(model => model.MessagePriority, new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MessagePriority, "", new { @class = "text-danger" })
-                        </p>
-                    </div>
+                        </div>
 
-                    <div class="ClearBoth">
-                        <p>
-                            @Html.TextAreaFor(model => model.MessageBody, new { @class = "ckeditor" })
-                            @*@Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })*@
-                        </p>
-                    </div>
+                    </fieldset>
 
-                    <div class="ClearBoth">
-                        <p>
-                            <div class="display-container">
-                                <div class="screen monitor">
-                                    <div class="content">
-                                        <div id="display-monitor">
-                                            <ul id="display-monitor-content" class="marquee-outer">
-                                                <li></li>
-                                            </ul>
-                                        </div>
+                    <div class="form-group">
+                        @Html.TextAreaFor(model => model.MessageBody, new { @class = "ckeditor" })
+                        @Html.ValidationMessageFor(model => model.MessageBody, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group">
+                        <div class="display-container">
+                            <div class="screen monitor">
+                                <div class="content">
+                                    <div id="display-monitor" class="pg-marquee">
+                                        <ul id="display-monitor-content" class="marquee-outer">
+                                            <li></li>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
-                        </p>
+                        </div>
                     </div>
                     <div id="AdvancedArrow"><h4>...</h4></div>
                 </fieldset>
-                
+
             </div><!--end of MessageWrapper-->
 
             <div id="AdvancedWrapper">
@@ -101,7 +94,7 @@
                             <div class="FloatDivRight">
                                 <fieldset>
                                     <legend>Repeat:</legend>
-                                    @Html.EnumDropDownListFor(model => model.ScheduleInterval)
+                                    @Html.EnumDropDownListFor(model => model.ScheduleInterval, new { @class = "form-control" })
                                 </fieldset>
                             </div>
                         </div>
@@ -109,60 +102,58 @@
                     <fieldset>
                         <div class="ClearBoth">
                             <div class="FloatDivLeft">
-                                <p>Expiration:</p>
-                                @Html.TextBoxFor(model => model.Expiration, new { @Value = Model.Expiration.ToString("yyyy/MM/dd HH:mm") })
+                                <label for="Expiration">Expiration:</label><br>
+                                @Html.EditorFor(model => model.Expiration, new { htmlAttributes = new { @class = "form-control" }, @Value = Model.Expiration.ToString("yyyy/MM/dd HH:mm") })
                                 @Html.ValidationMessageFor(model => model.Expiration, "", new { @class = "text-danger" })
                             </div>
-
                             <div class="FloatDivRight">
-                                <p>Duration:</p>
-                                @Html.EditorFor(model => model.duration)
+                                <label for="duration">Duration:</label>
+                                @Html.EditorFor(model => model.duration, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.duration, "", new { @class = "text-danger" })
                             </div>
                         </div>
                     </fieldset>
                     <fieldset class="odd">
-                        <div id="Tags" class="ClearBoth">
+                        <div id="Tags">
                             @if (AppConfiguration.Settings.GroupTAGsEnabled)
                             {
-                                <div class="ClearBoth FloatDivLeft">
-                                    <p>
-                                        <label for="">AD Distro Group:</label>
-                                        <input id="ADGroupSearch" type="text" name="" />
-                                    </p>
+                                <div class="form-group">
+                                    <label for="ADGroupSearch">Active Directory Groups:</label>
+                                    <input id="ADGroupSearch" type="text" class="form-control" />
                                 </div>
                             }
                             @if (AppConfiguration.Settings.UserTAGsEnabled)
                             {
-                                <div class="FloatDivRight">
-                                    <p>
-                                        <label for="">Username:</label>
-                                        <input id="userNameSearch" type="text" name="">
-                                    </p>
+                                <div class="form-group">
+                                    <label for="userNameSearch">Username:</label>
+                                    <input id="userNameSearch" type="text" class="form-control">
                                 </div>
                             }
                             @if (AppConfiguration.Settings.ComputerTAGsEnabled)
                             {
-                                <div class="ClearBoth FloatDivLeft">
-                                    <p>
-                                        <label for="">Computer Name:</label>
-                                        <input id="computerSearch" type="text" name="">
-                                    </p>
+                                <div class="form-group">
+                                    <label for="computerSearch">Computer Name:</label>
+                                    <input id="computerSearch" type="text" class="form-control">
                                 </div>
                             }
                             @if (AppConfiguration.Settings.SubNetTAGsEnabled)
                             {
-                                <div class="FloatDivRight" style="margin-left:23px">
-                                    <p>
-                                        <label for="">Subnet:</label>
-                                        <input id="subNetSearch" type="text" name="">
-                                    </p>
+                                <div class="form-group">
+                                    <label for="subNetSearch">Subnet:</label>
+                                    <input id="subNetSearch" type="text" class="form-control">
                                 </div>
                             }
                         </div>
+                        @Html.HiddenFor(model => model.TargetGroup)
+                        <label for="tags">General Tags</label>
                         <div id="tags-input" class="ClearBoth">
-                            @Html.HiddenFor(model => model.TargetGroup)
                             @Html.ListBox("tags", new MultiSelectList(new List<string>()), new { @data_role = "tagsinput" })
+                        </div>
+
+                        @Html.HiddenFor(model => model.ADGroupTags)
+                        <label for="tagsAD-input">Group Tags</label>
+                        <div id="tagsAD-input" class="ClearBoth">
+                            @Html.ListBox("tagsAD", new MultiSelectList(new List<string>()), new { @data_role = "tagsinput" })
                         </div>
                     </fieldset>
                 </fieldset>
@@ -171,7 +162,7 @@
             <button type="submit" value="Save" class="btn btn-success btn-lg btn-block">Save</button>
             @Html.ActionLink("Delete", "Delete", new { id = Model.MessageItemId }, new { @class = "btn btn-danger btn-lg btn-block" })
 
-        </form>
+        @*</form>*@
     </div><!--end of wrapper-->
 
 }
@@ -270,6 +261,14 @@
             $("#display-monitor").removeClass().addClass('pg-center').css({ 'top': $("#MessageTop").val() + "px", 'left': $("#MessageLeft").val() + "px", 'width': $("#MessageWidth").val(), 'height': $("#MessageHeight").val()});
         }
     });
+
+    $(document).ready(function () {
+        $("#ADGroupTags").val().split('|').forEach(function (i) {
+            $("#tagsAD").append($('<option>', {
+                value: i,
+            }));
+    })});
+
 </script>
 
         @if (AppConfiguration.Settings.GroupTAGsEnabled)
@@ -288,7 +287,7 @@
                     autoFocus: true
                 }).keyup(function (event) {
                     if (event.which == 13) {
-                        $("#tags").tagsinput('add', $(this).val());
+                        $("#tagsAD").tagsinput('add', $(this).val());
                     }
                 }).keydown(function (event) {
                     if (event.which == 13) {

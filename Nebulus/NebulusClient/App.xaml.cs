@@ -44,23 +44,28 @@ namespace NebulusClient
                     try
                     {
                         var message = o.GetBody<Nebulus.Models.MessageItem>();
-                        if (message.Expiration > DateTimeOffset.Now)
-                        {
-                            if (message.MessageType == Nebulus.Models.MessageType.Marquee)
-                            {
-                                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
-                                {
-                                    CloseOpenMarquee();
-                                    MessageList.Add(PopUpCreator.StartMarquee(message));
-                                }));
 
-                            }
-                            if (message.MessageType == Nebulus.Models.MessageType.Popup)
+                        if (message.PassesSecurityFilter)
+                        {
+
+                            if (message.Expiration > DateTimeOffset.Now)
                             {
-                                Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                                if (message.MessageType == Nebulus.Models.MessageType.Marquee)
                                 {
-                                    MessageList.Add(PopUpCreator.StartPopUp(message));
-                                }));
+                                    Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                                    {
+                                        CloseOpenMarquee();
+                                        MessageList.Add(PopUpCreator.StartMarquee(message));
+                                    }));
+
+                                }
+                                if (message.MessageType == Nebulus.Models.MessageType.Popup)
+                                {
+                                    Application.Current.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(() =>
+                                    {
+                                        MessageList.Add(PopUpCreator.StartPopUp(message));
+                                    }));
+                                }
                             }
                         }
                     }

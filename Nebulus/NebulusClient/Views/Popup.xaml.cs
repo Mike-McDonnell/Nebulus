@@ -20,6 +20,9 @@ namespace NebulusClient
     /// </summary>
     public partial class Popup : Window
     {
+        private System.Windows.Threading.DispatcherTimer CloseOptionTimer = new System.Windows.Threading.DispatcherTimer();
+        private int TextLengthTimeOut;
+
         public double widthZoomFactor;
         public double heightZoomFactor;
 
@@ -53,6 +56,19 @@ namespace NebulusClient
             
         }
 
+        public void StartCloseOptionTimer(int TimeOutSeconds)
+        {
+            this.TextLengthTimeOut = TimeOutSeconds;
+
+            CloseOptionTimer.Tick += (o, e) =>
+            {
+                this.WindowStyle = System.Windows.WindowStyle.ToolWindow;
+                this.CloseOptionTimer.Stop();
+            };
+
+            CloseOptionTimer.Interval = new TimeSpan(0, 0, TextLengthTimeOut);
+            CloseOptionTimer.Start();
+        }
 
         internal void StartSpeech(string speech)
         {

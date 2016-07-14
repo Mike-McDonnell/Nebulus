@@ -83,6 +83,12 @@ namespace Nebulus
 
         internal static void LoadSettings()
         {
+            /*
+                Queue Name: NebulusMessageQueue
+                ServiceBus: Endpoint=sb://amedwsbamc0113.amed.ds.army.mil/ServiceBusDefaultNamespace;StsEndpoint=https://amedwsbamc0113.amed.ds.army.mil:9355/ServiceBusDefaultNamespace;RuntimePort=9354;ManagementPort=9355
+                Database: data source=AMEDDBBAMC0102\BAMCSQL08DEV;initial catalog=Nebulus;integrated security=True;MultipleActiveResultSets=True;App=EntityFramework
+             */
+
             try
             {
                 Settings.ActiveDirectoryQueryEnabled = ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"] != null ? Convert.ToBoolean(ConfigurationManager.AppSettings["ActiveDirectoryQueryEnabled"]) : false;

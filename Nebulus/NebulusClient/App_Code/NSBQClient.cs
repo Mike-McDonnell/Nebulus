@@ -66,24 +66,24 @@ namespace Nebulus
             {
                 if (NebulusClient.App.ClientConfiguration.GroupTAGsEnabled)
                 {
-                    try
-                    {
-                        var pC = new PrincipalContext(ContextType.Domain);
+                    //try
+                    //{
+                    //    var pC = new PrincipalContext(ContextType.Domain);
 
-                        UserPrincipal user = UserPrincipal.FindByIdentity(pC, IdentityType.Sid, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value);
+                    //    UserPrincipal user = UserPrincipal.FindByIdentity(pC, IdentityType.Sid, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value);
 
-                        if (user != null)
-                        {
-                            foreach (var group in user.GetGroups().Where(p => ((GroupPrincipal)p).IsSecurityGroup == false).Select(g => g.SamAccountName).ToList<string>())
-                            {
-                                SQLQuery += " Tags LIKE '%" + group + "%' OR";
-                            }
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        AppLogging.Instance.Error("Error: Accessing ActiveDirectory ", ex);
-                    }
+                    //    if (user != null)
+                    //    {
+                    //        foreach (var group in user.GetGroups().Where(p => ((GroupPrincipal)p).IsSecurityGroup == false).Select(g => g.SamAccountName).ToList<string>())
+                    //        {
+                    //            SQLQuery += " Tags LIKE '%" + group + "%' OR";
+                    //        }
+                    //    }
+                    //}
+                    //catch(Exception ex)
+                    //{
+                    //    AppLogging.Instance.Error("Error: Accessing ActiveDirectory ", ex);
+                    //}
                 }
                 if (NebulusClient.App.ClientConfiguration.UserTAGsEnabled)
                 {

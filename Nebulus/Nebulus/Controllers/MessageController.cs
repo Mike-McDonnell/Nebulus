@@ -61,7 +61,7 @@ namespace Nebulus.Controllers
        
         [HttpPost]
         [ValidateInput(false)]
-        public async System.Threading.Tasks.Task<ActionResult> Create(MessageItem messageItem, string submit, string[] tags)
+        public async System.Threading.Tasks.Task<ActionResult> Create(MessageItem messageItem, string submit, string[] tags, string[] tagsAD)
         {
             if (ModelState.IsValid)
             {
@@ -73,6 +73,7 @@ namespace Nebulus.Controllers
                 messageItem.Creator = User.Identity.Name;
                 messageItem.MessageItemId = Guid.NewGuid().ToString();
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
+                messageItem.ADGroupTags = tagsAD != null ? string.Join("|", tagsAD) : string.Empty;
 
                 if (submit == "Template")
                 {
@@ -151,11 +152,12 @@ namespace Nebulus.Controllers
 
         [HttpPost]
         [ValidateInput(false)]
-        public ActionResult Edit(MessageItem messageItem, string[] tags, string[] tagsGroup)
+        public ActionResult Edit(MessageItem messageItem, string[] tags, string[] tagsAD)
         {
             if (ModelState.IsValid)
             {
                 messageItem.TargetGroup = tags != null ? string.Join("|", tags) : string.Empty;
+                messageItem.ADGroupTags = tagsAD != null ? string.Join("|", tagsAD) : string.Empty;
 
                 ((IObjectContextAdapter)Nebulus.AppConfiguration.NebulusDBContext).ObjectContext.Detach(Nebulus.AppConfiguration.NebulusDBContext.MessageItems.Find(messageItem.MessageItemId));
                 Nebulus.AppConfiguration.NebulusDBContext.Entry(messageItem).State = System.Data.Entity.EntityState.Modified;
