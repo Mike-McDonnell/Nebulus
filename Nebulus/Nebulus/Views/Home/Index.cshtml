@@ -1,13 +1,19 @@
-﻿<div class="jumbotron">
-    <h1>Nebulus</h1>
+﻿<div class="text-center">
+    <img class="img-responsive main-logo" src="~/logo.png" />
     <p class="lead">Nebulus Central Control System.</p>
     @*<p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>*@
 </div>
+
+<hr />
+
 @if (User.IsInAnyRole("BroadCastMessage"))
 { 
 <div class="row">
     <div class="col-md-4">
         <p><a href="~/Message/Index" class="btn btn-primary btn-lg btn-block">Broadcast Messaging &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <p><a href="~/Screensaver/Index" class="btn btn-primary btn-lg btn-block">Screen Saver &raquo;</a></p>
     </div>
 @if (AppConfiguration.Settings.FeatureSet > 2)
         {

@@ -47,11 +47,11 @@ namespace Nebulus
 
                     string NotificationHubName = AppConfiguration.Settings.NotificationHubName;
 
-                    if (namespaceManager.NotificationHubExists(NotificationHubName))
-                    {
+                    //if (namespaceManager.NotificationHubExists(NotificationHubName))
+                    //{
                         
                         NNHClient = NotificationHubClient.CreateClientFromConnectionString(connBuilder.ToString(), AppConfiguration.Settings.NotificationHubName);
-                    }
+                    //}
                 }
                 catch (Exception ex)
                 {

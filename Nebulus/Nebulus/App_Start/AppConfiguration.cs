@@ -121,6 +121,8 @@ namespace Nebulus
                 Settings.NotificationHubName = ConfigurationManager.AppSettings["NotificationHubName"] != null ? ConfigurationManager.AppSettings["NotificationHubName"] : string.Empty;
                 Settings.NotificationHubServerConenctionString = ConfigurationManager.ConnectionStrings["NotificationHubServerConenctionString"] != null ? ConfigurationManager.ConnectionStrings["NotificationHubServerConenctionString"].ConnectionString : string.Empty;
                 Settings.NotificationHubClientConenctionString = ConfigurationManager.ConnectionStrings["NotificationHubClientConenctionString"] != null ? ConfigurationManager.ConnectionStrings["NotificationHubClientConenctionString"].ConnectionString : string.Empty;
+
+                Settings.FileStorageLocation = ConfigurationManager.AppSettings["FileStorageLocation"] != null ? ConfigurationManager.AppSettings["FileStorageLocation"] : "~/Content/Uploaded/";
             }
             catch (Exception ex)
             {
@@ -133,6 +135,10 @@ namespace Nebulus
             try
             {
                 var cfg = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration(@"/");
+
+                if (cfg.AppSettings.Settings["FileStorageLocation"] == null)
+                    cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("FileStorageLocation", "~/Content/Uploaded/"));
+                cfg.AppSettings.Settings["FileStorageLocation"].Value = Settings.FileStorageLocation.ToString();
 
                 if (cfg.AppSettings.Settings["ActiveDirectoryQueryEnabled"] == null)
                     cfg.AppSettings.Settings.Add(new KeyValueConfigurationElement("ActiveDirectoryQueryEnabled", ""));

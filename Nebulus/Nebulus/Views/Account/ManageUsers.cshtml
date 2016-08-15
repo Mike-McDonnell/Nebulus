@@ -10,12 +10,12 @@
 
 <h2>Manage Users</h2>
 
-<div class="row">
-    <div class="col-md-10">
+    <div>
         <span>User Accounts</span>
         <div class="row">
-            <section id="usersGrid">
-                @Html.Grid(Model).Columns(columns =>
+            <div class="col-lg-12">
+                <section id="usersGrid">
+                    @Html.Grid(Model).Columns(columns =>
                 {
                     columns.Add(item => item.UserName).Titled("Name").Filterable(true);
                     columns.Add(item => item.Email).Titled("E-mail").Filterable(true);
@@ -24,33 +24,34 @@
                     columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Delete", "Delete", new { id = o.Id }, new { @class = "btn btn-danger btn-xs" }));
                 })
 
-                <br>
-            </section>
+                    <br>
+                </section>
+            </div>
         </div>
-            <div class="row">
+            <div>
                 @Html.ActionLink("Add User", "Register", "", new { @class = "btn btn-primary" })
             </div>
-     </div>
     </div>
 <br>
-    <div class="row">
-        <div class="col-md-10">
+    <div>
             <span>Active Directory Roles</span>
             <div class="row">
-                <section id="adGroups">
-                    @Html.Grid(Nebulus.AppConfiguration.Settings.SecurityRoles).Columns(columns =>
+                <div class="col-lg-12">
+                    <section id="adGroups">
+                        @Html.Grid(Nebulus.AppConfiguration.Settings.SecurityRoles).Columns(columns =>
                 {
                     columns.Add(item => item.Name).Titled("Name").Filterable(true);
                     columns.Add(item => item.IdentityRole).Titled("Role").Filterable(true);
                     columns.Add().Encoded(false).Sanitized(false).RenderValueAs(o => @Html.ActionLink("Delete", "DeleteGroup", new { id = o.SecurityRoleEntityID }, new { @class = "btn btn-danger btn-xs" }));
                 })
 
-                    <br>
-                </section>
-            </div>
-            <div class="row">
+                        <br>
+                    </section>
+                    </div>
+                </div>
+            <div>
                 @Html.ActionLink("Add Group", "AddGroup", "", new { @class = "btn btn-primary" })
             </div>
-        </div>
     </div>
+<br>
 

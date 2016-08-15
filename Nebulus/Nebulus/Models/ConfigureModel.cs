@@ -64,5 +64,7 @@ namespace Nebulus.Models
 
 
         public List<SecurityRoleEntity> SecurityRoles { get; set; }
+
+        public string FileStorageLocation { get; set; }
     }
 }

@@ -10,6 +10,8 @@ namespace Nebulus
     {
         public DbSet<MessageItem> MessageItems { get; set; }
 
+        public DbSet<ScreenSaverItem> ScreenSaverItems {get; set;}
+
         public DbSet<PrintServiceSettingsModel> PrintServiceConfiguration { get; set; }
 
         public NebulusContext()
@@ -29,7 +31,7 @@ namespace Nebulus
         }
     }
 
-    public partial class NebulusContextInitializer : CreateDatabaseIfNotExists<NebulusContext> //DropCreateDatabaseIfModelChanges<NebulusContext>
+    public partial class NebulusContextInitializer : DropCreateDatabaseIfModelChanges<NebulusContext>
     {
         protected override void Seed(NebulusContext context)
         {

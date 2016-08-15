@@ -12,11 +12,10 @@
         padding: .4em;
     }
 
-    body {
-        background-color: #510c1b;
-    }
-
-    
+    /*body {
+            background-color:#510c1b; background-image:url('../hex-bg.png'); 
+            background-repeat:no-repeat; background-position:0px 75px
+    }*/
 
     fieldset {
         border: #555 solid 1px;

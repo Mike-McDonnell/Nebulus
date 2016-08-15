@@ -17,7 +17,7 @@ namespace Nebulus.Models
         public virtual string RolesString { get {
             var AppUserDb = new ApplicationDbContext();
             return this.Roles != null ? string.Join(",", this.Roles.Select(role => AppUserDb.Roles.Find(role.RoleId).Name)) : string.Empty;
-        
+
         } }
 
         public virtual System.Collections.Generic.IEnumerable<IdentityRole> RolesNames

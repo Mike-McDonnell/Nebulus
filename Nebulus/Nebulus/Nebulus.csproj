@@ -85,6 +85,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.0.0\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.3.2.1\lib\net45\NLog.dll</HintPath>
     </Reference>
@@ -112,9 +116,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -182,29 +183,43 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Client\ClientConfig.cs" />
-    <Compile Include="Controllers\ClientController.cs" />
+    <Compile Include="Controllers\api\ClientController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\Login\AccountController.cs" />
     <Compile Include="Controllers\Login\AccountController.Windows.cs" />
     <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="App_Data\NebulusContext.cs" />
+    <Compile Include="Controllers\api\SlideDeckController.cs" />
+    <Compile Include="Controllers\ScreenSaverController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607281943407_InitialCreate.cs" />
+    <Compile Include="Migrations\201607281943407_InitialCreate.Designer.cs">
+      <DependentUpon>201607281943407_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608121527192_AddScreenSaverPresenterType.cs" />
+    <Compile Include="Migrations\201608121527192_AddScreenSaverPresenterType.Designer.cs">
+      <DependentUpon>201608121527192_AddScreenSaverPresenterType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\App_Enums.cs" />
     <Compile Include="Models\ConfigureModel.cs" />
+    <Compile Include="Models\CustomValidation\ValidateFileAttribute.cs" />
     <Compile Include="Models\Login\AccountViewModels.cs" />
     <Compile Include="Models\Login\AccountViewModels.Windows.cs" />
     <Compile Include="Models\Login\IdentityModels.cs" />
     <Compile Include="Models\Login\ManageViewModels.cs" />
     <Compile Include="Models\MessageItem.cs" />
     <Compile Include="Models\PrintServiceSettingsModel.cs" />
+    <Compile Include="Models\ScreenSaverItem.cs" />
     <Compile Include="Models\SecurityRoleEntity.cs" />
     <Compile Include="Models\TAGsDateSourceType.cs" />
     <Compile Include="App_Start\NSBQClient.cs" />
+    <Compile Include="PresenterType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -234,7 +249,9 @@
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery.datetimepicker.css" />
     <Content Include="Content\message-layout.css" />
-    <Content Include="favicon.ico" />
+    <Content Include="Content\sticky-footer-navbar.css" />
+    <Content Include="en.ico" />
+    <Content Include="en.png" />
     <Content Include="fileman\css\images\animated-overlay.gif" />
     <Content Include="fileman\css\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="fileman\css\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -512,6 +529,8 @@
     <Content Include="fileman\Uploads\LICENSE.txt" />
     <Content Include="fileman\Uploads\roxy-fileman-logo.gif" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="hex-bg.png" />
+    <Content Include="logo.png" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
     <Content Include="Scripts\ckeditor\ckeditor.js" />
     <Content Include="Scripts\ckeditor\config.js" />
@@ -2938,6 +2957,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Properties\PublishProfiles\Nebulus - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Nebulus - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\sprech.pubxml" />
     <None Include="Properties\PublishProfiles\test.pubxml" />
     <None Include="Properties\Settings.settings">
@@ -3016,8 +3037,18 @@
     <Content Include="Views\Account\DeleteGroup.cshtml" />
     <Content Include="Views\Template\Delete.cshtml" />
     <Content Include="Views\Template\Index.cshtml" />
+    <Content Include="Views\ScreenSaver\Create.cshtml" />
+    <Content Include="Views\ScreenSaver\Delete.cshtml" />
+    <Content Include="Views\ScreenSaver\Edit.cshtml" />
+    <Content Include="Views\ScreenSaver\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201607281943407_InitialCreate.resx">
+      <DependentUpon>201607281943407_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608121527192_AddScreenSaverPresenterType.resx">
+      <DependentUpon>201608121527192_AddScreenSaverPresenterType.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

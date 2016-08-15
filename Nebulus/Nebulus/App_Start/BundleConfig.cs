@@ -40,7 +40,8 @@ namespace Nebulus
                       "~/Content/site.css",
                       "~/Content/Gridmvc.css",
                       "~/Content/jquery.datetimepicker.css",
-                      "~/Content/jquery-ui.min.css"));
+                      "~/Content/jquery-ui.min.css",
+                      "~/Content/sticky-footer-navbar.css"));
         }
     }
 }
