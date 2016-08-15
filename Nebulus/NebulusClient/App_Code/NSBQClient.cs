@@ -15,6 +15,8 @@ namespace Nebulus
         {
             try
             {
+                //ServiceBusEnvironment.SystemConnectivity.Mode = ConnectivityMode.Http;
+
                 ServiceBusConnectionStringBuilder connBuilder = new ServiceBusConnectionStringBuilder(NebulusClient.App.ClientConfiguration.ServiceBUSConenctionString);
                 MessagingFactory messageFactory = MessagingFactory.CreateFromConnectionString(connBuilder.ToString());
                 NamespaceManager namespaceManager = NamespaceManager.CreateFromConnectionString(connBuilder.ToString());

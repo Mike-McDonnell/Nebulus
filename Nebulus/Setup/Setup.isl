@@ -3785,7 +3785,7 @@
 		<col key="yes" def="s72">Name</col>
 		<col def="s0">Value</col>
 		<row><td>TagCreatorRegid</td><td>regid.2014-09.com.nplogic</td></row>
-		<row><td>UniqueId</td><td>B8A70B31-FE16-4450-A9AE-0C3E7BD9E584</td></row>
+		<row><td>UniqueId</td><td>815DCA42-45A9-448A-A812-A576C952D0D0</td></row>
 	</table>
 
 	<table name="ISTargetImage">
