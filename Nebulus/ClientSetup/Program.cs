@@ -9,7 +9,7 @@ namespace ClientSetup
         {
             var project =
             new Project("Nebulus System Client",
-                new Dir(@"%ProgramFiles%\BAMC\Nebulus",
+                new Dir(@"%ProgramFiles%\NUPHASELOGIC\Nebulus",
 
                     //new Dir("Documentation", new Files(@"\\BUILDSERVER\My Product\Release\Documentation\*.*")), //uncomment if you have a real remote files to install 
 
@@ -38,12 +38,12 @@ namespace ClientSetup
             project.Version = new Version(1, 0);
             project.ControlPanelInfo.Comments = "Nebulus System Client";
             //project.ControlPanelInfo.HelpLink = "https://wixsharp.codeplex.com/support";
-            project.ControlPanelInfo.HelpTelephone = "210-916-7582";
+            project.ControlPanelInfo.HelpTelephone = "";
             //project.ControlPanelInfo.UrlInfoAbout = "https://wixsharp.codeplex.com/About";
             //project.ControlPanelInfo.UrlUpdateInfo = "https://wixsharp.codeplex.com/update";
             //project.ControlPanelInfo.ProductIcon = "app_icon.ico";
             project.ControlPanelInfo.Contact = "Michael McDonnell";
-            project.ControlPanelInfo.Manufacturer = "Michael McDonnell";
+            project.ControlPanelInfo.Manufacturer = "NUPHASE LOGIC, LLC";
             project.ControlPanelInfo.InstallLocation = "[INSTALLDIR]";
             project.ControlPanelInfo.NoModify = true;
 
