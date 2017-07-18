@@ -1,0 +1,21 @@
+﻿@model Nebulus.Models.MessageItem
+
+<h3>Are you sure you want to delete @Html.DisplayFor(model => model.MessageTitle)?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dd>
+            @Html.Raw(@Model.MessageBody)
+            @*@Html.DisplayFor(model => model.MessageBody)*@
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.MessageItemId)
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> 
+            @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+        </div>
+    }
+</div>

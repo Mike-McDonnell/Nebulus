@@ -1,0 +1,177 @@
+﻿    * {
+        font-size: 1em;
+        margin: 0;
+        padding: 0;
+    }
+
+    button {
+        background-color: #e1e1e1;
+        border: #333 solid 1px;
+        border-radius: 8px;
+        color: #510c1b;
+        padding: .4em;
+    }
+
+    /*body {
+            background-color:#510c1b; background-image:url('../hex-bg.png'); 
+            background-repeat:no-repeat; background-position:0px 75px
+    }*/
+
+    fieldset {
+        border: #555 solid 1px;
+        border-radius: 8px;
+        padding: 1em;
+        margin-top: 1em;
+        margin-bottom: .5em;
+    }
+
+    legend {
+        background-color: #e1e1e1;
+        border: #333 solid 1px;
+        border-radius: 8px;
+        color: #510c1b;
+        font-weight: bold;
+        letter-spacing: .4em;
+        margin: 1em 0;
+        padding: .3em .7EM;
+        -webkit-box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.64);
+        -moz-box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.64);
+        box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.64);
+    }
+
+    fieldset > legend {
+        float: left;
+        margin-top: -30px;
+    }
+
+        fieldset > legend + * {
+            clear: both;
+        }
+
+    input, textarea {
+        background-color: #fdfbca;
+        border: #555 solid 1px;
+        border-radius: 8px;
+        padding: .4em;
+    }
+
+    p {
+        color: #555;
+    }
+
+    textarea {
+        width: 98.5%;
+    }
+
+    .ClearBoth {
+        clear: both;
+    }
+
+    .even {
+    }
+
+    .FloatDivLeft {
+        float: left;
+    }
+
+    .FloatDivRight {
+        float: right;
+    }
+
+    .odd {
+        background-color: #f3f3f3;
+    }
+
+    #AdvancedWrapper {
+        margin-top: 1.5em;
+        margin-bottom: 1.5em;
+    }
+
+    #Calendar {
+        margin-left: 150px;
+        width: 340px;
+    }
+
+    #Repeat {
+        width: 130px;
+    }
+
+        #Calendar fieldset, #Repeat fieldset {
+            background-color: #e1e1e1;
+        }
+
+        #Calendar legend, #Repeat legend {
+            border: none;
+            border-radius: 4px;
+            background: #fff;
+            color: #555;
+            font-weight: normal;
+            letter-spacing: 0;
+            padding: .2em -webkit-box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.64);
+            -moz-box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.64);
+            box-shadow: 0px 4px 10px 0px rgba(50, 50, 50, 0.64);
+            filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30);
+            -ms-filter: "progid:DXImageTransform.Microsoft.Blur(PixelRadius=3,MakeShadow=true,ShadowOpacity=0.30)";
+            zoom: 1;
+        }
+
+    #FirstHortDiv,
+    #SecondHortDiv,
+    #ThirdHortDiv {
+        width: 32%;
+    }
+
+    #SecondHortDiv {
+        margin-left: 1em;
+    }
+
+    #Repeat p {
+        float: right;
+        clear: both;
+        color: #555;
+        margin-right: .5em;
+    }
+
+    #Wrapper {
+        background-color: #fff;
+        margin: 10px auto;
+        padding: 1em;
+        max-width: 1024px;
+        -webkit-border-radius: 10px;
+        -moz-border-radius: 10px;
+        border-radius: 10px;
+    }
+
+    #AdvancedArrow {
+        margin-top: -1px;
+        position: relative;
+    }
+    #AdvancedArrow h4{
+        position: absolute;
+        margin-left: 82.5%;
+        margin-top: -.75em;
+        z-index:5000;
+        font-size: 400%;
+    }
+
+    #AdvancedArrow:after {
+        content: "";
+	    position: absolute;
+	    width: 0;
+	    border: 50px solid transparent;
+	    border-top-color: #fff;
+        margin-left: 80%;
+        margin-top: -.5%
+    }
+    #AdvancedArrow:before {
+        content: '';
+	    height: 0;
+	    position: absolute;
+	    width: 0;
+
+	    border: 50px solid transparent;
+	    border-top-color: #333;
+        margin-left: 80%;
+        margin-top: 0%
+    }
+
