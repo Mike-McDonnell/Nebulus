@@ -25,7 +25,7 @@ namespace PPTScreenSaver.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://143.83.140.141:8080")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://127.0.0.1:8080")]
         public string ClientConfigConnectionString {
             get {
                 return ((string)(this["ClientConfigConnectionString"]));
