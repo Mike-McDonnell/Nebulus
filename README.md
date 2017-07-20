@@ -6,8 +6,7 @@ EXAMPLE PROJECT!!!
 Nebulus is an ASP.NET SeviceBus
 messaging system developed by NUPHASE Logic, LLC as an example project. 
 
-This project is example of a partly
-developed system. That has not gone through a traditional validation and security
+This project is example of a system in devlopment that has not gone through a traditional validation and security
 assessment phase. This project’s intended purpose is to be used as an example
 of implementing the Security Development Lifecycle (SDL).
 
