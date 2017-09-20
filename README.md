@@ -27,7 +27,7 @@ https://msdn.microsoft.com/en-us/library/jj193021.aspx
 
 Service
 Bus messaging: flexible data delivery in the cloud
-https://www.linkedin.com/notifications/https:/docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview
+https:/docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-messaging-overview
 
 Notification
 Hubs
